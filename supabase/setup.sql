@@ -58,6 +58,10 @@ insert into storage.buckets (id, name, public)
 values ('story', 'story', true)
 on conflict (id) do update set public = true;
 
+-- Upserts of existing objects require SELECT in addition to INSERT/UPDATE.
+drop policy if exists "Story admins may read" on storage.objects;
+create policy "Story admins may read" on storage.objects for select to authenticated
+using (bucket_id = 'story' and public.is_story_admin());
 drop policy if exists "Story admins may upload" on storage.objects;
 create policy "Story admins may upload" on storage.objects for insert to authenticated
 with check (bucket_id = 'story' and public.is_story_admin());

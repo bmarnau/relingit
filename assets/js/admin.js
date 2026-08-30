@@ -145,8 +145,7 @@ document.querySelector("#publish-form").addEventListener("submit", async (event)
     form.reset();
     statusNode.textContent = "Die neue Version ist veröffentlicht.";
   } catch (error) {
-    statusNode.textContent =
-      "Veröffentlichung fehlgeschlagen. Die bisherige Version bleibt angezeigt.";
+    statusNode.textContent = `Veröffentlichung fehlgeschlagen (${error.message}). Die bisherige Version bleibt angezeigt.`;
     console.error(error);
   } finally {
     submitButton.disabled = false;
