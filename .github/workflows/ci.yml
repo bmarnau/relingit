@@ -1,0 +1,43 @@
+name: Website CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: website-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Website prüfen
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Repository laden
+        uses: actions/checkout@v6
+
+      - name: Node.js bereitstellen
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: HTML, Links, PDFs und Geheimnisse prüfen
+        shell: pwsh
+        run: ./scripts/ci-check.ps1
+
+      - name: JavaScript-Syntax prüfen
+        run: |
+          node --check app.js
+          node --check admin.js
+          node --check supabase-config.js
+
+      - name: Git-Whitespace prüfen
+        run: git diff --check HEAD~1 HEAD 2>/dev/null || git diff --check

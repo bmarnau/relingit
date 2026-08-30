@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Die Fahrt zum Kunden – eine fortlaufende Geschichte aus dem Alltag des Systemhauses Reling IT.">
+  <title>Die Fahrt zum Kunden | Reling IT</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="supabase-config.js"></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Zur Startseite">Reling IT <span>/ Geschichte</span></a>
+    <nav aria-label="Hauptnavigation">
+      <a href="#geschichte">Über die Geschichte</a>
+      <a href="#feedback">Rückmeldung</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="title">
+      <div class="hero-copy">
+        <p class="kicker">Fortlaufende Kurzgeschichte · Version <span data-version></span></p>
+        <h1 id="title">Die Fahrt<br>zum Kunden</h1>
+        <p class="lede">Was passiert, wenn ein Systemhaus seine KI nicht als Abkürzung versteht, sondern als neue Kollegin mit klaren Grenzen?</p>
+        <div class="actions">
+          <a class="button primary" id="read-link" href="fahrt-zum-kunden.html">Im Browser lesen</a>
+          <a class="button secondary" id="pdf-link" href="geschichte.pdf" download>PDF herunterladen</a>
+        </div>
+        <p class="meta">46 Seiten · Bernd Marnau · aktualisiert am <time data-date></time></p>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="moon"></div>
+        <div class="route route-a"></div>
+        <div class="route route-b"></div>
+        <div class="car"><span></span><span></span></div>
+        <div class="signal navis">Navis</div>
+        <div class="signal lumen">Lumen</div>
+      </div>
+    </section>
+
+    <section class="story" id="geschichte">
+      <div>
+        <p class="section-label">Worum es geht</p>
+        <h2>Eine Fahrt. Viele Entscheidungen.</h2>
+      </div>
+      <div class="story-copy">
+        <p>Mira ist unterwegs zu einem Kunden. Während die Landstraße vorbeizieht, helfen Navis und Lumen bei der Vorbereitung – aber sie entscheiden nicht für sie.</p>
+        <p>Die frei erfundene Geschichte verbindet den Alltag eines kleinen Systemhauses mit dem realen Entwurf einer verantwortungsvollen KI-Zentrale. Erzählung, Architektur und offene Fragen stehen bewusst nebeneinander.</p>
+      </div>
+    </section>
+
+    <section class="themes" aria-label="Themen der Geschichte">
+      <article><span>01</span><h3>Menschen</h3><p>Verantwortung bleibt sichtbar – auch wenn Software Vorschläge macht.</p></article>
+      <article><span>02</span><h3>Technik</h3><p>Navis, Lumen, Sysingboard und Reports werden verständlich eingeordnet.</p></article>
+      <article><span>03</span><h3>Fortsetzung</h3><p>Jede neue Fassung ersetzt die vorherige und führt die Geschichte weiter.</p></article>
+    </section>
+
+    <section class="feedback" id="feedback" aria-labelledby="feedback-title">
+      <div>
+        <p class="section-label">Ihre Perspektive</p>
+        <h2 id="feedback-title">Was bleibt hängen?</h2>
+        <p>Hinweise zu Handlung, Verständlichkeit und Technik fließen in die nächste Version ein.</p>
+      </div>
+      <form id="feedback-form">
+        <label for="kind">Worum geht es?</label>
+        <select id="kind" name="kind">
+          <option>Allgemeiner Eindruck</option>
+          <option>Stimmigkeit der Geschichte</option>
+          <option>Technische oder fachliche Frage</option>
+          <option>Idee für die Fortsetzung</option>
+        </select>
+        <label for="message">Ihre Rückmeldung</label>
+        <textarea id="message" name="message" rows="6" required minlength="10" placeholder="Was hat überzeugt – und wo sollten wir noch einmal hinschauen?"></textarea>
+        <div class="trap" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+        <label class="check"><input id="privacy-ok" type="checkbox" required> Ich stimme zu, dass meine Rückmeldung zur Auswertung in Supabase gespeichert wird.</label>
+        <button class="button primary" type="submit">Rückmeldung senden</button>
+        <p class="form-note" id="form-status" aria-live="polite">Die Rückmeldung ist nicht öffentlich. Es werden keine Kontaktdaten abgefragt.</p>
+      </form>
+    </section>
+
+    <aside class="ai-note" aria-labelledby="ai-title">
+      <p class="section-label">Transparenzhinweis</p>
+      <h2 id="ai-title">Mit KI-Unterstützung entstanden</h2>
+      <p>Diese fiktionale Geschichte und ihre Veröffentlichung wurden von Bernd Marnau unter Einsatz generativer KI entwickelt und redaktionell verantwortet. Figuren, Unternehmen und Handlung sind – soweit nicht ausdrücklich anders gekennzeichnet – frei erfunden.</p>
+    </aside>
+  </main>
+
+  <footer>
+    <p>Eine frei erfundene Geschichte aus dem möglichen Alltag von Reling IT.</p>
+    <nav aria-label="Rechtliches"><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz &amp; Cookies</a> · <a href="admin.html">Neue Version</a> · <a href="https://github.com/bmarnau/relingit">Quellcode</a></nav>
+  </footer>
+</body>
+</html>
