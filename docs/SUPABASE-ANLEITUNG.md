@@ -32,7 +32,7 @@ Nur diese UID darf über `admin.html` neue Dateien einstellen. Weitere Administr
 1. In Supabase **Project Settings → API** öffnen.
 2. Die **Project URL** kopieren.
 3. Den **Publishable key** (`sb_publishable_...`) kopieren. Falls nur ältere Schlüssel angezeigt werden, kann vorübergehend der öffentliche `anon`-Key verwendet werden.
-4. `supabase-config.js` öffnen und beide Platzhalter ersetzen:
+4. `assets/js/supabase-config.js` öffnen und beide Platzhalter ersetzen:
 
 ```js
 window.SUPABASE_CONFIG = Object.freeze({
@@ -45,7 +45,7 @@ Der Publishable-/Anon-Key darf in einer öffentlichen Website stehen, weil RLS s
 
 ## D. Veröffentlichung prüfen
 
-1. Zunächst die vorhandenen Dateien `fahrt-zum-kunden.html` und `geschichte.pdf` über `admin.html` als Version 1.10 hochladen.
+1. Zunächst die vorhandenen Dateien `content/fahrt-zum-kunden.html` und `content/geschichte.pdf` über `admin.html` als Version 1.10 hochladen.
 2. Dafür `admin.html` öffnen und sich mit dem Administratorkonto anmelden.
 3. Version, sichtbares Datum und Seitenzahl eintragen; HTML und PDF auswählen.
 4. **Version jetzt veröffentlichen** drücken und die Erfolgsmeldung abwarten.

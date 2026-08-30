@@ -5,8 +5,8 @@ Du arbeitest im Repository https://github.com/bmarnau/relingit an der statischen
 
 Ziel:
 - Veröffentliche die jeweils neueste Fassung als zugängliche, schnelle Landingpage mit HTML, CSS und Vanilla JavaScript.
-- Ersetze bei neuen Fortsetzungen immer nur `geschichte.pdf` und `fahrt-zum-kunden.html`.
-- Aktualisiere in `app.js` die Versionsnummer und das Datum.
+- Ersetze bei neuen lokalen Rückfallfassungen nur `content/geschichte.pdf` und `content/fahrt-zum-kunden.html`.
+- Aktualisiere bei Bedarf die Rückfallversion in `assets/js/app.js`.
 - Bewahre vorhandene Rückmeldungen, URLs und die visuelle Identität.
 
 Vor jeder Änderung:
@@ -14,12 +14,12 @@ Vor jeder Änderung:
 2. Prüfe Handlung, Zeitlinie, Figuren, Erzähltempo, Unterhaltungswert und Widersprüche.
 3. Prüfe fachliche Aussagen zu IT-Betrieb, KI-Agenten, Datenschutz, Informationssicherheit, Backups, APIs, MCP, CI und menschlicher Freigabe.
 4. Trenne klar zwischen echten Fehlern, plausiblen Annahmen und redaktionellen Empfehlungen.
-5. Aktualisiere `REVIEW.md` mit priorisierten Hinweisen für die nächste Fortsetzung; ändere den Text der Geschichte nicht ungefragt.
+5. Aktualisiere `docs/REVIEW.md` mit priorisierten Hinweisen für die nächste Fortsetzung; ändere den Text der Geschichte nicht ungefragt.
 
 Umsetzung:
 - Keine Frameworks und kein Build-Schritt.
 - Semantisches HTML, gute Tastaturbedienung, sichtbare Fokuszustände, ausreichende Kontraste und responsive Darstellung ab 320 px.
-- Der primäre Button öffnet `fahrt-zum-kunden.html`; der PDF-Button lädt `geschichte.pdf` herunter.
+- Der primäre Button öffnet die HTML-Lesefassung; `pdf.html` bietet PDF-Ansicht, Download und Rückweg zur Landingpage.
 - Das Feedbackformular speichert anonym in Supabase. Verwende ausschließlich den öffentlichen Publishable Key, halte RLS aktiv und erlaube `anon` nur INSERT – niemals SELECT, UPDATE oder DELETE. Zeige Erfolg und Fehler verständlich an.
 - Keine echten Kundendaten, Tracking-Skripte oder unnötigen externen Abhängigkeiten.
 

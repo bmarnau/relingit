@@ -35,9 +35,10 @@ jobs:
 
       - name: JavaScript-Syntax prüfen
         run: |
-          node --check app.js
-          node --check admin.js
-          node --check supabase-config.js
+          node --check assets/js/app.js
+          node --check assets/js/admin.js
+          node --check assets/js/pdf-viewer.js
+          node --check assets/js/supabase-config.js
 
       - name: Git-Whitespace prüfen
         run: git diff --check HEAD~1 HEAD 2>/dev/null || git diff --check

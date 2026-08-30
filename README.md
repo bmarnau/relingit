@@ -4,6 +4,17 @@ Landingpage und Online-Lesefassung der fortlaufenden Kurzgeschichte von Bernd Ma
 
 Die öffentliche Landingpage wird manuell per FTP bei DomainFactory gehostet. GitHub dient als Quellcode-Repository und CI-Plattform, führt aber kein Deployment aus. Supabase übernimmt Leserfeedback, Versionsmetadaten sowie die jeweils aktuelle HTML- und PDF-Fassung.
 
+## Projektstruktur
+
+- `assets/css`: gemeinsame Gestaltung und Rechtseiten-Stile
+- `assets/js`: öffentliche Logik, PDF-Ansicht, Administration und Supabase-Konfiguration
+- `content`: lokale Rückfallfassung der Geschichte als HTML und PDF
+- `docs`: redaktionelle, Supabase- und FTP-Anleitungen
+- `scripts`: lokale und CI-Prüfungen
+- `source`: ursprüngliche Quelldateien, die nicht veröffentlicht werden
+- `supabase`: Datenbank- und RLS-Einrichtung
+- Projektstamm: ausschließlich öffentlich aufrufbare Seiten, README, Lizenz und Wartungsskript
+
 ## Neue Version veröffentlichen
 
 1. Den geschützten Bereich `admin.html` aufrufen und mit dem Supabase-Administratorkonto anmelden.
@@ -16,7 +27,7 @@ Supabase ersetzt die Dateien unter stabilen Adressen und aktualisiert die Versio
 ## Rückmeldungen mit Supabase
 
 1. Im Supabase-Dashboard den SQL Editor öffnen und `supabase/setup.sql` ausführen.
-2. In `supabase-config.js` die Project URL und den öffentlichen Publishable Key eintragen.
+2. In `assets/js/supabase-config.js` die Project URL und den öffentlichen Publishable Key eintragen.
 3. Niemals einen Secret- oder Service-Role-Key in diese Website eintragen.
 
 Anonyme Besucher dürfen danach ausschließlich neue Rückmeldungen anlegen. Sie können keine Einträge lesen, ändern oder löschen. Das Formular fragt keine Kontaktdaten ab. Vor einer stark beworbenen Veröffentlichung sollte zusätzlich serverseitiger Spam-Schutz oder Rate-Limiting ergänzt werden.

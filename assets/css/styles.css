@@ -1,0 +1,427 @@
+/* ---------- Design tokens and base styles ---------- */
+:root {
+  --night: #08111d;
+  --panel: #0e1a29;
+  --ink: #edf2f4;
+  --muted: #aebbc6;
+  --line: #24384a;
+  --cyan: #55d6c2;
+  --gold: #f1b854;
+  --paper: #f3efe6;
+  --paper-ink: #14202a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--night);
+  color: var(--ink);
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+}
+
+a:focus-visible,
+button:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+main,
+footer {
+  max-width: 1180px;
+  margin: auto;
+}
+
+/* ---------- Shared header and controls ---------- */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  max-width: 1180px;
+  margin: auto;
+  padding: 0 28px;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.brand span {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.site-header nav {
+  display: flex;
+  gap: 28px;
+}
+
+.site-header nav a {
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.site-header nav a:hover,
+.site-header nav a:focus {
+  color: var(--ink);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 0 22px;
+  border: 1px solid var(--cyan);
+  border-radius: 3px;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button:hover,
+.button:focus {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.primary {
+  background: var(--cyan);
+  color: #071710;
+}
+
+.secondary {
+  background: transparent;
+  color: var(--cyan);
+}
+
+.text-link {
+  align-self: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-underline-offset: 4px;
+}
+
+.kicker,
+.section-label {
+  color: var(--cyan);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+h2 {
+  margin: 14px 0;
+  font-family: Georgia, serif;
+  font-size: clamp(2.3rem, 5vw, 4.2rem);
+  line-height: 1.05;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: center;
+  min-height: 680px;
+  padding: 76px 28px 80px;
+  gap: 70px;
+}
+
+.hero h1 {
+  margin: 24px 0 34px;
+  font-family: Georgia, serif;
+  font-size: clamp(4.2rem, 9vw, 7.8rem);
+  letter-spacing: -0.065em;
+  line-height: 0.82;
+}
+
+.lede {
+  max-width: 600px;
+  color: var(--muted);
+  font-size: clamp(1.1rem, 2vw, 1.45rem);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 36px 0 18px;
+}
+
+.meta {
+  color: #8293a2;
+  font-size: 0.85rem;
+}
+
+.hero-art {
+  position: relative;
+  height: 520px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: linear-gradient(#15263a, #08111d 65%);
+  clip-path: polygon(7% 0, 100% 0, 100% 93%, 0 100%, 0 8%);
+}
+
+.moon {
+  position: absolute;
+  top: 12%;
+  right: 14%;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #e8e7d8;
+  box-shadow: 0 0 60px #dbe6e080;
+}
+
+.route {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  width: 2px;
+  height: 420px;
+  background: repeating-linear-gradient(
+    var(--gold) 0 25px,
+    transparent 25px 48px
+  );
+  transform-origin: bottom;
+}
+
+.route-a { transform: rotate(-17deg); }
+.route-b { transform: rotate(17deg); }
+
+.car {
+  position: absolute;
+  bottom: 42px;
+  left: calc(50% - 50px);
+  width: 100px;
+  height: 52px;
+  border: 1px solid #60768a;
+  border-radius: 28px 28px 10px 10px;
+  background: #26394d;
+}
+
+.car span {
+  position: absolute;
+  bottom: -8px;
+  width: 22px;
+  height: 22px;
+  border: 4px solid #26394d;
+  border-radius: 50%;
+  background: #050a10;
+}
+
+.car span:first-child { left: 11px; }
+.car span:last-child { right: 11px; }
+
+.signal {
+  position: absolute;
+  top: 57%;
+  font: 600 0.75rem ui-monospace, monospace;
+  letter-spacing: 0.08em;
+}
+
+.signal::before {
+  display: block;
+  width: 8px;
+  height: 8px;
+  margin: auto auto 7px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 6px currentColor;
+  content: "";
+}
+
+.navis { left: 18%; color: var(--cyan); }
+.lumen { right: 16%; color: var(--gold); }
+
+/* ---------- Editorial content ---------- */
+.story {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  margin: 0 28px;
+  padding: 92px 0;
+  border-top: 1px solid var(--line);
+}
+
+.story-copy {
+  color: var(--muted);
+  font-size: 1.15rem;
+}
+
+.themes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0 28px 110px;
+  border: 1px solid var(--line);
+}
+
+.themes article {
+  min-height: 220px;
+  padding: 34px;
+}
+
+.themes article + article { border-left: 1px solid var(--line); }
+.themes span { color: var(--gold); font-family: ui-monospace, monospace; }
+.themes h3 { margin: 35px 0 10px; font-size: 1.25rem; }
+.themes p { margin: 0; color: var(--muted); }
+
+.feedback {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 80px;
+  margin: 0 28px 90px;
+  padding: 72px;
+  background: var(--paper);
+  color: var(--paper-ink);
+}
+
+.feedback > div > p:last-child { color: #53636d; }
+.feedback form { display: grid; gap: 10px; }
+.feedback label { font-size: 0.88rem; font-weight: 700; }
+
+.feedback select,
+.feedback textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #aab4b6;
+  border-radius: 2px;
+  background: #fff;
+  font: inherit;
+}
+
+.feedback textarea { resize: vertical; }
+
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 6px 0 10px;
+  font-weight: 400 !important;
+}
+
+.check input { margin-top: 5px; }
+.form-note { margin: 0; color: #66747c; font-size: 0.8rem; }
+
+/* Honeypot: available to bots, outside the visible viewport for readers. */
+.trap {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.ai-note {
+  margin: 0 28px 90px;
+  padding: 42px;
+  border: 1px solid var(--line);
+}
+
+.ai-note h2 { font-size: 2rem; }
+.ai-note p:last-child { max-width: 75ch; color: var(--muted); }
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 30px 28px 48px;
+  border-top: 1px solid var(--line);
+  color: #8293a2;
+  font-size: 0.85rem;
+}
+
+footer p { margin: 0; }
+footer nav { text-align: right; }
+
+/* ---------- PDF viewer ---------- */
+.viewer-page {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-height: 100vh;
+}
+
+.viewer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.viewer-main {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  width: 100%;
+  max-width: none;
+  min-height: 0;
+}
+
+#pdf-frame {
+  width: 100%;
+  height: 100%;
+  min-height: calc(100vh - 95px);
+  border: 0;
+  background: #333;
+}
+
+.viewer-fallback {
+  margin: 0;
+  padding: 8px 24px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* ---------- Responsive behavior ---------- */
+@media (max-width: 800px) {
+  .site-header nav { display: none; }
+  .hero { grid-template-columns: 1fr; padding-top: 52px; }
+  .hero h1 { font-size: clamp(4rem, 20vw, 6rem); }
+  .hero-art { height: 380px; }
+  .story,
+  .feedback { grid-template-columns: 1fr; gap: 30px; }
+  .themes { grid-template-columns: 1fr; }
+  .themes article + article { border-top: 1px solid var(--line); border-left: 0; }
+  .feedback { padding: 40px 26px; }
+  footer { flex-direction: column; }
+  footer nav { text-align: left; }
+}
+
+@media (max-width: 520px) {
+  .viewer-header { align-items: stretch; flex-direction: column; }
+  .viewer-header .button { width: 100%; }
+  #pdf-frame { min-height: calc(100vh - 160px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .button { transition: none; }
+}

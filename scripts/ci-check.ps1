@@ -4,9 +4,11 @@ Set-Location -LiteralPath $projectRoot
 $failures = [System.Collections.Generic.List[string]]::new()
 
 $requiredFiles = @(
-    "index.html", "fahrt-zum-kunden.html", "geschichte.pdf",
-    "app.js", "styles.css", "admin.html", "admin.js",
-    "impressum.html", "datenschutz.html", "supabase/setup.sql"
+    "index.html", "pdf.html", "admin.html", "impressum.html", "datenschutz.html",
+    "content/fahrt-zum-kunden.html", "content/geschichte.pdf",
+    "assets/css/styles.css", "assets/css/legal.css",
+    "assets/js/app.js", "assets/js/admin.js", "assets/js/pdf-viewer.js",
+    "assets/js/supabase-config.js", "supabase/setup.sql"
 )
 foreach ($file in $requiredFiles) {
     if (-not (Test-Path -LiteralPath $file -PathType Leaf)) {
@@ -14,15 +16,16 @@ foreach ($file in $requiredFiles) {
     }
 }
 
-$htmlFiles = Get-ChildItem -Path $projectRoot -Filter "*.html" -File
+$htmlFiles = Get-ChildItem -Path $projectRoot -Filter "*.html" -File -Recurse
 foreach ($htmlFile in $htmlFiles) {
     $content = Get-Content -Raw -LiteralPath $htmlFile.FullName
+    $relativeHtmlPath = $htmlFile.FullName.Substring($projectRoot.Length + 1)
 
     $ids = [regex]::Matches($content, '\bid\s*=\s*["'']([^"'']+)["'']') |
         ForEach-Object { $_.Groups[1].Value }
     $duplicates = $ids | Group-Object | Where-Object Count -gt 1
     foreach ($duplicate in $duplicates) {
-        $failures.Add("Doppelte ID '$($duplicate.Name)' in $($htmlFile.Name)")
+        $failures.Add("Doppelte ID '$($duplicate.Name)' in $relativeHtmlPath")
     }
 
     $references = [regex]::Matches($content, '\b(?:href|src)\s*=\s*["'']([^"'']+)["'']')
@@ -33,12 +36,12 @@ foreach ($htmlFile in $htmlFiles) {
         if ([string]::IsNullOrWhiteSpace($cleanReference)) { continue }
         $resolved = Join-Path -Path $htmlFile.DirectoryName -ChildPath $cleanReference
         if (-not (Test-Path -LiteralPath $resolved)) {
-            $failures.Add("Fehlender lokaler Verweis in $($htmlFile.Name): $reference")
+            $failures.Add("Fehlender lokaler Verweis in ${relativeHtmlPath}: $reference")
         }
     }
 }
 
-foreach ($pdfName in @("geschichte.pdf", "Die-Fahrt-zum-Kunden_11.pdf")) {
+foreach ($pdfName in @("content/geschichte.pdf", "source/Die-Fahrt-zum-Kunden_11.pdf")) {
     if (-not (Test-Path -LiteralPath $pdfName)) { continue }
     $stream = [System.IO.File]::OpenRead((Resolve-Path $pdfName))
     try {

@@ -7,24 +7,20 @@ Die Landingpage wird bewusst manuell per FTP auf den DomainFactory-Webspace kopi
 Folgende Dateien und Ordner in das Zielverzeichnis der Domain kopieren:
 
 - `index.html`
-- `styles.css`
-- `legal.css`
-- `app.js`
-- `supabase-config.js`
+- den vollständigen Ordner `assets`
+- den vollständigen Ordner `content`
+- `pdf.html`
 - `admin.html`
-- `admin.js`
 - `impressum.html`
 - `datenschutz.html`
-- `fahrt-zum-kunden.html` als lokale Rückfallfassung
-- `geschichte.pdf` als lokale Rückfallfassung
 
-Nicht auf den Webspace gehören `.git`, `.github`, `scripts`, Markdown-Dokumente, `supabase/setup.sql`, `repo-aktualisieren.ps1` und die ursprüngliche PDF `Die-Fahrt-zum-Kunden_11.pdf`.
+Nicht auf den Webspace gehören `.git`, `.github`, `docs`, `scripts`, `source`, `supabase`, `README.md` und `repo-aktualisieren.ps1`.
 
 ## Vor dem FTP-Upload
 
 1. Die lokale Arbeitskopie mit `repo-aktualisieren.ps1` aktualisieren.
 2. Prüfen, dass die CI auf GitHub grün ist.
-3. In `supabase-config.js` kontrollieren, dass Project URL und Publishable Key eingetragen sind.
+3. In `assets/js/supabase-config.js` kontrollieren, dass Project URL und Publishable Key eingetragen sind.
 4. Alle orange markierten Pflichtfelder in Impressum und Datenschutz ersetzen.
 5. Die Landingpage lokal testen.
 6. Die oben genannten Dateien per FTP übertragen.
