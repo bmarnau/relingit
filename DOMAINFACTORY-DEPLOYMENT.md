@@ -1,24 +1,43 @@
-# Veröffentlichung bei DomainFactory
+# Manueller Upload zu DomainFactory
 
-## Rollen der Systeme
+Die Landingpage wird bewusst manuell per FTP auf den DomainFactory-Webspace kopiert. GitHub führt nur die automatischen Qualitätsprüfungen aus und nimmt kein Deployment vor.
 
-- **DomainFactory:** öffentliches Hosting der Landingpage
-- **GitHub:** Quellcode, Versionsverwaltung und automatische Prüfungen
-- **Supabase:** Leserfeedback, aktuelle Versionsangaben, HTML-Lesefassung und PDF
+## Einmaliger Erst-Upload
 
-## Derzeitiger Ablauf
+Folgende Dateien und Ordner in das Zielverzeichnis der Domain kopieren:
 
-Nach einer Änderung am Aufbau der Landingpage werden die statischen Projektdateien auf den DomainFactory-Webspace übertragen. Neue Fortsetzungen der Geschichte werden anschließend ohne erneuten DomainFactory-Upload über `admin.html` in Supabase veröffentlicht.
+- `index.html`
+- `styles.css`
+- `legal.css`
+- `app.js`
+- `supabase-config.js`
+- `admin.html`
+- `admin.js`
+- `impressum.html`
+- `datenschutz.html`
+- `fahrt-zum-kunden.html` als lokale Rückfallfassung
+- `geschichte.pdf` als lokale Rückfallfassung
 
-## Für einen späteren automatischen Upload
+Nicht auf den Webspace gehören `.git`, `.github`, `scripts`, Markdown-Dokumente, `supabase/setup.sql`, `repo-aktualisieren.ps1` und die ursprüngliche PDF `Die-Fahrt-zum-Kunden_11.pdf`.
 
-Für eine sichere GitHub-Actions-Bereitstellung werden noch benötigt:
+## Vor dem FTP-Upload
 
-1. verwendetes Übertragungsverfahren: bevorzugt SFTP, andernfalls FTPS;
-2. Servername;
-3. Benutzername;
-4. Zielverzeichnis der Domain;
-5. Information, ob das Zielverzeichnis ausschließlich diese Website enthält;
-6. gewünschter Auslöser: automatisch nach erfolgreicher CI oder nur manuell.
+1. Die lokale Arbeitskopie mit `repo-aktualisieren.ps1` aktualisieren.
+2. Prüfen, dass die CI auf GitHub grün ist.
+3. In `supabase-config.js` kontrollieren, dass Project URL und Publishable Key eingetragen sind.
+4. Alle orange markierten Pflichtfelder in Impressum und Datenschutz ersetzen.
+5. Die Landingpage lokal testen.
+6. Die oben genannten Dateien per FTP übertragen.
+7. Die öffentliche Domain in einem privaten Browserfenster prüfen.
 
-Passwort bzw. privater Schlüssel dürfen niemals in eine Projektdatei eingetragen werden. Sie werden als verschlüsselte GitHub-Secrets hinterlegt. Vor einem automatischen Löschen veralteter Serverdateien muss das exakte Zielverzeichnis geprüft werden.
+## Neue Fortsetzung veröffentlichen
+
+Für eine neue Geschichte ist kein weiterer FTP-Upload erforderlich:
+
+1. Auf der veröffentlichten Website `admin.html` öffnen.
+2. Mit dem Supabase-Administratorkonto anmelden.
+3. Version, Datum und Seitenzahl eintragen.
+4. Neue HTML-Lesefassung und PDF auswählen.
+5. Veröffentlichen und die öffentliche Landingpage prüfen.
+
+Supabase ersetzt dabei die Dateien unter stabilen Adressen. Ein erneuter FTP-Upload ist nur notwendig, wenn sich Landingpage, Gestaltung, JavaScript, Impressum oder Datenschutz ändern.

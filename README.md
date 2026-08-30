@@ -2,7 +2,7 @@
 
 Landingpage und Online-Lesefassung der fortlaufenden Kurzgeschichte von Bernd Marnau.
 
-Die öffentliche Landingpage wird bei DomainFactory gehostet. GitHub dient als Quellcode-Repository und CI-Plattform. Supabase übernimmt Leserfeedback, Versionsmetadaten sowie die jeweils aktuelle HTML- und PDF-Fassung.
+Die öffentliche Landingpage wird manuell per FTP bei DomainFactory gehostet. GitHub dient als Quellcode-Repository und CI-Plattform, führt aber kein Deployment aus. Supabase übernimmt Leserfeedback, Versionsmetadaten sowie die jeweils aktuelle HTML- und PDF-Fassung.
 
 ## Neue Version veröffentlichen
 
