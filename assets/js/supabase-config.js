@@ -1,5 +1,5 @@
 // Public browser configuration. Never place a secret/service-role key here.
 window.SUPABASE_CONFIG = Object.freeze({
-  url: "HIER_SUPABASE_PROJEKT_URL_EINTRAGEN",
-  publishableKey: "HIER_SUPABASE_PUBLISHABLE_KEY_EINTRAGEN",
+  url: "https://ondriolofnxpuockhxrc.supabase.co",
+  publishableKey: "sb_publishable_qLelHh_4S-lexS2YUFfIAA_00ep4Rj8",
 });
