@@ -1,5 +1,7 @@
 # Supabase Schritt für Schritt einrichten
 
+Die Landingpage selbst wird bei DomainFactory gehostet. Supabase stellt die jeweils aktuelle HTML-/PDF-Fassung bereit und speichert Leserfeedback. GitHub verwaltet den Quellcode und führt die automatischen Prüfungen aus.
+
 ## A. Projekt vorbereiten
 
 1. Bei Supabase anmelden und das gewünschte Projekt öffnen.
@@ -57,6 +59,7 @@ Der Publishable-/Anon-Key darf in einer öffentlichen Website stehen, weil RLS s
 3. Mit Supabase Vertrags- und Übermittlungsgrundlagen prüfen und, soweit erforderlich, einen Auftragsverarbeitungsvertrag abschließen.
 4. Eine Löschroutine festlegen, beispielsweise monatliche Prüfung und Löschung nach zwölf Monaten.
 5. Vor dem Livegang die Texte fachanwaltlich oder durch einen Datenschutzbeauftragten prüfen lassen.
+6. Für DomainFactory den Vertrag zur Auftragsverarbeitung prüfen bzw. abschließen und die tatsächliche Log-Speicherdauer des gebuchten Tarifs in `datenschutz.html` ergänzen.
 
 ## F. Cookies
 

@@ -2,14 +2,16 @@
 
 Landingpage und Online-Lesefassung der fortlaufenden Kurzgeschichte von Bernd Marnau.
 
+Die öffentliche Landingpage wird bei DomainFactory gehostet. GitHub dient als Quellcode-Repository und CI-Plattform. Supabase übernimmt Leserfeedback, Versionsmetadaten sowie die jeweils aktuelle HTML- und PDF-Fassung.
+
 ## Neue Version veröffentlichen
 
-1. Die neue PDF als `geschichte.pdf` ablegen und die vorhandene Datei ersetzen.
-2. Die neue HTML-Lesefassung als `fahrt-zum-kunden.html` ablegen und die vorhandene Datei ersetzen.
-3. In `app.js` nur `version` und `date` aktualisieren.
-4. Die Seite lokal prüfen und anschließend veröffentlichen.
+1. Den geschützten Bereich `admin.html` aufrufen und mit dem Supabase-Administratorkonto anmelden.
+2. Version, Datum und Seitenzahl eintragen.
+3. Neue PDF und HTML-Lesefassung auswählen.
+4. Veröffentlichen und anschließend die öffentliche Landingpage prüfen.
 
-Die Landingpage bleibt dadurch unverändert; alle Links zeigen dauerhaft auf dieselben Dateinamen.
+Supabase ersetzt die Dateien unter stabilen Adressen und aktualisiert die Versionsangaben. Für eine neue Fortsetzung ist deshalb kein DomainFactory-Upload nötig. Nur Änderungen an der Landingpage selbst werden erneut zu DomainFactory übertragen.
 
 ## Rückmeldungen mit Supabase
 
