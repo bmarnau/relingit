@@ -45,7 +45,7 @@ Der Publishable-/Anon-Key darf in einer öffentlichen Website stehen, weil RLS s
 
 ## D. Veröffentlichung prüfen
 
-1. Zunächst die vorhandenen Dateien `content/fahrt-zum-kunden.html` und `content/geschichte.pdf` über `admin.html` als Version 1.10 hochladen.
+1. Zunächst die vorhandenen Dateien `story/current/fahrt-zum-kunden.html` und `story/current/geschichte.pdf` über `admin.html` als Version 1.10 hochladen.
 2. Dafür `admin.html` öffnen und sich mit dem Administratorkonto anmelden.
 3. Version, sichtbares Datum und Seitenzahl eintragen; HTML und PDF auswählen.
 4. **Version jetzt veröffentlichen** drücken und die Erfolgsmeldung abwarten.

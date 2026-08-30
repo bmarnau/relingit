@@ -5,7 +5,7 @@ Du arbeitest im Repository https://github.com/bmarnau/relingit an der statischen
 
 Ziel:
 - Veröffentliche die jeweils neueste Fassung als zugängliche, schnelle Landingpage mit HTML, CSS und Vanilla JavaScript.
-- Ersetze bei neuen lokalen Rückfallfassungen nur `content/geschichte.pdf` und `content/fahrt-zum-kunden.html`.
+- Ersetze bei neuen lokalen Rückfallfassungen nur `story/current/geschichte.pdf` und `story/current/fahrt-zum-kunden.html`.
 - Aktualisiere bei Bedarf die Rückfallversion in `assets/js/app.js`.
 - Bewahre vorhandene Rückmeldungen, URLs und die visuelle Identität.
 

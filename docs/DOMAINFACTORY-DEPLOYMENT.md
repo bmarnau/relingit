@@ -8,7 +8,7 @@ Folgende Dateien und Ordner in das Zielverzeichnis der Domain kopieren:
 
 - `index.html`
 - den vollständigen Ordner `assets`
-- den vollständigen Ordner `content`
+- den vollständigen Ordner `story`
 - `pdf.html`
 - `admin.html`
 - `impressum.html`

@@ -14,7 +14,7 @@ Dieser Ordner ist für Dateien vorgesehen, die nicht mehr aktiv benötigt werden
 
 - `archive/`: nicht mehr aktive Dateien
 - `source/`: weiterhin relevante Original- und Quelldateien
-- `content/`: aktuell verwendete lokale Rückfallfassung
+- `story/current/`: aktuell verwendete lokale Rückfallfassung
 - `docs/`: aktuelle Anleitungen und Prüfberichte
 
 Das Archiv ist keine Datensicherung. Wichtige Originaldateien sollten zusätzlich in einer regulären, geschützten Sicherung aufbewahrt werden.

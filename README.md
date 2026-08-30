@@ -9,7 +9,7 @@ Die öffentliche Landingpage wird manuell per FTP bei DomainFactory gehostet. Gi
 - `assets/css`: gemeinsame Gestaltung und Rechtseiten-Stile
 - `assets/js`: öffentliche Logik, PDF-Ansicht, Administration und Supabase-Konfiguration
 - `archive`: ausschließlich lokales Archiv für nicht mehr aktive Dateien
-- `content`: lokale Rückfallfassung der Geschichte als HTML und PDF
+- `story/current`: aktuell veröffentlichte lokale Rückfallfassung; entspricht dem Supabase-Pfad `story/current`
 - `docs`: redaktionelle, Supabase- und FTP-Anleitungen
 - `scripts`: lokale und CI-Prüfungen
 - `source`: ursprüngliche Quelldateien, die nicht veröffentlicht werden

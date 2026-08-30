@@ -5,7 +5,7 @@ $failures = [System.Collections.Generic.List[string]]::new()
 
 $requiredFiles = @(
     "index.html", "pdf.html", "admin.html", "impressum.html", "datenschutz.html",
-    "content/fahrt-zum-kunden.html", "content/geschichte.pdf",
+    "story/current/fahrt-zum-kunden.html", "story/current/geschichte.pdf",
     "assets/css/styles.css", "assets/css/legal.css",
     "assets/js/app.js", "assets/js/admin.js", "assets/js/pdf-viewer.js",
     "assets/js/supabase-config.js", "supabase/setup.sql"
@@ -41,7 +41,7 @@ foreach ($htmlFile in $htmlFiles) {
     }
 }
 
-foreach ($pdfName in @("content/geschichte.pdf", "source/Die-Fahrt-zum-Kunden_11.pdf")) {
+foreach ($pdfName in @("story/current/geschichte.pdf", "source/Die-Fahrt-zum-Kunden_11.pdf")) {
     if (-not (Test-Path -LiteralPath $pdfName)) { continue }
     $stream = [System.IO.File]::OpenRead((Resolve-Path $pdfName))
     try {
