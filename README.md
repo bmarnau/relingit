@@ -8,12 +8,15 @@ Die öffentliche Landingpage wird manuell per FTP bei DomainFactory gehostet. Gi
 
 - `assets/css`: gemeinsame Gestaltung und Rechtseiten-Stile
 - `assets/js`: öffentliche Logik, PDF-Ansicht, Administration und Supabase-Konfiguration
+- `archive`: ausschließlich lokales Archiv für nicht mehr aktive Dateien
 - `content`: lokale Rückfallfassung der Geschichte als HTML und PDF
 - `docs`: redaktionelle, Supabase- und FTP-Anleitungen
 - `scripts`: lokale und CI-Prüfungen
 - `source`: ursprüngliche Quelldateien, die nicht veröffentlicht werden
 - `supabase`: Datenbank- und RLS-Einrichtung
 - Projektstamm: ausschließlich öffentlich aufrufbare Seiten, README, Lizenz und Wartungsskript
+
+Inhalte unter `archive/` werden nicht zu GitHub übertragen und dürfen nicht auf den DomainFactory-Webspace kopiert werden. Die genaue Ablageregel steht in `archive/README.md`.
 
 ## Neue Version veröffentlichen
 

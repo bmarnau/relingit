@@ -1,0 +1,4 @@
+# Keep archived working files local. Only the archive instructions are versioned.
+*
+!.gitignore
+!README.md

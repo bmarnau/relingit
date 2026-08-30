@@ -14,7 +14,7 @@ Folgende Dateien und Ordner in das Zielverzeichnis der Domain kopieren:
 - `impressum.html`
 - `datenschutz.html`
 
-Nicht auf den Webspace gehören `.git`, `.github`, `docs`, `scripts`, `source`, `supabase`, `README.md` und `repo-aktualisieren.ps1`.
+Nicht auf den Webspace gehören `.git`, `.github`, `archive`, `docs`, `scripts`, `source`, `supabase`, `README.md` und `repo-aktualisieren.ps1`.
 
 ## Vor dem FTP-Upload
 
