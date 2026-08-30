@@ -1,8 +1,10 @@
-# Redaktionelle Prüfung – Version 1.10
+# Redaktionelle Prüfung – Version 1.11
 
 ## Kurzurteil
 
 Die Geschichte ist grundsätzlich stimmig, sympathisch und ungewöhnlich konkret. Besonders gut funktionieren die wiederkehrenden Leitplanken „Navis navigiert, Mira steuert“, „Entwurf vor Freigabe“ und der Kontrast zwischen menschlicher Verantwortung und technischer Unterstützung. Die fachlichen Kapitel sind überwiegend plausibel, sollten aber an einigen Stellen genauer formuliert werden.
+
+Version 1.11 korrigiert die Beschreibung des Aufbaus auf dem Deckblatt: Teil 1 beginnt tatsächlich mit mehreren Alltagsszenen, bevor die Fahrt zum Kunden einsetzt. Die Erzählung, ihre Kapitelreihenfolge und die technischen Aussagen sind gegenüber Version 1.10 unverändert. Die Korrektur beseitigt die bisherige Unstimmigkeit, ohne neue inhaltliche Probleme einzuführen.
 
 ## Empfehlungen für die nächste Version
 

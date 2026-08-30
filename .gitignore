@@ -1,0 +1,5 @@
+# Local-only archive and generated review files
+archive/*
+!archive/README.md
+tmp/
+
