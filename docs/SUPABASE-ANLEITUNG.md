@@ -59,7 +59,7 @@ Der Publishable-/Anon-Key darf in einer öffentlichen Website stehen, weil RLS s
 3. Mit Supabase Vertrags- und Übermittlungsgrundlagen prüfen und, soweit erforderlich, einen Auftragsverarbeitungsvertrag abschließen.
 4. Eine Löschroutine festlegen, beispielsweise monatliche Prüfung und Löschung nach zwölf Monaten.
 5. Vor dem Livegang die Texte fachanwaltlich oder durch einen Datenschutzbeauftragten prüfen lassen.
-6. Für DomainFactory den Vertrag zur Auftragsverarbeitung prüfen bzw. abschließen und die tatsächliche Log-Speicherdauer des gebuchten Tarifs in `datenschutz.html` ergänzen.
+6. Für DomainFactory den Vertrag zur Auftragsverarbeitung prüfen bzw. abschließen. Apache- und Error-Logs werden im cPanel-Webhosting grundsätzlich nach 14 Tagen gelöscht; zusätzlich prüfen, ob AWStats oder Webalizer aktiviert sind und welche Löschroutine dort gilt.
 
 ## F. Cookies
 
