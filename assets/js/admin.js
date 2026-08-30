@@ -50,19 +50,22 @@ async function uploadStoryFile(file, name, contentType) {
   const response = await fetch(
     `${config.url}/storage/v1/object/story/current/${name}`,
     {
-      method: "POST",
+      // PUT updates the stable, already existing release object.
+      method: "PUT",
       headers: {
         apikey: config.publishableKey,
         Authorization: `Bearer ${accessToken}`,
         "Content-Type": contentType,
-        "x-upsert": "true",
       },
       body: file,
     },
   );
 
   if (!response.ok) {
-    throw new Error(`${name}: HTTP ${response.status}`);
+    const detail = (await response.text()).trim();
+    throw new Error(
+      `${name}: HTTP ${response.status}${detail ? ` – ${detail}` : ""}`,
+    );
   }
 }
 
