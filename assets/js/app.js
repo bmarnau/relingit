@@ -37,8 +37,6 @@ function showRelease(current) {
 }
 
 function setStoryLinks(baseUrl) {
-  document.querySelector("#read-link").href =
-    `${baseUrl}/fahrt-zum-kunden.html`;
   document.querySelector("#pdf-link").href = `${baseUrl}/geschichte.pdf`;
 }
 

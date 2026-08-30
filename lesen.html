@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="HTML-Leseansicht der Geschichte Die Fahrt zum Kunden.">
+  <title>Im Browser lesen | Die Fahrt zum Kunden</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/story-viewer.js" defer></script>
+</head>
+<body class="viewer-page">
+  <header class="viewer-header">
+    <a class="button secondary" href="index.html">← Zurück zur Landingpage</a>
+    <span id="story-status" role="status">Geschichte wird geladen …</span>
+  </header>
+  <main class="viewer-main">
+    <iframe
+      id="story-frame"
+      title="Die Fahrt zum Kunden als HTML-Lesefassung"
+      sandbox="allow-same-origin allow-scripts"
+    ></iframe>
+    <p class="viewer-fallback" id="story-error" hidden>
+      Die Geschichte konnte nicht geladen werden. Bitte versuchen Sie es später erneut.
+    </p>
+  </main>
+</body>
+</html>

@@ -385,12 +385,20 @@ footer nav { text-align: right; }
   min-height: 0;
 }
 
-#pdf-frame {
+#pdf-frame,
+#story-frame {
   width: 100%;
   height: 100%;
   min-height: calc(100vh - 95px);
   border: 0;
+}
+
+#pdf-frame {
   background: #333;
+}
+
+#story-frame {
+  background: white;
 }
 
 .viewer-fallback {
@@ -418,7 +426,8 @@ footer nav { text-align: right; }
 @media (max-width: 520px) {
   .viewer-header { align-items: stretch; flex-direction: column; }
   .viewer-header .button { width: 100%; }
-  #pdf-frame { min-height: calc(100vh - 160px); }
+  #pdf-frame,
+  #story-frame { min-height: calc(100vh - 160px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
