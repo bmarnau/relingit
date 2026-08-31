@@ -4,15 +4,27 @@ Set-Location -LiteralPath $projectRoot
 $failures = [System.Collections.Generic.List[string]]::new()
 
 $requiredFiles = @(
-    "index.html", "pdf.html", "admin.html", "impressum.html", "datenschutz.html",
+    ".htaccess", "index.html", "lesen.html", "pdf.html", "admin.html", "impressum.html", "datenschutz.html",
     "story/current/fahrt-zum-kunden.html", "story/current/geschichte.pdf",
     "assets/css/styles.css", "assets/css/legal.css",
-    "assets/js/app.js", "assets/js/admin.js", "assets/js/pdf-viewer.js",
+    "assets/js/app.js", "assets/js/admin.js", "assets/js/pdf-viewer.js", "assets/js/story-viewer.js",
     "assets/js/supabase-config.js", "supabase/setup.sql"
 )
 foreach ($file in $requiredFiles) {
     if (-not (Test-Path -LiteralPath $file -PathType Leaf)) {
         $failures.Add("Pflichtdatei fehlt: $file")
+    }
+}
+
+$publicMarkupFiles = Get-ChildItem -Path $projectRoot -Recurse -File |
+    Where-Object {
+        $_.Extension -in '.html','.css' -and
+        $_.FullName -notmatch '[\\/](?:archive|output|tmp)[\\/]'
+    }
+foreach ($file in $publicMarkupFiles) {
+    $text = Get-Content -Raw -LiteralPath $file.FullName
+    if ($text -match 'fonts\.(?:googleapis|gstatic)\.com') {
+        $failures.Add("Extern geladene Google-Schriftart in $($file.FullName.Substring($projectRoot.Length + 1))")
     }
 }
 

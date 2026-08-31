@@ -2,11 +2,15 @@
 
 Die Landingpage wird bewusst manuell per FTP auf den DomainFactory-Webspace kopiert. GitHub führt nur die automatischen Qualitätsprüfungen aus und nimmt kein Deployment vor.
 
+Die Datei `.htaccess` muss ebenfalls in das Verzeichnis `relingit` übertragen werden. Sie erzwingt HTTPS, verhindert Verzeichnislisten und setzt die Sicherheitsheader der Website.
+
 ## Einmaliger Erst-Upload
 
 Folgende Dateien und Ordner in das Zielverzeichnis der Domain kopieren:
 
 - `index.html`
+- `.htaccess`
+- `lesen.html`
 - den vollständigen Ordner `assets`
 - den vollständigen Ordner `story`
 - `pdf.html`
