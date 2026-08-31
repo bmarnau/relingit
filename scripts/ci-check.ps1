@@ -1,8 +1,10 @@
+# Gemeinsame, plattformunabhängige Qualitätsprüfung für lokal und GitHub Actions.
 $ErrorActionPreference = "Stop"
 $projectRoot = Split-Path -Parent $PSScriptRoot
 Set-Location -LiteralPath $projectRoot
 $failures = [System.Collections.Generic.List[string]]::new()
 
+# Diese Dateien bilden die minimale veröffentlichungsfähige Website.
 $requiredFiles = @(
     ".htaccess", "index.html", "lesen.html", "pdf.html", "admin.html", "impressum.html", "datenschutz.html",
     "story/current/fahrt-zum-kunden.html", "story/current/geschichte.pdf",
@@ -16,6 +18,7 @@ foreach ($file in $requiredFiles) {
     }
 }
 
+# Externe Google-Fonts sind aus Datenschutzgründen nicht zulässig.
 $publicMarkupFiles = Get-ChildItem -Path $projectRoot -Recurse -File |
     Where-Object {
         $_.Extension -in '.html','.css' -and
@@ -28,6 +31,7 @@ foreach ($file in $publicMarkupFiles) {
     }
 }
 
+# Prüft lokale Verweise und doppelte IDs in sämtlichen HTML-Dateien.
 $htmlFiles = Get-ChildItem -Path $projectRoot -Filter "*.html" -File -Recurse
 foreach ($htmlFile in $htmlFiles) {
     $content = Get-Content -Raw -LiteralPath $htmlFile.FullName
@@ -53,6 +57,7 @@ foreach ($htmlFile in $htmlFiles) {
     }
 }
 
+# Eine schnelle Signaturprüfung erkennt beschädigte oder falsch benannte PDFs.
 foreach ($pdfName in @("story/current/geschichte.pdf", "source/Die-Fahrt-zum-Kunden_11.pdf")) {
     if (-not (Test-Path -LiteralPath $pdfName)) { continue }
     $stream = [System.IO.File]::OpenRead((Resolve-Path $pdfName))
@@ -65,6 +70,7 @@ foreach ($pdfName in @("story/current/geschichte.pdf", "source/Die-Fahrt-zum-Kun
     } finally { $stream.Dispose() }
 }
 
+# Öffentliche Publishable Keys sind erlaubt; Secret- und Service-Role-Keys nicht.
 $secretPatterns = @(
     'sb_secret_[A-Za-z0-9_-]+',
     'service_role["'']?\s*[:=]\s*["''][^"'']+'
