@@ -10,6 +10,8 @@ const frame = document.querySelector("#story-frame");
 const statusNode = document.querySelector("#story-status");
 const releaseNode = document.querySelector("#story-release");
 const errorNode = document.querySelector("#story-error");
+const chapterSelect = document.querySelector("#chapter-select");
+const currentSectionNode = document.querySelector("#current-section");
 const zoomOutButton = document.querySelector("#zoom-out");
 const zoomResetButton = document.querySelector("#zoom-reset");
 const zoomInButton = document.querySelector("#zoom-in");
@@ -19,6 +21,7 @@ const maximumZoom = 1.6;
 const zoomStep = 0.1;
 
 let zoomLevel = 1;
+let storyChapters = [];
 
 function hasSupabaseConfig() {
   return Boolean(
@@ -42,6 +45,7 @@ function applyZoom() {
   zoomResetButton.textContent = `${Math.round(zoomLevel * 100)} %`;
   zoomOutButton.disabled = zoomLevel <= minimumZoom;
   zoomInButton.disabled = zoomLevel >= maximumZoom;
+  updateCurrentSection();
 }
 
 function changeZoom(change) {
@@ -50,6 +54,58 @@ function changeZoom(change) {
     Math.max(minimumZoom, Number((zoomLevel + change).toFixed(1))),
   );
   applyZoom();
+}
+
+function updateCurrentSection() {
+  const storyWindow = frame.contentWindow;
+  if (!storyWindow || storyChapters.length === 0) return;
+
+  const readingLine = storyWindow.scrollY + 140;
+  let currentIndex = -1;
+
+  storyChapters.forEach((chapter, index) => {
+    const chapterTop =
+      chapter.heading.getBoundingClientRect().top + storyWindow.scrollY;
+    if (chapterTop <= readingLine) currentIndex = index;
+  });
+
+  if (currentIndex < 0) {
+    chapterSelect.value = "__top";
+    currentSectionNode.textContent = "Anfang";
+    return;
+  }
+
+  const current = storyChapters[currentIndex];
+  chapterSelect.value = current.id;
+  currentSectionNode.textContent =
+    `Abschnitt ${currentIndex + 1} von ${storyChapters.length}: ${current.title}`;
+}
+
+function buildChapterNavigation() {
+  const storyDocument = frame.contentDocument;
+  const storyWindow = frame.contentWindow;
+  if (!storyDocument || !storyWindow) return;
+
+  storyChapters = Array.from(storyDocument.querySelectorAll("h2"))
+    .map((heading, index) => {
+      const existingId = heading.id || heading.closest("[id]")?.id;
+      const id = existingId || `leseabschnitt-${index + 1}`;
+      if (!existingId) heading.id = id;
+      return { id, title: heading.textContent.trim(), heading };
+    })
+    .filter((chapter) => chapter.title);
+
+  chapterSelect.replaceChildren();
+  chapterSelect.add(new Option("Anfang der Geschichte", "__top"));
+  storyChapters.forEach((chapter) => {
+    chapterSelect.add(new Option(chapter.title, chapter.id));
+  });
+  chapterSelect.disabled = storyChapters.length === 0;
+
+  storyWindow.addEventListener("scroll", updateCurrentSection, {
+    passive: true,
+  });
+  updateCurrentSection();
 }
 
 async function loadReleaseInfo() {
@@ -97,7 +153,24 @@ async function loadStory() {
 loadReleaseInfo();
 loadStory();
 
-frame.addEventListener("load", applyZoom);
+frame.addEventListener("load", () => {
+  buildChapterNavigation();
+  applyZoom();
+});
+chapterSelect.addEventListener("change", () => {
+  const storyDocument = frame.contentDocument;
+  const storyWindow = frame.contentWindow;
+  if (!storyDocument || !storyWindow) return;
+
+  if (chapterSelect.value === "__top") {
+    storyWindow.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+
+  storyDocument
+    .getElementById(chapterSelect.value)
+    ?.scrollIntoView({ behavior: "smooth", block: "start" });
+});
 zoomOutButton.addEventListener("click", () => changeZoom(-zoomStep));
 zoomInButton.addEventListener("click", () => changeZoom(zoomStep));
 zoomResetButton.addEventListener("click", () => {

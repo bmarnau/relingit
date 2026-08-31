@@ -12,6 +12,13 @@
 <body class="viewer-page">
   <header class="viewer-header">
     <a class="button secondary" href="index.html">← Zurück zur Landingpage</a>
+    <div class="reader-navigation">
+      <label for="chapter-select">Inhaltsverzeichnis</label>
+      <select id="chapter-select" disabled>
+        <option value="">Kapitel werden geladen …</option>
+      </select>
+      <span id="current-section" aria-live="polite">Anfang</span>
+    </div>
     <div class="zoom-controls" aria-label="Textgröße der Geschichte">
       <button id="zoom-out" type="button" aria-label="Ansicht verkleinern">−</button>
       <button id="zoom-reset" type="button" aria-label="Originalgröße wiederherstellen">100 %</button>
