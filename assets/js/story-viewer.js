@@ -10,7 +10,15 @@ const frame = document.querySelector("#story-frame");
 const statusNode = document.querySelector("#story-status");
 const releaseNode = document.querySelector("#story-release");
 const errorNode = document.querySelector("#story-error");
+const zoomOutButton = document.querySelector("#zoom-out");
+const zoomResetButton = document.querySelector("#zoom-reset");
+const zoomInButton = document.querySelector("#zoom-in");
 const localStoryUrl = "story/current/fahrt-zum-kunden.html";
+const minimumZoom = 0.7;
+const maximumZoom = 1.6;
+const zoomStep = 0.1;
+
+let zoomLevel = 1;
 
 function hasSupabaseConfig() {
   return Boolean(
@@ -24,6 +32,24 @@ async function fetchStory(url) {
   const response = await fetch(url);
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   return response.text();
+}
+
+function applyZoom() {
+  const storyDocument = frame.contentDocument;
+  if (!storyDocument) return;
+
+  storyDocument.documentElement.style.zoom = String(zoomLevel);
+  zoomResetButton.textContent = `${Math.round(zoomLevel * 100)} %`;
+  zoomOutButton.disabled = zoomLevel <= minimumZoom;
+  zoomInButton.disabled = zoomLevel >= maximumZoom;
+}
+
+function changeZoom(change) {
+  zoomLevel = Math.min(
+    maximumZoom,
+    Math.max(minimumZoom, Number((zoomLevel + change).toFixed(1))),
+  );
+  applyZoom();
 }
 
 async function loadReleaseInfo() {
@@ -70,3 +96,11 @@ async function loadStory() {
 
 loadReleaseInfo();
 loadStory();
+
+frame.addEventListener("load", applyZoom);
+zoomOutButton.addEventListener("click", () => changeZoom(-zoomStep));
+zoomInButton.addEventListener("click", () => changeZoom(zoomStep));
+zoomResetButton.addEventListener("click", () => {
+  zoomLevel = 1;
+  applyZoom();
+});
