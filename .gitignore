@@ -2,4 +2,4 @@
 archive/*
 !archive/README.md
 tmp/
-
+output/
