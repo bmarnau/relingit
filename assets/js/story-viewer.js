@@ -8,6 +8,7 @@
 const config = window.SUPABASE_CONFIG ?? {};
 const frame = document.querySelector("#story-frame");
 const statusNode = document.querySelector("#story-status");
+const releaseNode = document.querySelector("#story-release");
 const errorNode = document.querySelector("#story-error");
 const localStoryUrl = "story/current/fahrt-zum-kunden.html";
 
@@ -23,6 +24,28 @@ async function fetchStory(url) {
   const response = await fetch(url);
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   return response.text();
+}
+
+async function loadReleaseInfo() {
+  if (!hasSupabaseConfig()) return;
+
+  try {
+    const endpoint =
+      `${config.url}/rest/v1/story_release` +
+      "?id=eq.current&select=version,display_date";
+    const response = await fetch(endpoint, {
+      headers: { apikey: config.publishableKey },
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    const [release] = await response.json();
+    if (release) {
+      releaseNode.textContent =
+        `Version ${release.version} · ${release.display_date}`;
+    }
+  } catch (error) {
+    console.warn("Release metadata could not be loaded", error);
+  }
 }
 
 async function loadStory() {
@@ -45,4 +68,5 @@ async function loadStory() {
   }
 }
 
+loadReleaseInfo();
 loadStory();

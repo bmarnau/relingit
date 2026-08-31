@@ -377,6 +377,17 @@ footer nav { text-align: right; }
   background: var(--panel);
 }
 
+.viewer-meta {
+  display: grid;
+  gap: 2px;
+  text-align: right;
+}
+
+.viewer-meta span {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
 .viewer-main {
   display: grid;
   grid-template-rows: 1fr auto;
@@ -426,6 +437,7 @@ footer nav { text-align: right; }
 @media (max-width: 520px) {
   .viewer-header { align-items: stretch; flex-direction: column; }
   .viewer-header .button { width: 100%; }
+  .viewer-meta { text-align: left; }
   #pdf-frame,
   #story-frame { min-height: calc(100vh - 160px); }
 }
