@@ -11,6 +11,8 @@ Folgende Dateien und Ordner in das Zielverzeichnis der Domain kopieren:
 - `index.html`
 - `.htaccess`
 - `lesen.html`
+- `handout.html`
+- `handout-pdf.html`
 - den vollständigen Ordner `assets`
 - den vollständigen Ordner `story`
 - `pdf.html`
@@ -38,6 +40,7 @@ Für eine neue Geschichte ist kein weiterer FTP-Upload erforderlich:
 2. Mit dem Supabase-Administratorkonto anmelden.
 3. Version, Datum und Seitenzahl eintragen.
 4. Neue HTML-Lesefassung und PDF auswählen.
-5. Veröffentlichen und die öffentliche Landingpage prüfen.
+5. Falls geändert, das Handout als zusammengehöriges HTML/PDF-Paar auswählen.
+6. Veröffentlichen und die öffentliche Landingpage prüfen.
 
 Supabase ersetzt dabei die Dateien unter stabilen Adressen. Ein erneuter FTP-Upload ist nur notwendig, wenn sich Landingpage, Gestaltung, JavaScript, Impressum oder Datenschutz ändern.

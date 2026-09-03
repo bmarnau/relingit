@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
   <title>Neue Version veröffentlichen</title>
+  <link rel="icon" href="assets/img/favicon.png" type="image/png">
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/legal.css">
   <script src="assets/js/supabase-config.js"></script>
@@ -12,7 +13,7 @@
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="index.html">Reling IT <span>/ Veröffentlichung</span></a>
+    <a class="brand" href="index.html"><img src="assets/img/reling-it-logo.svg" alt=""><span>Reling IT <small>/ Veröffentlichung</small></span></a>
   </header>
 
   <main class="legal">
@@ -64,6 +65,15 @@
 
         <label for="story-pdf">PDF</label>
         <input id="story-pdf" type="file" accept=".pdf,application/pdf" required>
+
+        <fieldset class="optional-files">
+          <legend>Begleitendes Handout (optional)</legend>
+          <p>Wenn das Handout geändert wurde, bitte immer HTML und PDF gemeinsam auswählen.</p>
+          <label for="handout-html">Handout als HTML</label>
+          <input id="handout-html" type="file" accept=".html,text/html">
+          <label for="handout-pdf">Handout als PDF</label>
+          <input id="handout-pdf" type="file" accept=".pdf,application/pdf">
+        </fieldset>
 
         <button class="button primary" type="submit">
           Version jetzt veröffentlichen

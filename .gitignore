@@ -3,3 +3,5 @@ archive/*
 !archive/README.md
 tmp/
 output/
+ideen/
+.tmp-inspect.py

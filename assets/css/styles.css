@@ -59,13 +59,21 @@ footer {
 }
 
 .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   font-weight: 800;
   letter-spacing: 0.06em;
   text-decoration: none;
   text-transform: uppercase;
 }
 
-.brand span {
+.brand img {
+  width: 42px;
+  height: 42px;
+}
+
+.brand small {
   color: var(--muted);
   font-weight: 400;
 }
@@ -261,7 +269,8 @@ h2 {
 .lumen { right: 16%; color: var(--gold); }
 
 /* ---------- Editorial content ---------- */
-.story {
+.story,
+.companion {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 80px;
@@ -269,6 +278,13 @@ h2 {
   padding: 92px 0;
   border-top: 1px solid var(--line);
 }
+
+.companion-copy {
+  color: var(--muted);
+  font-size: 1.08rem;
+}
+
+.companion-copy .actions { margin-bottom: 0; }
 
 .story-copy {
   color: var(--muted);
@@ -377,6 +393,28 @@ footer nav { text-align: right; }
   background: var(--panel);
 }
 
+.viewer-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.viewer-brand img {
+  display: block;
+  width: 46px;
+  height: 46px;
+}
+
+.optional-files {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+}
+
+.optional-files p { margin: 0 0 6px; color: var(--muted); }
+
 .viewer-meta {
   display: grid;
   gap: 2px;
@@ -458,7 +496,8 @@ footer nav { text-align: right; }
 }
 
 #pdf-frame,
-#story-frame {
+#story-frame,
+#handout-frame {
   width: 100%;
   height: 100%;
   min-height: calc(100vh - 95px);
@@ -487,6 +526,7 @@ footer nav { text-align: right; }
   .hero h1 { font-size: clamp(4rem, 20vw, 6rem); }
   .hero-art { height: 380px; }
   .story,
+  .companion,
   .feedback { grid-template-columns: 1fr; gap: 30px; }
   .themes { grid-template-columns: 1fr; }
   .themes article + article { border-top: 1px solid var(--line); border-left: 0; }
@@ -508,7 +548,8 @@ footer nav { text-align: right; }
   .zoom-controls button { flex: 1; }
   .viewer-meta { text-align: left; }
   #pdf-frame,
-  #story-frame { min-height: calc(100vh - 160px); }
+  #story-frame,
+  #handout-frame { min-height: calc(100vh - 160px); }
 }
 
 @media (prefers-reduced-motion: reduce) {

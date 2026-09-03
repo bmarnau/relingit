@@ -128,6 +128,15 @@ document.querySelector("#publish-form").addEventListener("submit", async (event)
   if (!form.reportValidity()) return;
 
   const submitButton = form.querySelector("button[type='submit']");
+  const handoutHtml = form.querySelector("#handout-html").files[0];
+  const handoutPdf = form.querySelector("#handout-pdf").files[0];
+
+  // A release must never contain two different handout revisions.
+  if (Boolean(handoutHtml) !== Boolean(handoutPdf)) {
+    statusNode.textContent =
+      "Bitte für das Handout entweder beide Dateien auswählen oder beide Felder leer lassen.";
+    return;
+  }
   submitButton.disabled = true;
   statusNode.textContent = "Dateien werden hochgeladen …";
 
@@ -142,6 +151,20 @@ document.querySelector("#publish-form").addEventListener("submit", async (event)
       "geschichte.pdf",
       "application/pdf",
     );
+
+    if (handoutHtml && handoutPdf) {
+      statusNode.textContent = "Handout wird hochgeladen …";
+      await uploadStoryFile(
+        handoutHtml,
+        "workshop-handout.html",
+        "text/html; charset=utf-8",
+      );
+      await uploadStoryFile(
+        handoutPdf,
+        "workshop-handout.pdf",
+        "application/pdf",
+      );
+    }
 
     // Metadata is updated last, so readers only see a fully uploaded release.
     await updateReleaseMetadata(form);

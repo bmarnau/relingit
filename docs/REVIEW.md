@@ -1,28 +1,27 @@
-# Redaktionelle Prüfung – Version 1.11
+# Redaktionelle Prüfung – Version 1.18
 
 ## Kurzurteil
 
-Die Geschichte ist grundsätzlich stimmig, sympathisch und ungewöhnlich konkret. Besonders gut funktionieren die wiederkehrenden Leitplanken „Navis navigiert, Mira steuert“, „Entwurf vor Freigabe“ und der Kontrast zwischen menschlicher Verantwortung und technischer Unterstützung. Die fachlichen Kapitel sind überwiegend plausibel, sollten aber an einigen Stellen genauer formuliert werden.
+Die Geschichte bleibt stimmig, unterhaltsam und fachlich ungewöhnlich konkret. Version 1.18 behebt die frühere Unklarheit zwischen Navis und Lumen: Navis nutzt das Sysingboard, Lumen die Report-Familie. Die neuen Praxisgrafiken machen diese Trennung anschaulich. Das neue Workshop-Handout ist als eigenständiges Begleitmaterial sinnvoller als ein weiterer Anhang, weil Leser es unmittelbar für eine Übung nutzen können.
 
-Version 1.11 korrigiert die Beschreibung des Aufbaus auf dem Deckblatt: Teil 1 beginnt tatsächlich mit mehreren Alltagsszenen, bevor die Fahrt zum Kunden einsetzt. Die Erzählung, ihre Kapitelreihenfolge und die technischen Aussagen sind gegenüber Version 1.10 unverändert. Die Korrektur beseitigt die bisherige Unstimmigkeit, ohne neue inhaltliche Probleme einzuführen.
+## Verbesserungen für die nächste Version
 
-## Empfehlungen für die nächste Version
+1. **Platzhalter in der Versionshistorie entfernen:** Der Eintrag zu Version 1.16 enthält „seit dem Logo auf dem Deckblatt (v1.??)“. Die unbekannte Versionsnummer sollte recherchiert oder neutral als „seit Aufnahme des Logos“ formuliert werden.
+2. **Veröffentlichungsrechte der Praxisgrafiken prüfen:** Die neuen Sysingboard- und Report-Familie-Abbildungen werden auf einer öffentlichen Website ausgeliefert. Vor der Veröffentlichung sollte bestätigt sein, dass Logos, Oberflächen und Beispieldaten öffentlich gezeigt werden dürfen.
+3. **Lesbarkeit der eingebetteten Grafiken beachten:** Einige Beschriftungen sind auf kleinen Bildschirmen sehr fein. Eine zusätzliche Großansicht oder barrierearme Textbeschreibung wäre für eine spätere Fassung hilfreich.
+4. **Technikstatus zeitlich kennzeichnen:** Formulierungen wie „in echt“, „einzige Quelle“ oder „ausschließlich“ wirken dauerhaft verbindlich. Bei einer sich entwickelnden Architektur sollte ein Standdatum oder der Hinweis „im aktuellen Entwurf“ ergänzt werden.
+5. **Sicheres Sprechen während der Fahrt weiter präzisieren:** Sprachbedienung reduziert Ablenkung, beseitigt sie aber nicht. Komplexe Inhalte sollten ausdrücklich erst im Stand betrachtet werden.
+6. **Datenschutz nicht allein aus dem Speicherort ableiten:** Eine EU-Region beantwortet noch nicht Zugriffsrechte, Unterauftragsverarbeiter, Drittlandtransfers, Verschlüsselung, Löschung und Auftragsverarbeitung.
+7. **MCP-Aussagen vorsichtig formulieren:** MCP standardisiert die Werkzeuganbindung, ersetzt aber nicht automatisch Adapter, Rechtekonzept und Integrationslogik des jeweiligen Fachsystems.
 
-1. **Zeitlogik glätten:** Die Fahrt ist am Vorabend, der Kundentermin am nächsten Morgen. Später heißt es, Mira habe sich „heute Morgen“ vor der Fahrt einen Bericht ausgedruckt. Das wirkt wie ein Wechsel zwischen Abend- und Morgenfassung. Eine eindeutige Übernachtung oder ein klarer Szenenwechsel würde helfen.
-2. **Navis/Lumen-Quellen konsistent halten:** In der Erzählung liest Navis aus Sysingboard *und* Report-Familie; im Realteil wird Navis dem Sysingboard und Lumen dem Hub zugeordnet. Entweder die Rollen strikt trennen oder ausdrücklich erklären, dass Navis Lumens Hub-Abfrage orchestriert.
-3. **Ablenkung beim Fahren stärker begrenzen:** Sprachsteuerung reduziert, beseitigt aber Ablenkung nicht. Die Geschichte sollte ergänzen, dass nur kurze, nicht dringliche Abfragen während der Fahrt zulässig sind und komplexe Inhalte bis zum Halt warten.
-4. **Telefonweg sicherheitstechnisch ergänzen:** Ein gewöhnlicher Anruf ist plausibel, aber Authentifizierung, Rufnummern-Spoofing, Verschlüsselung, Einwilligung zur Sprachverarbeitung und Aufbewahrungsfristen bleiben offen. „Nichts bleibt auf dem Telefon“ bedeutet außerdem nicht, dass Provider oder Zentrale keine Metadaten bzw. Transkripte verarbeiten.
-5. **MCP präziser beschreiben:** MCP standardisiert die Verbindung zwischen KI-Anwendung und Werkzeugen, ersetzt aber nicht automatisch den Adapter- oder Integrationscode zum jeweiligen Fachsystem. Der Satz „ohne … Individualcode“ ist zu absolut.
-6. **Backup-Priorität fachlich schärfen:** 41 Stunden seit der letzten erfolgreichen Sicherung sind relevant, aber die Priorität hängt von RPO/RTO, Datenänderungsrate, Redundanz und Wiederherstellungstest ab. Navis sollte diese Vertrags- und Risikodaten nennen oder offen sagen, dass sie fehlen.
-7. **EU-Speicherung nicht mit Datenschutz gleichsetzen:** Eine EU-Region allein beantwortet weder Zugriffsrechte noch Unterauftragsverarbeiter, Drittlandtransfers, Verschlüsselung, Löschkonzept und AV-Vertrag. Das eignet sich gut als fachlicher Zusatz im Kundengespräch.
-8. **CI-Aussage differenzieren:** „Jeder Commit stößt … an“ und bei Fehlern startet „kein einziger nachfolgender Schritt“ ist nur bei strikt sequenzieller Pipeline richtig. Als bewusst gewählte Projektregel kennzeichnen.
-9. **Prompt-Injection als konkrete Kontrolle ausbauen:** Die offene Frage zu manipulierten Kundendaten ist wichtig. Für die Fortsetzung wären Quellenkennzeichnung, erlaubte Tool-Parameter, Rechteprüfung, Output-Validierung und Audit-Log konkrete Gegenmaßnahmen.
-10. **Erzähltempo straffen:** Die Rahmenhandlung wird durch mehrere Rückblenden und lange Realteil-Blöcke stark gedehnt. Für mehr Spannung könnten Teil 1 und der technische Realteil noch klarer getrennt oder einzelne Rückblicke gekürzt werden.
+## Bewertung des Handouts
+
+Das zweiseitige Handout passt gut zur Geschichte und ist für einen Workshop schnell erfassbar. Die klare Dreiteilung aus Bestandsaufnahme, KI-Szenario und nächstem Versuch führt zu einem konkreten Ergebnis. Für eine spätere Version wären ausfüllbare Felder für Prozess, benötigte Daten, verantwortliche Person und Prüfkriterium nützlich.
 
 ## Stärken, die erhalten bleiben sollten
 
 - glaubwürdiger Systemhaus-Alltag ohne Technik-Heldenpathos
 - klare menschliche Freigabe vor schreibenden Aktionen
-- bewusster Verzicht auf eine irreführende Gesamtampel
+- konsistente Trennung von Sysingboard/Navis und Report-Familie/Lumen
 - offene Architekturfragen statt vorgetäuschter Fertiglösung
-- wiederkehrende Motive und Figuren als Basis für Fortsetzungen
+- unmittelbarer Transfer von der Erzählung in eine Workshop-Übung

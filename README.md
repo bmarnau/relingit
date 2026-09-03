@@ -1,12 +1,13 @@
 # Die Fahrt zum Kunden
 
-Landingpage und Online-Lesefassung der fortlaufenden Kurzgeschichte von Bernd Marnau.
+Landingpage, Online-Lesefassung und Workshop-Handout zur fortlaufenden Kurzgeschichte von Bernd Marnau.
 
 Die öffentliche Landingpage wird manuell per FTP bei DomainFactory gehostet. GitHub dient als Quellcode-Repository und CI-Plattform, führt aber kein Deployment aus. Supabase übernimmt Leserfeedback, Versionsmetadaten sowie die jeweils aktuelle HTML- und PDF-Fassung.
 
 ## Projektstruktur
 
 - `assets/css`: gemeinsame Gestaltung und Rechtseiten-Stile
+- `assets/img`: RelingIT-Logo und Browser-Symbol
 - `assets/js`: öffentliche Logik, PDF-Ansicht, Administration und Supabase-Konfiguration
 - `archive`: ausschließlich lokales Archiv für nicht mehr aktive Dateien
 - `story/current`: aktuell veröffentlichte lokale Rückfallfassung; entspricht dem Supabase-Pfad `story/current`
@@ -23,9 +24,10 @@ Inhalte unter `archive/` werden nicht zu GitHub übertragen und dürfen nicht au
 1. Den geschützten Bereich `admin.html` aufrufen und mit dem Supabase-Administratorkonto anmelden.
 2. Version, Datum und Seitenzahl eintragen.
 3. Neue PDF und HTML-Lesefassung auswählen.
-4. Veröffentlichen und anschließend die öffentliche Landingpage prüfen.
+4. Falls geändert, das Handout zusätzlich als HTML und PDF auswählen.
+5. Veröffentlichen und anschließend die öffentliche Landingpage prüfen.
 
-Supabase ersetzt die Dateien unter stabilen Adressen und aktualisiert die Versionsangaben. Für eine neue Fortsetzung ist deshalb kein DomainFactory-Upload nötig. Nur Änderungen an der Landingpage selbst werden erneut zu DomainFactory übertragen.
+Supabase ersetzt die Dateien unter stabilen Adressen und aktualisiert die Versionsangaben. Das Handout liegt dauerhaft unter `workshop-handout.html` und `workshop-handout.pdf`. Für eine neue Fortsetzung ist deshalb kein DomainFactory-Upload nötig. Nur Änderungen an der Landingpage selbst werden erneut zu DomainFactory übertragen.
 
 ## Rückmeldungen mit Supabase
 

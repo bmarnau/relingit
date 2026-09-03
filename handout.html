@@ -3,45 +3,34 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="HTML-Leseansicht der Geschichte Die Fahrt zum Kunden.">
-  <title>Im Browser lesen | Die Fahrt zum Kunden</title>
+  <meta name="description" content="HTML-Ansicht des Workshop-Handouts Der Reling-IT-Transfer.">
+  <title>Workshop-Handout | Reling IT</title>
   <link rel="icon" href="assets/img/favicon.png" type="image/png">
   <link rel="stylesheet" href="assets/css/styles.css">
   <script src="assets/js/supabase-config.js"></script>
-  <script src="assets/js/story-viewer.js" defer></script>
+  <script src="assets/js/handout-viewer.js" defer></script>
 </head>
 <body class="viewer-page">
   <header class="viewer-header">
     <div class="viewer-brand">
       <a href="index.html" aria-label="Zurück zur Landingpage"><img src="assets/img/reling-it-logo.svg" alt="Reling IT"></a>
-      <a class="button secondary" href="index.html">← Zurück</a>
+      <a class="button secondary" href="index.html#handout">← Zurück</a>
     </div>
     <div class="reader-navigation">
       <label for="chapter-select">Inhaltsverzeichnis</label>
-      <select id="chapter-select" disabled>
-        <option value="">Kapitel werden geladen …</option>
-      </select>
+      <select id="chapter-select" disabled><option>Abschnitte werden geladen …</option></select>
       <span id="current-section" aria-live="polite">Anfang</span>
     </div>
-    <div class="zoom-controls" aria-label="Textgröße der Geschichte">
+    <div class="zoom-controls" aria-label="Textgröße des Handouts">
       <button id="zoom-out" type="button" aria-label="Ansicht verkleinern">−</button>
       <button id="zoom-reset" type="button" aria-label="Originalgröße wiederherstellen">100 %</button>
       <button id="zoom-in" type="button" aria-label="Ansicht vergrößern">+</button>
     </div>
-    <div class="viewer-meta">
-      <span id="story-status" role="status">Geschichte wird geladen …</span>
-      <strong id="story-release">Version 1.18 · 3. September 2026</strong>
-    </div>
+    <div class="viewer-meta"><span id="handout-status" role="status">Handout wird geladen …</span><strong>Workshop-Handout · September 2026</strong></div>
   </header>
   <main class="viewer-main">
-    <iframe
-      id="story-frame"
-      title="Die Fahrt zum Kunden als HTML-Lesefassung"
-      sandbox="allow-same-origin allow-scripts"
-    ></iframe>
-    <p class="viewer-fallback" id="story-error" hidden>
-      Die Geschichte konnte nicht geladen werden. Bitte versuchen Sie es später erneut.
-    </p>
+    <iframe id="handout-frame" title="Der Reling-IT-Transfer als HTML-Handout" sandbox="allow-same-origin allow-scripts"></iframe>
+    <p class="viewer-fallback" id="handout-error" hidden>Das Handout konnte nicht geladen werden. Bitte versuchen Sie es später erneut.</p>
   </main>
 </body>
 </html>

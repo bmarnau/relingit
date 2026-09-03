@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Der Reling-IT-Transfer</title>
+<style>
+  :root{
+    --bg:#0b1220;
+    --surface:#121b2e;
+    --surface-2:#182238;
+    --ink:#eef2fb;
+    --ink-soft:#aab4cc;
+    --ink-faint:#6c7796;
+    --line:#24304d;
+    --navis:#4fd1c5;
+    --navis-soft:#12292a;
+    --lumen:#e8b34c;
+    --lumen-soft:#2c2311;
+    --accent:#8098ff;
+    --accent-soft:#1a2140;
+    --ok:#7bc493;
+    --ok-soft:#16241c;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0; padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Work Sans","Segoe UI",Arial,sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:700px; margin:0 auto; padding:56px 24px 36px;}
+
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--accent);
+    background:var(--accent-soft);
+    display:inline-block;
+    padding:3px 9px;
+    border-radius:3px;
+  }
+
+  h1{
+    font-family:"Fraunces",Georgia,serif;
+    font-weight:700;
+    font-size:clamp(26px,4.6vw,34px);
+    line-height:1.18;
+    margin:14px 0 0;
+  }
+  h1 .emoji{margin-right:8px;}
+
+  h2.block-title{
+    font-family:"Fraunces",Georgia,serif;
+    font-weight:600;
+    font-size:22px;
+    line-height:1.25;
+    margin:0 0 14px;
+    color:var(--ink);
+  }
+  h2.block-title .emoji{margin-right:8px;}
+
+  h3.step-title{
+    font-family:"Work Sans",Arial,sans-serif;
+    font-weight:600;
+    font-size:16px;
+    margin:16px 0 6px;
+    color:var(--lumen);
+  }
+  h3.step-title:first-of-type{margin-top:6px;}
+
+  p{margin:0 0 12px; color:var(--ink-soft);}
+  strong{color:var(--ink); font-weight:600;}
+  em{color:var(--ink); font-style:italic;}
+
+  ul{margin:0 0 4px; padding-left:20px;}
+  li{margin:0 0 12px; color:var(--ink-soft);}
+  li::marker{color:var(--accent);}
+
+  .box-shell{margin:20px 0;}
+  .block{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px 26px;
+  }
+  .block.navis-lumen{border-top:3px solid var(--navis);}
+  .block.logbuch{border-top:3px solid var(--lumen);}
+
+  .tag-navis{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px;
+    color:var(--navis);
+    background:var(--navis-soft);
+    padding:2px 7px;
+    border-radius:3px;
+    margin-left:6px;
+    white-space:nowrap;
+  }
+  .tag-lumen{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px;
+    color:var(--lumen);
+    background:var(--lumen-soft);
+    padding:2px 7px;
+    border-radius:3px;
+    margin-left:6px;
+    white-space:nowrap;
+  }
+
+  .divider{
+    border:none;
+    border-top:1px solid var(--line);
+    margin:22px 0;
+  }
+
+  footer{
+    margin-top:22px;
+    padding-top:12px;
+    border-top:1px solid var(--line);
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px;
+    color:var(--ink-faint);
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+
+  @media print{
+    body{background:var(--bg) !important; -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+    p, h2, h3{padding-top:10px; box-decoration-break:clone; -webkit-box-decoration-break:clone;}
+    .box-shell{padding-top:12px; padding-bottom:12px; break-inside:avoid; box-decoration-break:clone; -webkit-box-decoration-break:clone;}
+    .footer-shell{padding-top:12px; box-decoration-break:clone; -webkit-box-decoration-break:clone;}
+    footer{break-inside:avoid;}
+    li{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="eyebrow">Workshop-Vorbereitungsmaterial &middot; September 2026</span>
+
+  <div class="box-shell">
+    <div class="block navis-lumen">
+      <h2 class="block-title"><span class="emoji">🧭</span>Der Reling-IT-Transfer: Vom Logbuch ins Ticket-System</h2>
+
+      <p><strong>In der Geschichte:</strong> Ein automatisiertes Vorhersage-Modell übernimmt Routineberechnungen, die vorher jemand manuell erledigen musste. Die Person am Steuer behält den Überblick, gewinnt aber Zeit für die eigentlichen Entscheidungen.</p>
+
+      <p><strong>Was bedeutet das für unser IT-Systemhaus?</strong></p>
+
+      <ul>
+        <li><strong>Automatisierte Triage &amp; Dispatching<span class="tag-navis">Navis</span>:</strong> Genau wie im Wochendurchlauf, den Navis montags in der Teamrunde liefert &ndash; Tickets, Eskalationen, Kundenprojekte werden aus dem Sysingboard vorsortiert, statt dass jemand jeden Montagmorgen manuell alles zusammensucht. Navis liest dafür ausschließlich aus dem Sysingboard, nicht live von irgendwoher &ndash; Navis sortiert vor, entscheidet aber nicht.</li>
+        <li><strong>Sichtbar machen statt Alarm schlagen<span class="tag-lumen">Lumen</span>:</strong> So wie Lumen im Management-Report auf dieselbe geprüfte Sicht zugreift, die auch gedruckt beim Kunden landet, macht Lumen bereits geprüfte Auffälligkeiten in der Kundensicht sichtbar &ndash; ohne sie zu einer einzigen Ampel oder einem Score zu verdichten. Die Einschätzung, was das bedeutet, und das Handeln bleiben beim Team. Lumen zeigt, entscheidet aber nicht.</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="box-shell">
+    <div class="block logbuch">
+      <h2 class="block-title"><span class="emoji">⚓</span>Logbuch-Eintrag: Eure Manöverkritik (Workshop-Übung)</h2>
+
+      <p>Nutzt diese Geschichte für ein kurzes 15-Minuten-Brainstorming in eurem Team (z.&nbsp;B. im nächsten Technik- oder Vertriebs-Meeting).</p>
+
+      <h3 class="step-title">1. Die Bestandsaufnahme (5 Min)</h3>
+      <p><strong>Frage:</strong> Wo auf unserem eigenen &bdquo;Schiff&ldquo; (unserer Abteilung) navigieren wir aktuell noch komplett auf Sicht und mit hohem manuellem Aufwand, obwohl es dafür längst digitale Assistenzsysteme gäbe?</p>
+      <p><em>Typische Antworten aus dem Systemhaus:</em> Dokumentation schreiben, Standard-Antworten auf wiederkehrende Kundenfragen, Logfile-Analysen.</p>
+
+      <h3 class="step-title">2. Das KI-Szenario (5 Min)</h3>
+      <p><strong>Frage:</strong> Wenn wir für diesen Prozess einen &bdquo;digitalen Maat&ldquo; (einen KI-Assistenten) hätten &ndash; was müsste dieser im ersten Schritt können, damit wir ihm vertrauen?</p>
+      <p><em>Fokus:</em> Welche Datenqualität brauchen wir dafür (saubere Ticket-Historie, gepflegte Wissensdatenbank)?</p>
+
+      <h3 class="step-title">3. Das nächste Segel setzen (5 Min)</h3>
+      <p><strong>Aktion:</strong> Definiert <em>eine</em> konkrete Test-Aufgabe für die nächste Woche. Zum Beispiel: &bdquo;Wir lassen eine KI testweise die Zusammenfassung für fünf komplexe Projektabschlüsse schreiben und prüfen die Qualität.&ldquo;</p>
+    </div>
+  </div>
+
+  <div class="footer-shell">
+    <footer>
+      <span>Der Reling-IT-Transfer &middot; Begleitmaterial zu &bdquo;Die Fahrt zum Kunden&ldquo; &middot; frei erfunden</span>
+      <span id="render-stamp">Renderstand: &ndash;</span>
+    </footer>
+  </div>
+
+</div>
+</body>
+</html>

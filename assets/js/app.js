@@ -5,9 +5,9 @@
  * Local story files remain available as an offline and failure fallback.
  */
 const fallbackRelease = {
-  version: "1.11",
-  date: "30. August 2026",
-  pageCount: 46,
+  version: "1.18",
+  date: "3. September 2026",
+  pageCount: 53,
 };
 
 let release = fallbackRelease;
@@ -38,6 +38,8 @@ function showRelease(current) {
 
 function setStoryLinks(baseUrl) {
   document.querySelector("#pdf-link").href = `${baseUrl}/geschichte.pdf`;
+  document.querySelector("#handout-download").href =
+    `${baseUrl}/workshop-handout.pdf`;
 }
 
 async function loadRelease() {

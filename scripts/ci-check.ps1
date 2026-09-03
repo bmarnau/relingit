@@ -6,10 +6,11 @@ $failures = [System.Collections.Generic.List[string]]::new()
 
 # Diese Dateien bilden die minimale veröffentlichungsfähige Website.
 $requiredFiles = @(
-    ".htaccess", "index.html", "lesen.html", "pdf.html", "admin.html", "impressum.html", "datenschutz.html",
-    "story/current/fahrt-zum-kunden.html", "story/current/geschichte.pdf",
+    ".htaccess", "index.html", "lesen.html", "pdf.html", "handout.html", "handout-pdf.html", "admin.html", "impressum.html", "datenschutz.html",
+    "story/current/fahrt-zum-kunden.html", "story/current/geschichte.pdf", "story/current/workshop-handout.html", "story/current/workshop-handout.pdf",
+    "assets/img/reling-it-logo.svg", "assets/img/favicon.png",
     "assets/css/styles.css", "assets/css/legal.css",
-    "assets/js/app.js", "assets/js/admin.js", "assets/js/pdf-viewer.js", "assets/js/story-viewer.js",
+    "assets/js/app.js", "assets/js/admin.js", "assets/js/pdf-viewer.js", "assets/js/story-viewer.js", "assets/js/handout-viewer.js",
     "assets/js/supabase-config.js", "supabase/setup.sql"
 )
 foreach ($file in $requiredFiles) {
@@ -58,7 +59,7 @@ foreach ($htmlFile in $htmlFiles) {
 }
 
 # Eine schnelle Signaturprüfung erkennt beschädigte oder falsch benannte PDFs.
-foreach ($pdfName in @("story/current/geschichte.pdf", "source/Die-Fahrt-zum-Kunden_11.pdf")) {
+foreach ($pdfName in @("story/current/geschichte.pdf", "story/current/workshop-handout.pdf", "source/Die-Fahrt-zum-Kunden_11.pdf")) {
     if (-not (Test-Path -LiteralPath $pdfName)) { continue }
     $stream = [System.IO.File]::OpenRead((Resolve-Path $pdfName))
     try {
