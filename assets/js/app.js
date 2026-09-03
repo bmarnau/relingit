@@ -5,7 +5,7 @@
  * Local story files remain available as an offline and failure fallback.
  */
 const fallbackRelease = {
-  version: "1.24",
+  version: "1.25",
   date: "3. September 2026",
   pageCount: 57,
 };

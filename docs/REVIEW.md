@@ -1,8 +1,8 @@
-# Redaktionelle Prüfung – Version 1.24
+# Redaktionelle Prüfung – Version 1.25
 
 ## Kurzurteil
 
-Die neue Fassung ist stimmig, unterhaltsam und gegenüber Version 1.18 inhaltlich gewachsen. „Die Freigabegrenze“ ergänzt den menschlichen Blick auf Verantwortung und Handlungsspielräume überzeugend. Der neue n8n-Abschnitt schließt nachvollziehbar die bislang offene Richtung zurück in die Fachsysteme. Das hellere Meeresblau passt zum Reling-Motiv und bleibt mit der hellen Schrift gut lesbar.
+Die als neuer Eingang bereitgestellte PDF ist bytegenau identisch mit Version 1.24 und umfasst weiterhin 57 Seiten. Die HTML-Datei unterscheidet sich inhaltlich ebenfalls nicht; hinzugekommen war ausschließlich ein externer Google-Fonts-Aufruf. Dieser wird wegen Datenschutz, Offline-Fähigkeit und Ausfallsicherheit nicht veröffentlicht. Version 1.25 dokumentiert daher eine technische Bereinigung ohne neue Handlung oder fachliche Aussagen.
 
 ## Verbesserungen für die nächste Version
 
