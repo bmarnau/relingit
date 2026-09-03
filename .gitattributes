@@ -1,0 +1,2 @@
+# PDFs are binary release assets; never run text conversion or whitespace checks.
+*.pdf binary

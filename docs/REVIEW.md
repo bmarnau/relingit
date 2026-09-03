@@ -1,27 +1,24 @@
-# Redaktionelle Prüfung – Version 1.18
+# Redaktionelle Prüfung – Version 1.24
 
 ## Kurzurteil
 
-Die Geschichte bleibt stimmig, unterhaltsam und fachlich ungewöhnlich konkret. Version 1.18 behebt die frühere Unklarheit zwischen Navis und Lumen: Navis nutzt das Sysingboard, Lumen die Report-Familie. Die neuen Praxisgrafiken machen diese Trennung anschaulich. Das neue Workshop-Handout ist als eigenständiges Begleitmaterial sinnvoller als ein weiterer Anhang, weil Leser es unmittelbar für eine Übung nutzen können.
+Die neue Fassung ist stimmig, unterhaltsam und gegenüber Version 1.18 inhaltlich gewachsen. „Die Freigabegrenze“ ergänzt den menschlichen Blick auf Verantwortung und Handlungsspielräume überzeugend. Der neue n8n-Abschnitt schließt nachvollziehbar die bislang offene Richtung zurück in die Fachsysteme. Das hellere Meeresblau passt zum Reling-Motiv und bleibt mit der hellen Schrift gut lesbar.
 
 ## Verbesserungen für die nächste Version
 
-1. **Platzhalter in der Versionshistorie entfernen:** Der Eintrag zu Version 1.16 enthält „seit dem Logo auf dem Deckblatt (v1.??)“. Die unbekannte Versionsnummer sollte recherchiert oder neutral als „seit Aufnahme des Logos“ formuliert werden.
-2. **Veröffentlichungsrechte der Praxisgrafiken prüfen:** Die neuen Sysingboard- und Report-Familie-Abbildungen werden auf einer öffentlichen Website ausgeliefert. Vor der Veröffentlichung sollte bestätigt sein, dass Logos, Oberflächen und Beispieldaten öffentlich gezeigt werden dürfen.
-3. **Lesbarkeit der eingebetteten Grafiken beachten:** Einige Beschriftungen sind auf kleinen Bildschirmen sehr fein. Eine zusätzliche Großansicht oder barrierearme Textbeschreibung wäre für eine spätere Fassung hilfreich.
-4. **Technikstatus zeitlich kennzeichnen:** Formulierungen wie „in echt“, „einzige Quelle“ oder „ausschließlich“ wirken dauerhaft verbindlich. Bei einer sich entwickelnden Architektur sollte ein Standdatum oder der Hinweis „im aktuellen Entwurf“ ergänzt werden.
-5. **Sicheres Sprechen während der Fahrt weiter präzisieren:** Sprachbedienung reduziert Ablenkung, beseitigt sie aber nicht. Komplexe Inhalte sollten ausdrücklich erst im Stand betrachtet werden.
-6. **Datenschutz nicht allein aus dem Speicherort ableiten:** Eine EU-Region beantwortet noch nicht Zugriffsrechte, Unterauftragsverarbeiter, Drittlandtransfers, Verschlüsselung, Löschung und Auftragsverarbeitung.
-7. **MCP-Aussagen vorsichtig formulieren:** MCP standardisiert die Werkzeuganbindung, ersetzt aber nicht automatisch Adapter, Rechtekonzept und Integrationslogik des jeweiligen Fachsystems.
-
-## Bewertung des Handouts
-
-Das zweiseitige Handout passt gut zur Geschichte und ist für einen Workshop schnell erfassbar. Die klare Dreiteilung aus Bestandsaufnahme, KI-Szenario und nächstem Versuch führt zu einem konkreten Ergebnis. Für eine spätere Version wären ausfüllbare Felder für Prozess, benötigte Daten, verantwortliche Person und Prüfkriterium nützlich.
+1. **n8n nicht als Open Source bezeichnen:** n8n verwendet eine Sustainable Use License und beschreibt sich als fair-code beziehungsweise source-available. „Quelloffen“ kann als OSI-konformes Open Source missverstanden werden. Besser: „selbst hostbares, source-available Automatisierungswerkzeug“.
+2. **Platzhalter in Version 1.16 entfernen:** Der Eintrag enthält weiterhin „seit dem Logo auf dem Deckblatt (v1.??)“. Entweder die Version nachtragen oder neutral „seit Aufnahme des Logos“ schreiben.
+3. **Veröffentlichungsrechte der Praxisgrafiken bestätigen:** Sysingboard- und Report-Familie-Abbildungen werden öffentlich ausgeliefert. Logos, Oberflächen und Beispieldaten sollten ausdrücklich zur Veröffentlichung freigegeben sein.
+4. **n8n-Schreibrechte konkret begrenzen:** Der Abschnitt fragt zu Recht nach AVKK. Für den nächsten Stand wären Freigabeprozess, technische Identität, erlaubte Zielsysteme, Protokollierung und Rücknahme eines Workflows hilfreiche Ergänzungen.
+5. **Technikstatus zeitlich kennzeichnen:** Aussagen wie „einzige Quelle“ oder „ausschließlich“ sollten bei einer sich entwickelnden Architektur mit „im aktuellen Entwurf“ und einem Standdatum versehen werden.
+6. **Grafiken barriereärmer machen:** Die kleinen Beschriftungen der eingebetteten Architekturbilder sind mobil schwer lesbar. Eine Großansicht und eine ausführlichere Textalternative wären sinnvoll.
+7. **Sicheres Sprechen während der Fahrt präzisieren:** Sprachbedienung reduziert Ablenkung, beseitigt sie aber nicht. Komplexe Inhalte sollten erst im Stand betrachtet werden.
 
 ## Stärken, die erhalten bleiben sollten
 
 - glaubwürdiger Systemhaus-Alltag ohne Technik-Heldenpathos
 - klare menschliche Freigabe vor schreibenden Aktionen
 - konsistente Trennung von Sysingboard/Navis und Report-Familie/Lumen
+- nachvollziehbare Verbindung von AVKK und technischer Berechtigung
 - offene Architekturfragen statt vorgetäuschter Fertiglösung
 - unmittelbarer Transfer von der Erzählung in eine Workshop-Übung

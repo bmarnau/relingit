@@ -1,14 +1,15 @@
+<meta charset="UTF-8">
 <title>Die Fahrt zum Kunden</title>
 <style>
   :root{
-    --bg:#0b1220;
-    --surface:#121b2e;
-    --surface-2:#182238;
+    --bg:#123b4e;
+    --surface:#1b4f66;
+    --surface-2:#24647e;
     --ink:#eef2fb;
     --ink-soft:#aab4cc;
     --ink-faint:#6c7796;
-    --line:#24304d;
-    --road:#2a3654;
+    --line:#265066;
+    --road:#2c5c73;
     --navis:#4fd1c5;
     --navis-soft:#12292a;
     --lumen:#e8b34c;
@@ -300,6 +301,7 @@
   aside.real p{font-size:14px; color:var(--ink-soft); margin:0 0 16px; max-width:58ch;}
   aside.real p.narrative{font-style:italic; color:var(--ink); max-width:60ch;}
   aside.real .scene-fig{background:var(--surface-2);}
+  aside.real .scene-fig figcaption a{color:var(--accent); text-decoration:none; border-bottom:1px dotted var(--accent);}
 
   .appendix{
     margin-top:40px;
@@ -406,6 +408,15 @@
     .voice, .drafttasks, .disclaimer, .intro, .table-people{padding-top:26px !important; box-decoration-break:clone; -webkit-box-decoration-break:clone;}
     .scene-fig{padding-top:20px; box-decoration-break:clone; -webkit-box-decoration-break:clone;}
     .box-shell{padding-top:12px; padding-bottom:12px; break-inside:avoid; box-decoration-break:clone; -webkit-box-decoration-break:clone;}
+    /* .box-shell-flow: wie .box-shell (gleicher Rand-Schutz oben/unten), aber OHNE
+       break-inside:avoid. Ausnahme fuer einzelne Abschnitte, die laenger als eine
+       Seite sind UND direkt im Anschluss an eine andere Box beginnen (wenig
+       Restplatz): .box-shell wuerde den gesamten, zu grossen Block auf die
+       naechste Seite verschieben und dabei eine fast leere Seite hinterlassen.
+       .box-shell-flow laesst den Block stattdessen den Restplatz ausfuellen und
+       normal umbrechen, wie es bereits mehrseitige aside.real-Abschnitte tun,
+       die direkt am Seitenanfang beginnen. */
+    .box-shell-flow{padding-top:12px; padding-bottom:12px; box-decoration-break:clone; -webkit-box-decoration-break:clone;}
     .scene h2, aside.real h2, .appendix h2{break-after:avoid;}
     .scene p, aside.real p{orphans:3; widows:3;}
     .cover{
@@ -561,7 +572,7 @@
   <section class="cover">
     <div class="cover-logo" role="img" aria-label="Reling IT Logo">
       <svg viewBox="0 0 140 140">
-        <rect x="8" y="8" width="124" height="124" rx="16" fill="#0e1728" stroke="#2a3556"/>
+        <rect x="8" y="8" width="124" height="124" rx="16" fill="#0a2833" stroke="#2c5c73"/>
         <line x1="45" y1="35" x2="45" y2="105" stroke="#e7ecf1" stroke-width="6" stroke-linecap="round"/>
         <path d="M45,35 H80 A20,20 0 0 1 80,75 H45" fill="none" stroke="#e7ecf1" stroke-width="6" stroke-linecap="round"/>
         <line x1="70" y1="75" x2="95" y2="105" stroke="#e7ecf1" stroke-width="6" stroke-linecap="round"/>
@@ -578,8 +589,8 @@
       <svg viewBox="0 0 600 260" role="img" aria-label="Ein Auto fährt bei Nacht eine Landstrasse entlang, am Horizont zwei kleine leuchtende Punkte für Navis und Lumen">
         <defs>
           <linearGradient id="coversky" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#1a2140"/>
-            <stop offset="100%" stop-color="#0b1220"/>
+            <stop offset="0%" stop-color="#081f29"/>
+            <stop offset="100%" stop-color="#123b4e"/>
           </linearGradient>
           <linearGradient id="coverbeam" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0%" stop-color="#e8b34c" stop-opacity="0.32"/>
@@ -607,10 +618,10 @@
         <text x="380" y="215" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#4fd1c5">Navis</text>
         <text x="440" y="215" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#e8b34c">Lumen</text>
 
-        <rect x="90" y="168" width="76" height="34" rx="8" fill="#182238" stroke="currentColor" stroke-opacity="0.5"/>
-        <rect x="100" y="160" width="40" height="16" rx="6" fill="#182238" stroke="currentColor" stroke-opacity="0.5"/>
-        <circle cx="110" cy="200" r="9" fill="#0b1220" stroke="currentColor" stroke-opacity="0.55"/>
-        <circle cx="146" cy="200" r="9" fill="#0b1220" stroke="currentColor" stroke-opacity="0.55"/>
+        <rect x="90" y="168" width="76" height="34" rx="8" fill="#24647e" stroke="currentColor" stroke-opacity="0.5"/>
+        <rect x="100" y="160" width="40" height="16" rx="6" fill="#24647e" stroke="currentColor" stroke-opacity="0.5"/>
+        <circle cx="110" cy="200" r="9" fill="#123b4e" stroke="currentColor" stroke-opacity="0.55"/>
+        <circle cx="146" cy="200" r="9" fill="#123b4e" stroke="currentColor" stroke-opacity="0.55"/>
         <circle cx="160" cy="176" r="3.5" fill="#e8b34c"/>
       </svg>
     </figure>
@@ -619,23 +630,23 @@
       <span><b>Bernd Marnau</b></span>
       <span>03.09.2026</span>
       <span>Vorbereitung Workshop Ende September 2026</span>
-      <span>Version 1.18</span>
+      <span>Version 1.24</span>
     </div>
     <p id="render-stamp" style="text-align:center; font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.03em; color:var(--ink-faint); opacity:0.55; margin:10px 0 0;"></p>
   </section>
 
   <div class="box-shell"><div class="cover-frontmatter">
-    <p class="cover-whatsnew"><span class="tag">Neu in v1.18</span>Sysing-Dashboard-Mockup mit Navis im Anhang ergänzt &ndash; siehe <a href="#kap-versionen">Versionshistorie</a> am Ende.</p>
+    <p class="cover-whatsnew"><span class="tag">Neu in v1.24</span>Farbschema auf Meeresblau umgestellt &ndash; siehe <a href="#kap-versionen">Versionshistorie</a> am Ende.</p>
 
     <nav class="cover-toc" aria-label="Inhaltsverzeichnis">
       <div class="cover-toc-title">Inhalt</div>
       <div class="cover-toc-group">
         <span class="cover-toc-label">Teil&nbsp;1 &middot; Geschichte</span><br>
-        <a href="#kap-kaffeeecke">Kaffeeecke</a><span class="sep">&middot;</span><a href="#kap-umweg">Der Umweg</a><span class="sep">&middot;</span><a href="#kap-reiner-voss">Der klare Auftrag</a><span class="sep">&middot;</span><a href="#kap-vor-reling-it">Vor Reling IT</a><span class="sep">&middot;</span><a href="#kap-aufbruch">Aufbruch</a><span class="sep">&middot;</span><a href="#kap-navis-meldet-sich">Navis meldet sich</a><span class="sep">&middot;</span><a href="#kap-frage-an-lumen">Eine Frage an Lumen</a><span class="sep">&middot;</span><a href="#kap-horst-avkk">Die vierte Frage</a><span class="sep">&middot;</span><a href="#kap-kunde-der-ging">Der Kunde, der ging</a><span class="sep">&middot;</span><a href="#kap-zwischenfall">Der kleine Zwischenfall</a><span class="sep">&middot;</span><a href="#kap-ankunft">Ankunft</a><span class="sep">&middot;</span><a href="#kap-konferenztisch">Am Konferenztisch</a><span class="sep">&middot;</span><a href="#kap-warum-navis-lumen">Warum Navis und Lumen</a><span class="sep">&middot;</span><a href="#kap-kurz-vor-neun">Kurz vor neun</a>
+        <a href="#kap-kaffeeecke">Kaffeeecke</a><span class="sep">&middot;</span><a href="#kap-umweg">Der Umweg</a><span class="sep">&middot;</span><a href="#kap-reiner-voss">Der klare Auftrag</a><span class="sep">&middot;</span><a href="#kap-freigabegrenze">Die Freigabegrenze</a><span class="sep">&middot;</span><a href="#kap-vor-reling-it">Vor Reling IT</a><span class="sep">&middot;</span><a href="#kap-aufbruch">Aufbruch</a><span class="sep">&middot;</span><a href="#kap-navis-meldet-sich">Navis meldet sich</a><span class="sep">&middot;</span><a href="#kap-frage-an-lumen">Eine Frage an Lumen</a><span class="sep">&middot;</span><a href="#kap-horst-avkk">Die vierte Frage</a><span class="sep">&middot;</span><a href="#kap-kunde-der-ging">Der Kunde, der ging</a><span class="sep">&middot;</span><a href="#kap-zwischenfall">Der kleine Zwischenfall</a><span class="sep">&middot;</span><a href="#kap-ankunft">Ankunft</a><span class="sep">&middot;</span><a href="#kap-konferenztisch">Am Konferenztisch</a><span class="sep">&middot;</span><a href="#kap-warum-navis-lumen">Warum Navis und Lumen</a><span class="sep">&middot;</span><a href="#kap-kurz-vor-neun">Kurz vor neun</a>
       </div>
       <div class="cover-toc-group">
         <span class="cover-toc-label">Teil&nbsp;2 &middot; Realer Bezug</span><br>
-        <a href="#kap-so-ist-es-gedacht">So ist es gedacht</a><span class="sep">&middot;</span><a href="#kap-architektur-exkurs">Architektur-Exkurs</a><span class="sep">&middot;</span><a href="#kap-kommunikation">Wie Mira kommuniziert</a><span class="sep">&middot;</span><a href="#kap-infos">Woher die Infos kommen</a>
+        <a href="#kap-so-ist-es-gedacht">So ist es gedacht</a><span class="sep">&middot;</span><a href="#kap-architektur-exkurs">Architektur-Exkurs</a><span class="sep">&middot;</span><a href="#kap-kommunikation">Wie Mira kommuniziert</a><span class="sep">&middot;</span><a href="#kap-infos">Woher die Infos kommen</a><span class="sep">&middot;</span><a href="#kap-n8n">n8n</a>
       </div>
       <div class="cover-toc-group">
         <span class="cover-toc-label">Anhang</span><br>
@@ -692,6 +703,12 @@
         <div class="tenure">langjährig, reduzierte Stunden</div>
       </div>
       <div class="person">
+        <div class="badge">IB</div>
+        <div class="name">Insa Brookmann</div>
+        <div class="role">Backoffice, Aufträge/Rechnungen/Einkauf</div>
+        <div class="tenure">seit den frühen Jahren</div>
+      </div>
+      <div class="person">
         <div class="badge navis">N</div>
         <div class="name">Navis</div>
         <div class="role">KI-Agent, operativ (Sysingboard)</div>
@@ -715,16 +732,16 @@
           <text x="300" y="24" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" fill-opacity="0.55">16:10 &middot; Systemhaus, Kaffeeecke</text>
 
           <!-- Theke -->
-          <rect x="60" y="112" width="480" height="12" rx="4" fill="#182238" stroke="currentColor" stroke-opacity="0.35"/>
+          <rect x="60" y="112" width="480" height="12" rx="4" fill="#24647e" stroke="currentColor" stroke-opacity="0.35"/>
 
           <!-- Kaffeemaschine -->
-          <rect x="272" y="66" width="56" height="46" rx="6" fill="#182238" stroke="currentColor" stroke-opacity="0.4"/>
+          <rect x="272" y="66" width="56" height="46" rx="6" fill="#24647e" stroke="currentColor" stroke-opacity="0.4"/>
           <rect x="282" y="58" width="36" height="12" rx="3" fill="#141d33" stroke="currentColor" stroke-opacity="0.35"/>
           <rect x="292" y="112" width="16" height="10" rx="2" fill="none" stroke="currentColor" stroke-opacity="0.4"/>
           <circle cx="316" cy="76" r="3.5" fill="#e8b34c"/>
 
           <!-- Laptop mit Testfenster -->
-          <rect x="196" y="86" width="72" height="4" rx="2" fill="#182238"/>
+          <rect x="196" y="86" width="72" height="4" rx="2" fill="#24647e"/>
           <rect x="205" y="52" width="54" height="36" rx="4" fill="#0e1728" stroke="currentColor" stroke-opacity="0.4"/>
           <circle cx="223" cy="70" r="4" fill="#4fd1c5"/>
           <circle cx="241" cy="70" r="4" fill="#e8b34c"/>
@@ -767,7 +784,7 @@
           <path d="M275,120 L540,120" fill="none" stroke="#4fd1c5" stroke-opacity="0.5" stroke-width="2" stroke-dasharray="3 5"/>
 
           <!-- Schreibtisch -->
-          <rect x="150" y="128" width="300" height="10" rx="3" fill="#182238" stroke="currentColor" stroke-opacity="0.35"/>
+          <rect x="150" y="128" width="300" height="10" rx="3" fill="#24647e" stroke="currentColor" stroke-opacity="0.35"/>
 
           <!-- Ordner auf dem Tisch -->
           <rect x="272" y="104" width="56" height="26" rx="3" fill="#1a2140" stroke="currentColor" stroke-opacity="0.45"/>
@@ -828,7 +845,7 @@
           <line x1="80" y1="70" x2="98" y2="70" stroke="currentColor" stroke-opacity="0.6" stroke-width="2"/>
           <text x="80" y="122" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="currentColor" fill-opacity="0.6">nur vormittags</text>
 
-          <rect x="190" y="40" width="170" height="60" rx="8" fill="#182238" stroke="#4fd1c5" stroke-opacity="0.6"/>
+          <rect x="190" y="40" width="170" height="60" rx="8" fill="#24647e" stroke="#4fd1c5" stroke-opacity="0.6"/>
           <text x="275" y="65" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor">Auftrag</text>
           <text x="275" y="83" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" fill-opacity="0.7">NAS tauschen, 2 Std.</text>
 
@@ -843,6 +860,42 @@
       <p>Heute Vormittag steht er beim Landhandel Rehder, zwei Stunden fest eingeplant: das alte NAS im Lagerbüro tauschen, bevor die nächste Sicherung wieder eine Stunde länger braucht als nötig. Herr Rehder, seit Jahrzehnten Kunde, vertraut ihm mehr als jedem Vertrag &ndash; genau deshalb hält Reiner sich selbst am strengsten an das, was vereinbart ist.</p>
       <p>Auf halbem Weg hält Rehder ihn kurz am Ärmel fest. &bdquo;Wo Sie gerade da sind &ndash; mein Enkel hat mir hier so eine Kamera am Hoftor eingerichtet, die spinnt neuerdings. Gucken Sie doch kurz mit drüber?&ldquo; Reiner schaut kurz hin, sieht sofort, woran es liegt &ndash; und lässt die Finger trotzdem davon. &bdquo;Sieht nach einer Sache von fünf Minuten aus, ehrlich gesagt. Aber die gehört nicht zum heutigen Auftrag, und fünf Minuten hier, fünf Minuten da, davon werden am Ende ganze Nachmittage draus, die dann woanders fehlen.&ldquo; Er zückt sein Diensthandy, tippt eine kurze Notiz ins Sysingboard: Kamera Hoftor, vermutlich Netzwerkeinstellung, Rehder informiert, Termin folgt. &bdquo;Ruft Sie heute noch jemand aus dem Büro an, wegen einem Termin. Passt das?&ldquo; Rehder nickt, sichtlich mehr beeindruckt als enttäuscht. &bdquo;Sie sind der Einzige, der mir sowas so erklärt, dass ich's nicht als Ausrede verstehe.&ldquo;</p>
       <p>Diese Grenze gab es bei Reling IT schon lange, bevor irgendjemand im Haus von Navis oder Lumen sprach &ndash; Reiner hat sie sich selbst gesetzt, aus demselben Grund, aus dem Navis heute nichts rät, wenn es sich nicht sicher ist: eine ehrliche Grenze hält länger als ein Gefallen, den man nicht immer wird halten können. Auf der Rückfahrt zum Büro, die zweite Stunde fast vorbei, denkt er an nichts als den Kaffee, der ihn dort erwartet &ndash; und daran, dass er bis heute keinen einzigen Kunden verloren hat, weil er einmal Nein zu etwas gesagt hat, das nicht zum Auftrag gehörte.</p>
+    </section>
+
+    <section class="scene">
+      <div class="box-shell"><figure class="scene-fig">
+        <svg viewBox="0 0 600 150" role="img" aria-label="Ein Paket mit Express-Aufkleber und eine Uhr, die zwei Tage bis zur Frist anzeigt, links; eine kleine Rechnung mit einem markierten Auffälligkeits-Punkt rechts">
+          <rect x="0" y="0" width="600" height="150" fill="#0e1728"/>
+          <text x="300" y="24" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" fill-opacity="0.55">Backoffice &middot; zwei Tage vor der Frist</text>
+
+          <!-- Paket mit Express-Band -->
+          <rect x="70" y="52" width="86" height="66" rx="4" fill="#24647e" stroke="currentColor" stroke-opacity="0.65" stroke-width="1.5"/>
+          <line x1="70" y1="85" x2="156" y2="85" stroke="#8098ff" stroke-opacity="0.7" stroke-width="6"/>
+          <line x1="113" y1="52" x2="113" y2="118" stroke="#8098ff" stroke-opacity="0.7" stroke-width="6"/>
+          <text x="113" y="134" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="currentColor" fill-opacity="0.6">Ersatzteil, Express</text>
+
+          <!-- Uhr -->
+          <circle cx="230" cy="85" r="26" fill="none" stroke="currentColor" stroke-opacity="0.5" stroke-width="2"/>
+          <path d="M230,85 A26,26 0 0,1 250,64" fill="none" stroke="#e8b34c" stroke-opacity="0.8" stroke-width="2.5"/>
+          <line x1="230" y1="85" x2="230" y2="66" stroke="currentColor" stroke-opacity="0.6" stroke-width="2"/>
+          <line x1="230" y1="85" x2="245" y2="85" stroke="currentColor" stroke-opacity="0.6" stroke-width="2"/>
+          <text x="230" y="134" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="currentColor" fill-opacity="0.6">noch 2 Tage</text>
+
+          <!-- Rechnung mit Auffaelligkeit -->
+          <rect x="420" y="42" width="110" height="80" rx="4" fill="#24647e" stroke="currentColor" stroke-opacity="0.4"/>
+          <line x1="432" y1="60" x2="518" y2="60" stroke="currentColor" stroke-opacity="0.35" stroke-width="3"/>
+          <line x1="432" y1="74" x2="518" y2="74" stroke="currentColor" stroke-opacity="0.35" stroke-width="3"/>
+          <line x1="432" y1="88" x2="490" y2="88" stroke="currentColor" stroke-opacity="0.35" stroke-width="3"/>
+          <circle cx="508" cy="88" r="6" fill="#e8b34c"/>
+          <text x="475" y="134" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="currentColor" fill-opacity="0.6">Rechnung, Aufälligkeit</text>
+        </svg>
+        <figcaption>Insa Brookmann: eine Express-Bestellung in eigener Freigabe &ndash; und, nebenbei, ein Blick, der eine Zahl zweimal liest.</figcaption>
+      </figure></div>
+      <h2 id="kap-freigabegrenze">Die Freigabegrenze</h2>
+      <p>Insa Brookmann ist, ausser Petra selbst, die Einzige bei Reling IT, die sich noch erinnert, wie das Büro aussah, als es noch keins war &ndash; ein Schreibtisch im Flur, eine Kladde für Rechnungen, ein Anrufbeantworter, der öfter blinkte, als er sollte. Sie ist ungefähr zeitgleich mit Petras Wachstum vom Ein-Frau- zum Zehn-Köpfe-Betrieb dazugekommen und kennt seither jeden Rahmenvertrag, jede mündliche Sonderabsprache, jede Ausnahme, die nie irgendwo dokumentiert wurde &ndash; nur eben in ihr selbst.</p>
+      <p>Heute Nachmittag fehlt für ein laufendes Projekt bei Dornbach Fensterbau ein bestelltes Ersatzteil, ein einzelner Switch, ohne den die vereinbarte Abnahme in zwei Tagen nicht stattfinden kann. Der reguläre Lieferant meldet eine Woche Verzug, ein Express-Händler hätte das Teil übermorgen &ndash; zu einem Aufpreis, der genau an der Grenze liegt, bis zu der Insa ohne Rücksprache bestellen darf.</p>
+      <p>Sie überlegt nicht lange, tippt aber trotzdem kurz nach: Aufpreis, Kundenname, Projektfrist, alles in einer Zeile im Sysingboard, bevor sie den Express-Kauf auslöst. Nicht weil sie unsicher wäre, sondern weil eine Freigabegrenze nur so lange etwas wert ist, wie man auch sauber zeigen kann, wo man drinnengeblieben ist &ndash; genau das, findet sie, unterscheidet eine Kompetenz von einer Ausrede. Petra bekommt die Zeile lesen, keine Rückfrage nötig, kein &bdquo;hätte ich auch machen können&ldquo; hinterher.</p>
+      <p>Auf dem Rückweg zum eigentlichen Grund ihres Nachmittags &ndash; die Wareneingangsrechnungen der letzten Woche &ndash; bleibt ihr Blick an einer Zahl hängen, die zweimal auftaucht, wo eigentlich nur einmal abgerechnet werden dürfte. Sie schreibt sich das auf, keine grosse Sache, nur eine Notiz für morgen früh &ndash; niemand hat sie darum gebeten, es ist bloss die Gewohnheit von jemandem, der schon zu oft gesehen hat, wie aus einer übersehenen Kleinigkeit am Jahresende eine grosse wird.</p>
     </section>
 
     <section class="scene">
@@ -865,12 +918,12 @@
           <text x="160" y="146" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="currentColor" fill-opacity="0.55">Band</text>
 
           <!-- Wandtelefon -->
-          <rect x="216" y="76" width="26" height="36" rx="4" fill="#182238" stroke="currentColor" stroke-opacity="0.4"/>
+          <rect x="216" y="76" width="26" height="36" rx="4" fill="#24647e" stroke="currentColor" stroke-opacity="0.4"/>
           <path d="M222,84 q6,10 14,0" stroke="currentColor" stroke-opacity="0.5" fill="none" stroke-width="2"/>
           <text x="229" y="146" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="currentColor" fill-opacity="0.55">Telefon</text>
 
           <!-- moderner Laptop -->
-          <rect x="428" y="94" width="72" height="4" rx="2" fill="#182238"/>
+          <rect x="428" y="94" width="72" height="4" rx="2" fill="#24647e"/>
           <rect x="437" y="58" width="54" height="36" rx="4" fill="#0e1728" stroke="currentColor" stroke-opacity="0.4"/>
           <circle cx="455" cy="76" r="4" fill="#4fd1c5"/>
           <circle cx="473" cy="76" r="4" fill="#e8b34c"/>
@@ -893,7 +946,7 @@
           <defs>
             <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stop-color="#1a2140"/>
-              <stop offset="100%" stop-color="#0b1220"/>
+              <stop offset="100%" stop-color="#123b4e"/>
             </linearGradient>
             <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0%" stop-color="#e8b34c" stop-opacity="0.35"/>
@@ -905,9 +958,9 @@
           <polygon points="100,150 300,150 200,40" fill="url(#beam)" opacity="0.6"/>
           <line x1="0" y1="150" x2="600" y2="150" stroke="currentColor" stroke-opacity="0.25" stroke-width="1"/>
           <line x1="0" y1="118" x2="600" y2="118" stroke="currentColor" stroke-opacity="0.5" stroke-width="2" stroke-dasharray="18 14"/>
-          <rect x="70" y="96" width="58" height="26" rx="6" fill="#182238" stroke="currentColor" stroke-opacity="0.4"/>
-          <circle cx="86" cy="122" r="7" fill="#0b1220" stroke="currentColor" stroke-opacity="0.5"/>
-          <circle cx="112" cy="122" r="7" fill="#0b1220" stroke="currentColor" stroke-opacity="0.5"/>
+          <rect x="70" y="96" width="58" height="26" rx="6" fill="#24647e" stroke="currentColor" stroke-opacity="0.4"/>
+          <circle cx="86" cy="122" r="7" fill="#123b4e" stroke="currentColor" stroke-opacity="0.5"/>
+          <circle cx="112" cy="122" r="7" fill="#123b4e" stroke="currentColor" stroke-opacity="0.5"/>
           <circle cx="122" cy="104" r="3" fill="#e8b34c"/>
           <text x="300" y="30" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" fill-opacity="0.55">19:42 &middot; A7 Richtung Süden</text>
         </svg>
@@ -923,7 +976,7 @@
       <div class="box-shell"><figure class="scene-fig">
         <svg viewBox="0 0 600 150" role="img" aria-label="Smartphone mit Sprachwelle verbindet sich mit einer Übersichtskarte, die Prioritäten und einen Risikopunkt zeigt">
           <rect x="0" y="0" width="600" height="150" fill="#0e1728"/>
-          <rect x="46" y="35" width="46" height="80" rx="8" fill="#182238" stroke="currentColor" stroke-opacity="0.4"/>
+          <rect x="46" y="35" width="46" height="80" rx="8" fill="#24647e" stroke="currentColor" stroke-opacity="0.4"/>
           <circle cx="69" cy="100" r="3" fill="currentColor" fill-opacity="0.4"/>
           <path d="M100 75 Q118 55 136 75 Q118 95 100 75" fill="none" stroke="#4fd1c5" stroke-width="2"/>
           <line x1="140" y1="75" x2="210" y2="75" stroke="#4fd1c5" stroke-width="2" stroke-dasharray="4 5"/>
@@ -955,7 +1008,7 @@
       <div class="box-shell"><figure class="scene-fig">
         <svg viewBox="0 0 600 150" role="img" aria-label="Smartphone verbindet sich mit einem aufgeschlagenen Dokument-Symbol in warmem Licht">
           <rect x="0" y="0" width="600" height="150" fill="#0e1728"/>
-          <rect x="46" y="35" width="46" height="80" rx="8" fill="#182238" stroke="currentColor" stroke-opacity="0.4"/>
+          <rect x="46" y="35" width="46" height="80" rx="8" fill="#24647e" stroke="currentColor" stroke-opacity="0.4"/>
           <circle cx="69" cy="100" r="3" fill="currentColor" fill-opacity="0.4"/>
           <path d="M100 75 Q118 55 136 75 Q118 95 100 75" fill="none" stroke="#e8b34c" stroke-width="2"/>
           <line x1="140" y1="75" x2="210" y2="75" stroke="#e8b34c" stroke-width="2" stroke-dasharray="4 5"/>
@@ -986,7 +1039,7 @@
         <svg viewBox="0 0 600 140" role="img" aria-label="Eine Freisprechanlage im Auto verbindet sich mit vier leuchtenden Buchstaben A, V, K und K, von denen der letzte besonders hervorgehoben ist">
           <rect x="0" y="0" width="600" height="140" fill="#0e1728"/>
           <text x="300" y="24" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" fill-opacity="0.55">19:51 &middot; eine andere Landstrasse, Freisprechanlage</text>
-          <rect x="46" y="55" width="46" height="30" rx="6" fill="#182238" stroke="currentColor" stroke-opacity="0.4"/>
+          <rect x="46" y="55" width="46" height="30" rx="6" fill="#24647e" stroke="currentColor" stroke-opacity="0.4"/>
           <circle cx="69" cy="70" r="3" fill="currentColor" fill-opacity="0.4"/>
           <line x1="100" y1="70" x2="176" y2="70" stroke="#8098ff" stroke-width="2" stroke-dasharray="4 5"/>
           <circle cx="216" cy="70" r="25" fill="#1a2140" stroke="#8098ff" stroke-opacity="0.5"/>
@@ -1017,7 +1070,7 @@
         <svg viewBox="0 0 600 140" role="img" aria-label="Ein Rückspiegel im Auto zeigt bei Dunkelheit das verblasste Bild eines Firmenschilds mit der Aufschrift gekündigt">
           <rect x="0" y="0" width="600" height="140" fill="#0e1728"/>
           <text x="300" y="22" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" fill-opacity="0.55">19:54 &middot; immer noch auf der Landstrasse</text>
-          <rect x="250" y="34" width="100" height="36" rx="6" fill="#182238" stroke="currentColor" stroke-opacity="0.4"/>
+          <rect x="250" y="34" width="100" height="36" rx="6" fill="#24647e" stroke="currentColor" stroke-opacity="0.4"/>
           <rect x="258" y="41" width="84" height="22" rx="3" fill="#0e1728" stroke="currentColor" stroke-opacity="0.3"/>
           <rect x="272" y="47" width="56" height="11" rx="2" fill="currentColor" fill-opacity="0.15"/>
           <text x="300" y="56" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="6.5" fill="currentColor" fill-opacity="0.4">GEKÜNDIGT</text>
@@ -1059,12 +1112,12 @@
           <defs>
             <linearGradient id="dawn" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stop-color="#1a2140"/>
-              <stop offset="100%" stop-color="#0b1220"/>
+              <stop offset="100%" stop-color="#123b4e"/>
             </linearGradient>
           </defs>
           <rect x="0" y="0" width="600" height="150" fill="url(#dawn)"/>
-          <rect x="230" y="55" width="140" height="80" fill="#182238" stroke="currentColor" stroke-opacity="0.4"/>
-          <polygon points="220,55 380,55 300,25" fill="#121b2e" stroke="currentColor" stroke-opacity="0.4"/>
+          <rect x="230" y="55" width="140" height="80" fill="#24647e" stroke="currentColor" stroke-opacity="0.4"/>
+          <polygon points="220,55 380,55 300,25" fill="#1b4f66" stroke="currentColor" stroke-opacity="0.4"/>
           <rect x="285" y="95" width="30" height="40" fill="#e8b34c" fill-opacity="0.85"/>
           <circle cx="255" cy="75" r="6" fill="#4fd1c5" fill-opacity="0.7"/>
           <circle cx="345" cy="75" r="6" fill="#4fd1c5" fill-opacity="0.7"/>
@@ -1082,7 +1135,7 @@
       <div class="box-shell"><figure class="scene-fig">
         <svg viewBox="0 0 640 190" role="img" aria-label="Ein runder Besprechungstisch mit drei Personen, Kaffeetassen und zwei kleinen leuchtenden Geräten für Navis und Lumen in der Mitte">
           <rect x="0" y="0" width="640" height="190" fill="#0e1728"/>
-          <ellipse cx="320" cy="150" rx="220" ry="18" fill="#182238" stroke="currentColor" stroke-opacity="0.35"/>
+          <ellipse cx="320" cy="150" rx="220" ry="18" fill="#24647e" stroke="currentColor" stroke-opacity="0.35"/>
           <ellipse cx="320" cy="146" rx="150" ry="11" fill="#141d33"/>
 
           <!-- Mira -->
@@ -1237,11 +1290,11 @@
       <div class="box-shell"><figure class="scene-fig">
         <svg viewBox="0 0 600 140" role="img" aria-label="Drei durch Pfeile verbundene Stationen: Weiterbildung, eigener Versuch, und schliesslich Navis und Lumen als zwei farbige Punkte">
           <rect width="600" height="140" fill="#0e1728"/>
-          <rect x="20" y="55" width="140" height="40" rx="8" fill="#182238" stroke="currentColor" stroke-opacity="0.5"/>
+          <rect x="20" y="55" width="140" height="40" rx="8" fill="#24647e" stroke="currentColor" stroke-opacity="0.5"/>
           <text x="90" y="79" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" fill-opacity="0.8">Weiterbildung</text>
           <line x1="160" y1="75" x2="222" y2="75" stroke="currentColor" stroke-opacity="0.5"/>
           <polygon points="222,75 213,70 213,80" fill="currentColor" fill-opacity="0.5"/>
-          <rect x="232" y="55" width="140" height="40" rx="8" fill="#182238" stroke="currentColor" stroke-opacity="0.5"/>
+          <rect x="232" y="55" width="140" height="40" rx="8" fill="#24647e" stroke="currentColor" stroke-opacity="0.5"/>
           <text x="302" y="79" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" fill-opacity="0.8">Eigener Versuch</text>
           <line x1="372" y1="75" x2="434" y2="75" stroke="currentColor" stroke-opacity="0.5"/>
           <polygon points="434,75 425,70 425,80" fill="currentColor" fill-opacity="0.5"/>
@@ -1265,7 +1318,7 @@
           <rect x="0" y="0" width="640" height="170" fill="#0e1728"/>
           <text x="320" y="24" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" fill-opacity="0.55">08:58 &middot; Montag, Kaffeeecke</text>
 
-          <ellipse cx="320" cy="140" rx="230" ry="16" fill="#182238" stroke="currentColor" stroke-opacity="0.35"/>
+          <ellipse cx="320" cy="140" rx="230" ry="16" fill="#24647e" stroke="currentColor" stroke-opacity="0.35"/>
 
           <g transform="translate(110,68)">
             <circle cx="0" cy="0" r="15" fill="#243254" stroke="currentColor" stroke-opacity="0.5"/>
@@ -1675,6 +1728,53 @@
     <p style="margin-top:16px;">Offen bleibt für die Fortsetzung: wie Lumen den Hub technisch anspricht &ndash; und was in die andere Richtung fließt, wenn aus einem Gespräch am Konferenztisch wieder ein neuer Eintrag im Sysingboard wird.</p>
   </aside></div>
 
+  <div class="box-shell-flow"><aside class="real">
+    <span class="eyebrow">Realer Bezug</span>
+    <h2 id="kap-n8n">n8n: ein Werkzeug für die andere Richtung</h2>
+    <p>Genau für diese offene Frage &ndash; was passiert, wenn aus einem Gespräch wieder ein Eintrag im Sysingboard werden soll &ndash; wird bei Reling IT ein zusätzliches Werkzeug erprobt: <b>n8n</b>, ausdrücklich nicht als Ersatz für Navis oder Lumen, sondern als eigene, noch unproduktive Baustelle daneben. n8n ist ein reales, quelloffenes Automatisierungswerkzeug (Fair-Code, Sustainable Use License, selbst hostbar): eine visuelle Oberfläche, auf der man Abläufe aus einzelnen <b>Knoten</b> zusammensteckt statt sie zu programmieren &ndash; ein Auslöser (Zeitplan, Webhook) startet den Ablauf, Knoten lesen oder schreiben Daten in verschiedenen Systemen, ein KI-Knoten kann Texte einordnen oder Entscheidungen vorbereiten.</p>
+    <div class="box-shell"><figure class="scene-fig">
+      <svg viewBox="0 0 640 108" role="img" aria-label="Ein kleines n8n-Emblem links, verbunden ueber einen Ausloeser-Knoten, einen Verarbeitungs-Knoten und einen hervorgehobenen KI-Knoten mit einem Zielsystem rechts, das einen Eintrag oder eine Nachricht erhaelt">
+        <defs>
+          <marker id="arrow7" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="currentColor" fill-opacity="0.6"/>
+          </marker>
+        </defs>
+
+        <circle cx="42" cy="54" r="26" fill="none" stroke="#8098ff" stroke-opacity="0.7" stroke-width="2"/>
+        <text x="42" y="51" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#8098ff">n8n</text>
+        <text x="42" y="64" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="6.5" fill="currentColor" fill-opacity="0.55">Workflow</text>
+
+        <line x1="68" y1="54" x2="100" y2="54" stroke="currentColor" stroke-opacity="0.5" marker-end="url(#arrow7)"/>
+
+        <rect x="104" y="34" width="100" height="40" rx="9" fill="var(--surface)" stroke="currentColor" stroke-opacity="0.6"/>
+        <text x="154" y="52" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="currentColor">Auslöser</text>
+        <text x="154" y="64" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7.5" fill="currentColor" fill-opacity="0.6">Zeitplan / Webhook</text>
+
+        <circle cx="222" cy="54" r="3" fill="currentColor" fill-opacity="0.5"/>
+        <line x1="204" y1="54" x2="240" y2="54" stroke="currentColor" stroke-opacity="0.5" marker-end="url(#arrow7)"/>
+
+        <rect x="244" y="34" width="100" height="40" rx="9" fill="var(--surface)" stroke="currentColor" stroke-opacity="0.6"/>
+        <text x="294" y="52" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="currentColor">Knoten</text>
+        <text x="294" y="64" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7.5" fill="currentColor" fill-opacity="0.6">liest / schreibt</text>
+
+        <circle cx="362" cy="54" r="3" fill="#e8b34c" fill-opacity="0.7"/>
+        <line x1="344" y1="54" x2="380" y2="54" stroke="#e8b34c" stroke-opacity="0.7" marker-end="url(#arrow7)"/>
+
+        <rect x="384" y="30" width="112" height="48" rx="9" fill="var(--lumen-soft)" stroke="#e8b34c" stroke-opacity="0.85"/>
+        <text x="440" y="50" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="currentColor">KI-Knoten</text>
+        <text x="440" y="62" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7.5" fill="currentColor" fill-opacity="0.65">ordnet ein, schlägt vor</text>
+
+        <line x1="496" y1="54" x2="526" y2="54" stroke="#4fd1c5" stroke-opacity="0.8" marker-end="url(#arrow7)"/>
+
+        <rect x="530" y="32" width="72" height="44" rx="9" fill="none" stroke="#4fd1c5" stroke-opacity="0.85"/>
+        <text x="566" y="51" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="currentColor">Ziel&#8203;system</text>
+        <text x="566" y="63" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7" fill="currentColor" fill-opacity="0.6">Eintrag</text>
+      </svg>
+      <figcaption>n8n verbindet Systeme über einzelne Knoten zu einem nachvollziehbaren Ablauf (Beispiel, in Erprobung, kein bereits produktiver Reling-IT-Prozess). Quellen zum Weiterlesen: <a href="https://n8n.io">n8n.io</a> &middot; <a href="https://docs.n8n.io">docs.n8n.io</a> &middot; <a href="https://github.com/n8n-io/n8n">github.com/n8n-io/n8n</a>.</figcaption>
+    </figure></div>
+    <p style="margin-top:16px;">Für ein zehnköpfiges Systemhaus liegt der Reiz auf der Hand, aber auch eine neue Frage, die Navis und Lumen sich nie gestellt haben: Wer darf einen Workflow anlegen oder ändern, nach welcher Regel &ndash; dieselbe Kompetenzen-Frage, die Petra bei Horst als AVKK kennengelernt hat, nur diesmal für ein Stück Automatisierung statt für eine Person. Wie genau n8n bei Reling IT eingesetzt wird, ist zum jetzigen Stand offen: erprobt, nicht bereits produktiv.</p>
+  </aside></div>
+
   <div class="box-shell"><section class="appendix">
     <span class="eyebrow">Anhang</span>
     <h2 id="kap-handout">Die Vorlage: Handout &bdquo;Sysing Dashboard &ndash; Agentenprojekt&ldquo;</h2>
@@ -1861,6 +1961,36 @@
           <td>1.18</td>
           <td>03.09.2026</td>
           <td>Neuer Anhang-Abschnitt &bdquo;Das Sysingboard in echt: Navis&rsquo; einzige Quelle&ldquo; ergänzt, direkt nach dem Handout und vor der Report-Familie-Architektur: ein vom Nutzer bereitgestelltes Mockup des echten Sysing-Dashboards (Kunden, Projekte, Arbeitspakete, AVKK-Uebersicht, Leistungsnachweis, Reports&nbsp;&amp;&nbsp;KPIs) mit Navis als eingeblendetem Assistenten, mit Quellenangabe. Bildunterschrift betont bewusst, dass hier kein Monitoring zu sehen ist &ndash; konsistent zur in v1.13 korrigierten Zustaendigkeits-Regel (Sysingboard/Navis vs. Report-Familie/Lumen). Ein zuvor vom Nutzer geschicktes Bild stellte sich als Verwechslung heraus (Duplikat eines bereits vorhandenen Report-Familie-Bilds statt eines Sysingboard-Screenshots) und wurde nicht übernommen. Mini-Inhaltsverzeichnis und Deckblatt-Hinweis aktualisiert.</td>
+        </tr>
+        <tr>
+          <td>1.19</td>
+          <td>03.09.2026</td>
+          <td>Idee 5 umgesetzt: neues Kapitel &bdquo;Die Freigabegrenze&ldquo; ergänzt (Insa Brookmann, Backoffice &ndash; seit den frühen Jahren bei Reling IT, kennt jeden Rahmenvertrag und jede mündliche Sonderabsprache), platziert als weitere Alltagsvignette in Teil&nbsp;1 zwischen &bdquo;Der klare Auftrag&ldquo; und &bdquo;Vor Reling IT&ldquo;. Szene: eine Ersatzteil-Lieferverzögerung bei einem Dornbach-Fensterbau-Projekt kurz vor Frist, bei der Insa eine Express-Beschaffung in eigener Freigabegrenze auslöst (beiläufige AVKK-Anspielung, Kompetenzen-Baustein) und dabei dokumentiert, statt nur zu handeln; als kleinerer Schlussbeat bemerkt sie nebenbei eine doppelt erfasste Rechnungsposition (Prävention-Anknüpfung). Insa Brookmann in die Personenliste aufgenommen (Rolle: Backoffice, Aufträge/Rechnungen/Einkauf; Tenure: seit den frühen Jahren). Mini-Inhaltsverzeichnis und Deckblatt-Hinweis aktualisiert.</td>
+        </tr>
+        <tr>
+          <td>1.20</td>
+          <td>03.09.2026</td>
+          <td>Neuer Wissensblock &bdquo;n8n: ein Werkzeug für die andere Richtung&ldquo; in Teil&nbsp;2 ergänzt, direkt nach &bdquo;Woher kommen die Infos und wo gehen sie hin?&ldquo; und vor dem Anhang &ndash; erklärt n8n als reales, quelloffenes Automatisierungswerkzeug (Knoten-basierte Workflows, KI-Knoten, selbst hostbar) und knüpft an die am Ende des vorigen Kapitels offen gelassene Frage an, was in die andere Richtung fließt, wenn aus einem Gespräch wieder ein Sysingboard-Eintrag wird. Bewusst als eigenständiger, noch unproduktiver Baustein neben Navis/Lumen positioniert, nicht als Ersatz oder dritte Instanz mit denselben Rechten; AVKK-Bezug hergestellt (wer darf einen Workflow anlegen/ändern). Keine neue Person eingeführt, daher keine Änderung an Personenliste oder Deckblatt-Kontextblöcken nötig. Mini-Inhaltsverzeichnis und Deckblatt-Hinweis aktualisiert.</td>
+        </tr>
+        <tr>
+          <td>1.21</td>
+          <td>03.09.2026</td>
+          <td>Technischer Fix: Der Datei fehlte eine &bdquo;meta charset=&bdquo;UTF-8&ldquo;&ldquo;-Deklaration im Kopf. Ohne diese ist Chromiums Zeichensatz-Erkennung beim Laden lokaler Dateien nicht zuverlässig deterministisch &ndash; bei einem Renderlauf traten dadurch doppelt kodierte Umlaute auf (z.&nbsp;B. &bdquo;GerÃ¤ten&ldquo; statt &bdquo;Geräten&ldquo;), was zusätzlichen Text und dadurch eine verschobene Seitenzahl sowie zwei Folgefehler zur Folge hatte (eine fast-leere Seite, vier scheinbar fehlende Kapitelüberschriften laut Inhalt-Check). `verify_layout.py` schlug bei diesem einen Lauf entsprechend fehl. Behoben durch Ergänzen von &bdquo;&lt;meta charset=&bdquo;UTF-8&ldquo;&gt;&ldquo; als erstes Element im Dokumentkopf, vor dem Titel. Mit drei aufeinanderfolgenden Renderläufen als deterministisch bestätigt (durchgehend 56 Seiten, alle Checks grün). Bei dieser Gelegenheit auch festgestellt und korrigiert: Das statische Versions-Label auf dem Deckblatt (&bdquo;Version 1.18&ldquo;) war seit v1.19 nicht mehr mitgepflegt worden und zeigte einen veralteten Stand &ndash; ab sofort bei jedem Versionsbump zusätzlich zu prüfen. Ebenfalls festgestellt: Die Datei hat weiterhin kein &bdquo;&lt;!DOCTYPE&gt;&ldquo;/&bdquo;&lt;html&gt;&ldquo;/&bdquo;&lt;head&gt;&ldquo;-Gerüst, was für den Browser-Vorschaufall unproblematisch bleibt, aber als bekannte Abweichung von einer vollständigen HTML-Struktur hier vermerkt sei.</td>
+        </tr>
+        <tr>
+          <td>1.22</td>
+          <td>03.09.2026</td>
+          <td>n8n-Wissensblock in Teil&nbsp;2 (v1.20) auf Nutzerwunsch um eine Zeichnung und Quellenangaben ergänzt: ein kleines SVG-Diagramm zeigt das n8n-Emblem, verbunden über einen Auslöser-Knoten und einen Verarbeitungs-Knoten mit einem hervorgehobenen KI-Knoten und einem Zielsystem; in der Bildunterschrift zusätzlich drei reale Quellen zum Weiterlesen verlinkt (n8n.io, docs.n8n.io, github.com/n8n-io/n8n, vorab per Websuche auf Aktualität geprüft: Lizenzmodell &bdquo;Sustainable Use License&ldquo;/fair-code bestätigt). Dabei erneut dieselbe Fehlerklasse wie beim ersten n8n-Einbau (v1.20) aufgetreten: Der um die Zeichnung erweiterte Abschnitt war zu hoch für den verbleibenden Platz auf seiner Seite und wurde von &bdquo;.box-shell&ldquo;s break-inside:avoid als Ganzes auf die naechste Seite verschoben, was eine fast-leere Seite hinterliess. Diesmal nicht durch Kuerzen geloest, sondern strukturell: neue CSS-Klasse &bdquo;.box-shell-flow&ldquo; eingefuehrt (gleicher Rand-Schutz oben/unten wie &bdquo;.box-shell&ldquo;, aber ohne break-inside:avoid), fuer Abschnitte, die laenger als eine Seite sind UND direkt im Anschluss an eine andere Box mit wenig Restplatz beginnen. Auf den n8n-Abschnitt angewendet; er fuellt jetzt den Restplatz der Seite und bricht danach normal um, wie es bereits laengere aside.real-Abschnitte tun, die am Seitenanfang beginnen. Mit mehreren aufeinanderfolgenden Renderlaeufen als deterministisch bestaetigt.</td>
+        </tr>
+        <tr>
+          <td>1.23</td>
+          <td>03.09.2026</td>
+          <td>Hintergrundfarbe auf Nutzerwunsch aufgehellt (&bdquo;wieder sehr dunkel geworden&ldquo;): &bdquo;--bg&ldquo; von #0b1220 auf #123b4e, &bdquo;--surface&ldquo; von #121b2e auf #1b4f66, &bdquo;--surface-2&ldquo; von #182238 auf #24647e, konsistent an allen 32&nbsp;Stellen im Dokument (CSS-Variablen und identische Hex-Werte in SVG-Illustrationen) ersetzt. `verify_layout.py`s BG-Referenzwert fuer den Rand-/Luftzonen-Check entsprechend mitgezogen. Dabei eine Nebenwirkung gefunden und behoben: Der Himmel-Verlauf der Deckblatt-Illustration ging ueber #1a2140 zum alten Hintergrundwert #0b1220 (bewusster Effekt: der Horizont verschwimmt mit der Seite) &ndash; nach dem Farbwechsel war der obere Verlaufspunkt dem neuen, helleren Hintergrund zu aehnlich, wodurch der automatische Fast-leere-Seite-Check auf der Titelseite anschlug. Der Horizont-Verschmelzungs-Effekt am unteren Rand wurde bewusst beibehalten, nur der obere Verlaufspunkt auf #0f1730 gesetzt, fuer mehr Tiefe im Himmel. Alle 57 Seiten mit zwei aufeinanderfolgenden Renderlaeufen als deterministisch bestaetigt, keine weiteren Kollisionsstellen im Buch gefunden.</td>
+        </tr>
+        <tr>
+          <td>1.24</td>
+          <td>03.09.2026</td>
+          <td>Farbschema auf Nutzerwunsch von Navy auf Meeresblau umgestellt (thematisch passend zu &bdquo;Reling&ldquo;): &bdquo;--bg&ldquo; #1b2740 &rarr; #123b4e, &bdquo;--surface&ldquo; #23324f &rarr; #1b4f66, &bdquo;--surface-2&ldquo; #2c3d5e &rarr; #24647e, &bdquo;--line&ldquo; #24304d &rarr; #265066, &bdquo;--road&ldquo; #2a3654 &rarr; #2c5c73 &ndash; konsistent an allen 35&nbsp;Stellen im Dokument ersetzt (CSS-Variablen und identische Hex-Werte in SVG-Illustrationen). Zusaetzlich zwei eigenstaendige, nicht ueber Variablen gefuehrte Farbstellen von Hand nachgezogen, die dem alten Navy-Ton aehnelten: der Himmel-Verlauf der Deckblatt-Illustration (oberer Punkt #0f1730 &rarr; #081f29, tiefes Seeblau statt Navy-Violett) sowie Fuellung/Rahmen des Deckblatt-Logos (#0e1728/#2a3556 &rarr; #0a2833/#2c5c73). `verify_layout.py`s BG-Referenzwert entsprechend mitgezogen. Alle 57 Seiten mit zwei aufeinanderfolgenden Renderlaeufen als deterministisch gruen bestaetigt, Seite&nbsp;1 (Deckblatt) und Seite&nbsp;28 (Navis-/Lumen-Dialogboxen) visuell auf Lesbarkeit geprueft.</td>
         </tr>
       </tbody>
     </table>
