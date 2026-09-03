@@ -27,6 +27,18 @@ Inhalte unter `archive/` werden nicht zu GitHub übertragen und dürfen nicht au
 4. Falls geändert, das Handout zusätzlich als HTML und PDF auswählen.
 5. Veröffentlichen und anschließend die öffentliche Landingpage prüfen.
 
+Vor einem FTP-Upload im Projektordner ausführen:
+
+```powershell
+./scripts/build-upload.ps1
+```
+
+Der Paketbau prüft verbindlich, dass Versionsnummer und Datum in der lokalen
+Fallback-Konfiguration, der Leseansicht und der HTML-Geschichte übereinstimmen.
+Das ZIP enthält außerdem `UPLOAD-MANIFEST.txt` mit Version, Datum und
+SHA-256-Prüfsummen. Ein bereits vorhandenes Paket wird nicht überschrieben;
+für eine weitere Ausgabe kann beispielsweise `-Suffix r2` verwendet werden.
+
 Supabase ersetzt die Dateien unter stabilen Adressen und aktualisiert die Versionsangaben. Das Handout liegt dauerhaft unter `workshop-handout.html` und `workshop-handout.pdf`. Für eine neue Fortsetzung ist deshalb kein DomainFactory-Upload nötig. Nur Änderungen an der Landingpage selbst werden erneut zu DomainFactory übertragen.
 
 ## Rückmeldungen mit Supabase
@@ -49,4 +61,4 @@ Nach eigenen Änderungen werden diese zuerst committed und anschließend zu GitH
 
 ## Continuous Integration
 
-GitHub Actions führt bei jedem Push auf `main`, bei Pull Requests und manuell die Workflow-Datei `.github/workflows/ci.yml` aus. Geprüft werden Pflichtdateien, lokale HTML-Verweise, doppelte IDs, PDF-Kennung, JavaScript-Syntax, Git-Whitespace und versehentlich eingecheckte Supabase-Secret-Keys. Der öffentliche Publishable Key ist zulässig; Secret- und Service-Role-Keys sind es nicht.
+GitHub Actions führt bei jedem Push auf `main`, bei Pull Requests und manuell die Workflow-Datei `.github/workflows/ci.yml` aus. Geprüft werden Pflichtdateien, die Übereinstimmung von Versionsnummer und Veröffentlichungsdatum, lokale HTML-Verweise, doppelte IDs, PDF-Kennung, JavaScript-Syntax, Git-Whitespace und versehentlich eingecheckte Supabase-Secret-Keys. Der öffentliche Publishable Key ist zulässig; Secret- und Service-Role-Keys sind es nicht.

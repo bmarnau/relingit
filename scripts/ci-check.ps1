@@ -19,6 +19,63 @@ foreach ($file in $requiredFiles) {
     }
 }
 
+# Versionsnummer und Veröffentlichungsdatum müssen in Landingpage-Logik,
+# Leseansicht und eigentlicher Geschichte denselben Stand ausweisen.
+$appText = Get-Content -Raw -LiteralPath "assets/js/app.js"
+$readerText = Get-Content -Raw -LiteralPath "lesen.html"
+$storyText = Get-Content -Raw -LiteralPath "story/current/fahrt-zum-kunden.html"
+
+$appRelease = [regex]::Match(
+    $appText,
+    'fallbackRelease\s*=\s*\{[\s\S]*?version:\s*"(?<version>[^"]+)"[\s\S]*?date:\s*"(?<date>[^"]+)"'
+)
+$readerRelease = [regex]::Match(
+    $readerText,
+    'id="story-release"[^>]*>\s*Version\s+(?<version>[^<·]+?)\s*·\s*(?<date>[^<]+?)\s*</strong>'
+)
+$storyMeta = [regex]::Match(
+    $storyText,
+    '<div\s+class="cover-meta">(?<content>[\s\S]*?)</div>'
+)
+$storyDateMatch = if ($storyMeta.Success) {
+    [regex]::Match($storyMeta.Groups['content'].Value, '<span>\s*(?<date>\d{2}\.\d{2}\.\d{4})\s*</span>')
+} else { [System.Text.RegularExpressions.Match]::Empty }
+$storyVersionMatch = if ($storyMeta.Success) {
+    [regex]::Match($storyMeta.Groups['content'].Value, '<span>\s*Version\s+(?<version>[^<]+?)\s*</span>')
+} else { [System.Text.RegularExpressions.Match]::Empty }
+
+if (-not $appRelease.Success) { $failures.Add("Versionsangabe in assets/js/app.js nicht lesbar") }
+if (-not $readerRelease.Success) { $failures.Add("Versionsangabe in lesen.html nicht lesbar") }
+if (-not $storyDateMatch.Success -or -not $storyVersionMatch.Success) {
+    $failures.Add("Version oder Datum in der HTML-Geschichte nicht lesbar")
+}
+
+if ($appRelease.Success -and $readerRelease.Success -and $storyDateMatch.Success -and $storyVersionMatch.Success) {
+    $versions = @(
+        $appRelease.Groups['version'].Value.Trim(),
+        $readerRelease.Groups['version'].Value.Trim(),
+        $storyVersionMatch.Groups['version'].Value.Trim()
+    ) | Select-Object -Unique
+    if ($versions.Count -ne 1) {
+        $failures.Add("Versionsnummern widersprechen sich: $($versions -join ', ')")
+    }
+
+    $culture = [System.Globalization.CultureInfo]::GetCultureInfo('de-DE')
+    $storyDate = [datetime]::ParseExact(
+        $storyDateMatch.Groups['date'].Value,
+        'dd.MM.yyyy',
+        $culture
+    ).ToString('d. MMMM yyyy', $culture)
+    $dates = @(
+        $appRelease.Groups['date'].Value.Trim(),
+        $readerRelease.Groups['date'].Value.Trim(),
+        $storyDate
+    ) | Select-Object -Unique
+    if ($dates.Count -ne 1) {
+        $failures.Add("Veröffentlichungsdaten widersprechen sich: $($dates -join ', ')")
+    }
+}
+
 # Externe Google-Fonts sind aus Datenschutzgründen nicht zulässig.
 $publicMarkupFiles = Get-ChildItem -Path $projectRoot -Recurse -File |
     Where-Object {
@@ -92,4 +149,4 @@ if ($failures.Count -gt 0) {
     throw "CI-Prüfung mit $($failures.Count) Fehler(n) abgebrochen."
 }
 
-Write-Host "OK: $($htmlFiles.Count) HTML-Dateien, lokale Links, PDFs und Secret-Schutz geprüft."
+Write-Host "OK: $($htmlFiles.Count) HTML-Dateien, Version/Datum, lokale Links, PDFs und Secret-Schutz geprüft."

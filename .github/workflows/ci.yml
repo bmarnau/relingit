@@ -30,7 +30,7 @@ jobs:
           node-version: "24"
           package-manager-cache: false
 
-      - name: HTML, Links, PDFs und Geheimnisse prüfen
+      - name: Version, Datum, HTML, Links, PDFs und Geheimnisse prüfen
         shell: pwsh
         run: ./scripts/ci-check.ps1
 
