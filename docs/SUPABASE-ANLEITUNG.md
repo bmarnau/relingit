@@ -10,7 +10,9 @@ Die Landingpage selbst wird bei DomainFactory gehostet. Supabase stellt die jewe
 4. Den vollständigen Inhalt aus `supabase/setup.sql` einfügen.
 5. **Run** drücken. Es sollte kein Fehler erscheinen.
 
-Damit wird `reader_feedback` erstellt. Besucher dürfen nur neue Zeilen schreiben. Sie können vorhandene Rückmeldungen nicht sehen, ändern oder löschen.
+Damit werden Feedbacktabelle, kurzlebige Rate-Limit-Daten und die serverseitige
+Schreibfunktion erstellt. Browser erhalten keinen direkten Zugriff auf diese
+Tabellen.
 
 ## B. Ihr Administratorkonto anlegen
 
@@ -45,12 +47,17 @@ Der Publishable-/Anon-Key darf in einer öffentlichen Website stehen, weil RLS s
 
 ## D. Veröffentlichung prüfen
 
-1. Zunächst die vorhandenen Dateien `story/current/fahrt-zum-kunden.html` und `story/current/geschichte.pdf` über `admin.html` als Version 1.10 hochladen.
-2. Dafür `admin.html` öffnen und sich mit dem Administratorkonto anmelden.
-3. Version, sichtbares Datum und Seitenzahl eintragen; HTML und PDF auswählen.
-4. **Version jetzt veröffentlichen** drücken und die Erfolgsmeldung abwarten.
-5. Landingpage neu öffnen. Versionsangaben sowie Lese- und PDF-Link kommen nun aus Supabase.
-6. Zusätzlich eine Testrückmeldung absenden und in **Table Editor → reader_feedback** kontrollieren.
+1. `admin.html` öffnen und sich mit dem Administratorkonto anmelden.
+2. Beim ersten Mal den angezeigten QR-Code mit einer Authenticator-App scannen.
+3. Den sechsstelligen Code bestätigen. Das Veröffentlichungsformular erscheint
+   erst nach erfolgreicher MFA-Prüfung.
+4. Version, sichtbares Datum und Seitenzahl eintragen; HTML und PDF auswählen.
+5. **Version jetzt veröffentlichen** drücken und die Erfolgsmeldung abwarten.
+6. Landingpage neu öffnen. Versionsangaben sowie Lese- und PDF-Link kommen nun aus Supabase.
+
+Wichtig: MFA unmittelbar nach dem Einspielen der SQL-Änderung selbst
+einrichten. Das Administratorkonto darf nicht unbeaufsichtigt nur mit Passwort
+bleiben. Den Wiederherstellungszugang zur Authenticator-App sicher verwahren.
 
 ## E. Rechtliches vervollständigen
 
@@ -76,4 +83,38 @@ Die öffentliche Website setzt keine Cookies und nutzt kein Tracking. Der gesch�
 
 ## H. Spam-Schutz
 
-Das unsichtbare Formularfeld hält einfache Bots ab. Für größere Reichweite sollte der direkte Datenbankzugriff durch eine Supabase Edge Function mit Rate-Limit und beispielsweise Cloudflare Turnstile ersetzt werden.
+Das unsichtbare Formularfeld wird durch die Edge Function und ein serverseitig
+atomar geprüftes Limit ergänzt: mindestens 15 Sekunden Abstand und höchstens
+drei Rückmeldungen innerhalb von 15 Minuten. Es werden keine rohen IP-Adressen
+in der Datenbank gespeichert; eine stündliche Löschroutine entfernt
+pseudonyme Prüfwerte nach Ablauf von 24 Stunden.
+
+### Edge Function einmalig aktivieren
+
+1. Einen zufälligen geheimen Wert mit mindestens 32 Zeichen erzeugen. Er darf
+   niemals in eine Projektdatei oder nach GitHub kopiert werden.
+2. Im Supabase Dashboard unter **Edge Functions → Secrets** ein Secret namens
+   `FEEDBACK_HASH_SALT` mit diesem Wert anlegen.
+3. Die Funktion `supabase/functions/submit-feedback/index.ts` als
+   `submit-feedback` bereitstellen. Mit der Supabase CLI:
+
+   ```powershell
+   supabase functions deploy submit-feedback --no-verify-jwt
+   ```
+
+4. `supabase/config.toml` legt ebenfalls fest, dass Besucher die Funktion ohne
+   Anmeldung aufrufen dürfen. Die Funktion akzeptiert trotzdem nur POST vom
+   Ursprung `https://berndmarnau.de` beziehungsweise `https://www.berndmarnau.de`.
+5. Das Formular einmal erfolgreich absenden. Ein unmittelbar zweiter Versuch
+   muss mit dem Wartehinweis abgewiesen werden.
+
+### Sicherheitsprüfung
+
+Nach `setup.sql` den Inhalt von `supabase/tests/security-checks.sql` im SQL
+Editor ausführen. Erwartet wird **Success. No rows returned**. Der Test läuft in
+einer Transaktion und hinterlässt keine Testdaten.
+
+Die IP-basierte Begrenzung erschwert automatisierten Missbrauch deutlich, ist
+aber kein vollständiger DDoS-Schutz: Angreifer können wechselnde Netze oder
+Proxys verwenden. Bei erheblichem Missbrauch wäre als nächste Stufe ein CAPTCHA
+oder ein vorgeschalteter spezialisierter Rate-Limit-Dienst sinnvoll.

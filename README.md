@@ -14,7 +14,7 @@ Die öffentliche Landingpage wird manuell per FTP bei DomainFactory gehostet. Gi
 - `docs`: redaktionelle, Supabase- und FTP-Anleitungen
 - `scripts`: lokale und CI-Prüfungen
 - `source`: ursprüngliche Quelldateien, die nicht veröffentlicht werden
-- `supabase`: Datenbank- und RLS-Einrichtung
+- `supabase`: Datenbank, RLS, Edge Function und Sicherheitsprüfungen
 - Projektstamm: ausschließlich öffentlich aufrufbare Seiten, README, Lizenz und Wartungsskript
 
 Inhalte unter `archive/` werden nicht zu GitHub übertragen und dürfen nicht auf den DomainFactory-Webspace kopiert werden. Die genaue Ablageregel steht in `archive/README.md`.
@@ -44,10 +44,11 @@ immer nur die aktuelle Ausgabe.
 ### Veröffentlichung über Supabase
 
 1. Den geschützten Bereich `admin.html` aufrufen und mit dem Supabase-Administratorkonto anmelden.
-2. Version, Datum und Seitenzahl eintragen.
-3. Neue PDF und HTML-Lesefassung auswählen.
-4. Falls geändert, das Handout zusätzlich als HTML und PDF auswählen.
-5. Veröffentlichen und anschließend die öffentliche Landingpage prüfen.
+2. Den sechsstelligen Code der Authenticator-App bestätigen.
+3. Version, Datum und Seitenzahl eintragen.
+4. Neue PDF und HTML-Lesefassung auswählen.
+5. Falls geändert, das Handout zusätzlich als HTML und PDF auswählen.
+6. Veröffentlichen und anschließend die öffentliche Landingpage prüfen.
 
 Vor einem FTP-Upload im Projektordner ausführen:
 
@@ -71,7 +72,11 @@ Supabase ersetzt die Dateien unter stabilen Adressen und aktualisiert die Versio
 2. In `assets/js/supabase-config.js` die Project URL und den öffentlichen Publishable Key eintragen.
 3. Niemals einen Secret- oder Service-Role-Key in diese Website eintragen.
 
-Anonyme Besucher dürfen danach ausschließlich neue Rückmeldungen anlegen. Sie können keine Einträge lesen, ändern oder löschen. Das Formular fragt keine Kontaktdaten ab. Vor einer stark beworbenen Veröffentlichung sollte zusätzlich serverseitiger Spam-Schutz oder Rate-Limiting ergänzt werden.
+Anonyme Besucher dürfen keine Feedbacktabellen direkt verwenden. Rückmeldungen
+laufen ausschließlich über eine Supabase Edge Function mit Plausibilitäts- und
+Rate-Limit-Prüfung. Leser können vorhandene Einträge weder lesen noch ändern
+oder löschen. Das Formular fragt keine Kontaktdaten ab. Einrichtung und
+Restrisiken stehen in [docs/SICHERHEIT.md](docs/SICHERHEIT.md).
 
 ## Lokale Vorschau
 
@@ -85,4 +90,4 @@ Nach eigenen Änderungen werden diese zuerst committed und anschließend zu GitH
 
 ## Continuous Integration
 
-GitHub Actions führt bei jedem Push auf `main`, bei Pull Requests und manuell die Workflow-Datei `.github/workflows/ci.yml` aus. Geprüft werden Pflichtdateien, die Übereinstimmung von Versionsnummer und Veröffentlichungsdatum, lokale HTML-Verweise, doppelte IDs, PDF-Kennung, JavaScript-Syntax, Git-Whitespace und versehentlich eingecheckte Supabase-Secret-Keys. Der öffentliche Publishable Key ist zulässig; Secret- und Service-Role-Keys sind es nicht.
+GitHub Actions führt bei jedem Push auf `main`, bei Pull Requests und manuell die Workflow-Datei `.github/workflows/ci.yml` aus. Geprüft werden Pflichtdateien, die Übereinstimmung von Versionsnummer und Veröffentlichungsdatum, lokale HTML-Verweise, doppelte IDs, PDF-Kennung, JavaScript-Syntax, Git-Whitespace, Geheimnismuster sowie wesentliche MFA-, RLS- und Rate-Limit-Invarianten. Der öffentliche Publishable Key ist zulässig; Secret- und Service-Role-Keys sind es nicht. `main` darf nur über einen Pull Request mit erfolgreicher CI geändert werden.

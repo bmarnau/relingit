@@ -26,11 +26,21 @@ Nicht auf den Webspace gehören `.git`, `.github`, `archive`, `docs`, `scripts`,
 
 1. Die lokale Arbeitskopie mit `repo-aktualisieren.ps1` aktualisieren.
 2. Prüfen, dass die CI auf GitHub grün ist.
-3. In `assets/js/supabase-config.js` kontrollieren, dass Project URL und Publishable Key eingetragen sind.
-4. Alle orange markierten Pflichtfelder in Impressum und Datenschutz ersetzen.
-5. Die Landingpage lokal testen.
-6. Die oben genannten Dateien per FTP übertragen.
-7. Die öffentliche Domain in einem privaten Browserfenster prüfen.
+3. Nach Sicherheitsänderungen zuerst sämtliche Aktivierungsschritte in
+   `docs/SICHERHEIT.md` und `docs/SUPABASE-ANLEITUNG.md` abschließen.
+4. In `assets/js/supabase-config.js` kontrollieren, dass Project URL und Publishable Key eingetragen sind.
+5. Alle orange markierten Pflichtfelder in Impressum und Datenschutz ersetzen.
+6. Die Landingpage lokal testen.
+7. Im FTP-Programm die Anzeige versteckter Dateien aktivieren.
+8. Die oben genannten Dateien einschließlich `.htaccess` per FTP übertragen.
+9. Die öffentliche Domain in einem privaten Browserfenster prüfen.
+10. Mit einem Header-Prüfwerkzeug kontrollieren, dass HSTS, CSP, `nosniff`,
+    Referrer-, Frame- und Permissions-Policy tatsächlich ausgeliefert werden.
+
+Bei der Kontrolle am 4. September 2026 fehlten diese Header auf der Live-Seite.
+Wenn `.htaccess` auf dem Server vorhanden ist, bitte DomainFactory nach der
+Freischaltung von `mod_headers` beziehungsweise erlaubten Headerdirektiven
+fragen.
 
 ## Neue Fortsetzung veröffentlichen
 
@@ -38,9 +48,10 @@ Für eine neue Geschichte ist kein weiterer FTP-Upload erforderlich:
 
 1. Auf der veröffentlichten Website `admin.html` öffnen.
 2. Mit dem Supabase-Administratorkonto anmelden.
-3. Version, Datum und Seitenzahl eintragen.
-4. Neue HTML-Lesefassung und PDF auswählen.
-5. Falls geändert, das Handout als zusammengehöriges HTML/PDF-Paar auswählen.
-6. Veröffentlichen und die öffentliche Landingpage prüfen.
+3. Den Code der Authenticator-App bestätigen.
+4. Version, Datum und Seitenzahl eintragen.
+5. Neue HTML-Lesefassung und PDF auswählen.
+6. Falls geändert, das Handout als zusammengehöriges HTML/PDF-Paar auswählen.
+7. Veröffentlichen und die öffentliche Landingpage prüfen.
 
 Supabase ersetzt dabei die Dateien unter stabilen Adressen. Ein erneuter FTP-Upload ist nur notwendig, wenn sich Landingpage, Gestaltung, JavaScript, Impressum oder Datenschutz ändern.

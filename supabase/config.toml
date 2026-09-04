@@ -1,0 +1,4 @@
+[functions.submit-feedback]
+# Öffentliches Leserfeedback hat keine Benutzersitzung. Die Funktion prüft
+# Ursprung, Eingaben und Rate-Limit selbst; Datenbankzugriff bleibt serverseitig.
+verify_jwt = false
