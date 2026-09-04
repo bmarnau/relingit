@@ -36,7 +36,9 @@ Vor einem FTP-Upload im Projektordner ausführen:
 Der Paketbau prüft verbindlich, dass Versionsnummer und Datum in der lokalen
 Fallback-Konfiguration, der Leseansicht und der HTML-Geschichte übereinstimmen.
 Das ZIP enthält außerdem `UPLOAD-MANIFEST.txt` mit Version, Datum und
-SHA-256-Prüfsummen. Ein bereits vorhandenes Paket wird nicht überschrieben;
+SHA-256-Prüfsummen. Nach dem Packen wird das ZIP erneut geöffnet und jede
+enthaltene Nutzdatei bytegenau mit ihrer aktuellen Quelle verglichen. Ein
+bereits vorhandenes Paket wird nicht überschrieben;
 für eine weitere Ausgabe kann beispielsweise `-Suffix r2` verwendet werden.
 
 Supabase ersetzt die Dateien unter stabilen Adressen und aktualisiert die Versionsangaben. Das Handout liegt dauerhaft unter `workshop-handout.html` und `workshop-handout.pdf`. Für eine neue Fortsetzung ist deshalb kein DomainFactory-Upload nötig. Nur Änderungen an der Landingpage selbst werden erneut zu DomainFactory übertragen.

@@ -1,5 +1,5 @@
 param(
-    [string]$Suffix = "verified"
+    [string]$Suffix = ""
 )
 
 # Erstellt ein geprüftes FTP-Paket ausschließlich aus den öffentlichen Dateien.
@@ -25,7 +25,8 @@ $releaseDate = [datetime]::ParseExact(
     $culture
 )
 $dateStamp = $releaseDate.ToString('yyyy-MM-dd')
-$packageName = "relingit-upload-v$version-$dateStamp-$Suffix"
+$suffixPart = if ([string]::IsNullOrWhiteSpace($Suffix)) { "" } else { "-$Suffix" }
+$packageName = "relingit-upload-v$version-$dateStamp$suffixPart"
 $outputRoot = Join-Path $projectRoot "output/ftp"
 $packageDirectory = Join-Path $outputRoot $packageName
 $zipPath = "$packageDirectory.zip"
@@ -70,4 +71,40 @@ foreach ($relativePath in $publicFiles) {
 Set-Content -LiteralPath (Join-Path $packageDirectory "UPLOAD-MANIFEST.txt") -Value $manifestLines -Encoding utf8
 
 Compress-Archive -Path (Join-Path $packageDirectory "*") -DestinationPath $zipPath -CompressionLevel Optimal
+
+# Die Kontrolle liest das fertige ZIP erneut ein. Jede enthaltene Nutzdatei muss
+# bytegenau ihrer aktuellen Quelle entsprechen; fehlende oder zusätzliche
+# Dateien führen zum Abbruch.
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+$archive = [System.IO.Compression.ZipFile]::OpenRead($zipPath)
+try {
+    $expectedEntries = @($publicFiles | ForEach-Object { $_.Replace('\', '/') }) + "UPLOAD-MANIFEST.txt"
+    $actualEntries = @($archive.Entries | Where-Object { -not $_.FullName.EndsWith('/') } | ForEach-Object FullName)
+    $missingEntries = @($expectedEntries | Where-Object { $_ -notin $actualEntries })
+    $extraEntries = @($actualEntries | Where-Object { $_ -notin $expectedEntries })
+    if ($missingEntries.Count -gt 0 -or $extraEntries.Count -gt 0) {
+        throw "ZIP-Inhalt weicht ab. Fehlend: $($missingEntries -join ', '); zusätzlich: $($extraEntries -join ', ')"
+    }
+
+    foreach ($relativePath in $publicFiles) {
+        $entryName = $relativePath.Replace('\', '/')
+        $entry = $archive.GetEntry($entryName)
+        $sourceHash = (Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $projectRoot $relativePath)).Hash
+        $stream = $entry.Open()
+        try {
+            $zipHash = (Get-FileHash -Algorithm SHA256 -InputStream $stream).Hash
+        } finally {
+            $stream.Dispose()
+        }
+        if ($sourceHash -ne $zipHash) {
+            throw "ZIP-Datei ist nicht identisch mit der Quelle: $relativePath"
+        }
+    }
+} finally {
+    $archive.Dispose()
+}
+
+$zipHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $zipPath).Hash
 Write-Host "OK: geprüftes Upload-Paket erstellt: $zipPath"
+Write-Host "OK: $($publicFiles.Count) aktuelle Quelldateien bytegenau im ZIP bestätigt."
+Write-Host "SHA-256 des ZIP: $zipHash"
