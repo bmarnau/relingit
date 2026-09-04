@@ -11,7 +11,8 @@ $requiredFiles = @(
     "assets/img/reling-it-logo.svg", "assets/img/favicon.png",
     "assets/css/styles.css", "assets/css/legal.css",
     "assets/js/app.js", "assets/js/admin.js", "assets/js/pdf-viewer.js", "assets/js/story-viewer.js", "assets/js/handout-viewer.js",
-    "assets/js/supabase-config.js", "supabase/setup.sql"
+    "assets/js/supabase-config.js", "supabase/setup.sql",
+    "source/fahrt-zum-kunden.html", "source/Die-Fahrt-zum-Kunden.pdf"
 )
 foreach ($file in $requiredFiles) {
     if (-not (Test-Path -LiteralPath $file -PathType Leaf)) {
@@ -24,6 +25,7 @@ foreach ($file in $requiredFiles) {
 $appText = Get-Content -Raw -LiteralPath "assets/js/app.js"
 $readerText = Get-Content -Raw -LiteralPath "lesen.html"
 $storyText = Get-Content -Raw -LiteralPath "story/current/fahrt-zum-kunden.html"
+$sourceStoryText = Get-Content -Raw -LiteralPath "source/fahrt-zum-kunden.html"
 
 $appRelease = [regex]::Match(
     $appText,
@@ -76,6 +78,40 @@ if ($appRelease.Success -and $readerRelease.Success -and $storyDateMatch.Success
     }
 }
 
+# Die freigegebene Rückfallfassung darf niemals hinter dem eindeutigen Eingang
+# unter source zurückbleiben. HTML und PDF müssen bytegenau identisch sein.
+foreach ($pair in @(
+    @("source/fahrt-zum-kunden.html", "story/current/fahrt-zum-kunden.html"),
+    @("source/Die-Fahrt-zum-Kunden.pdf", "story/current/geschichte.pdf")
+)) {
+    if ((Test-Path -LiteralPath $pair[0]) -and (Test-Path -LiteralPath $pair[1])) {
+        $sourceHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $pair[0]).Hash
+        $publishedHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $pair[1]).Hash
+        if ($sourceHash -ne $publishedHash) {
+            $failures.Add("Veröffentlichungsfassung ist nicht aktuell: $($pair[1]) weicht von $($pair[0]) ab")
+        }
+    }
+}
+
+# Der letzte Eintrag der Versionshistorie muss Deckblatt-Version und -Datum
+# entsprechen. So wird eine neue Datei mit altem Deckblatt sofort abgewiesen.
+$historyRows = [regex]::Matches(
+    $storyText,
+    '<tr>\s*<td>(?<version>\d+\.\d+)</td>\s*<td>(?<date>\d{2}\.\d{2}\.\d{4})</td>',
+    [System.Text.RegularExpressions.RegexOptions]::Singleline
+)
+if ($historyRows.Count -eq 0) {
+    $failures.Add("Versionshistorie in der HTML-Geschichte nicht lesbar")
+} elseif ($storyDateMatch.Success -and $storyVersionMatch.Success) {
+    $latestHistory = $historyRows[$historyRows.Count - 1]
+    if ($latestHistory.Groups['version'].Value -ne $storyVersionMatch.Groups['version'].Value.Trim()) {
+        $failures.Add("Deckblatt-Version stimmt nicht mit letztem Historieneintrag überein")
+    }
+    if ($latestHistory.Groups['date'].Value -ne $storyDateMatch.Groups['date'].Value) {
+        $failures.Add("Deckblatt-Datum stimmt nicht mit letztem Historieneintrag überein")
+    }
+}
+
 # Externe Google-Fonts sind aus Datenschutzgründen nicht zulässig.
 $publicMarkupFiles = Get-ChildItem -Path $projectRoot -Recurse -File |
     Where-Object {
@@ -116,7 +152,7 @@ foreach ($htmlFile in $htmlFiles) {
 }
 
 # Eine schnelle Signaturprüfung erkennt beschädigte oder falsch benannte PDFs.
-foreach ($pdfName in @("story/current/geschichte.pdf", "story/current/workshop-handout.pdf", "source/Die-Fahrt-zum-Kunden_11.pdf")) {
+foreach ($pdfName in @("story/current/geschichte.pdf", "story/current/workshop-handout.pdf", "source/Die-Fahrt-zum-Kunden.pdf")) {
     if (-not (Test-Path -LiteralPath $pdfName)) { continue }
     $stream = [System.IO.File]::OpenRead((Resolve-Path $pdfName))
     try {

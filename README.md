@@ -21,6 +21,28 @@ Inhalte unter `archive/` werden nicht zu GitHub übertragen und dürfen nicht au
 
 ## Neue Version veröffentlichen
 
+### Empfohlener lokaler Ablauf
+
+1. Die neue HTML-Datei immer als `source/fahrt-zum-kunden.html` ablegen.
+2. Die passende PDF immer als `source/Die-Fahrt-zum-Kunden.pdf` ablegen.
+3. Keine Dateien manuell nach `story/current` kopieren und kein ZIP von Hand bauen.
+4. Im Projektordner nur diesen Befehl ausführen:
+
+```powershell
+./scripts/publish-release.ps1
+```
+
+Das Skript übernimmt Version und Datum aus der HTML-Datei, verlangt den gleichen
+Stand im letzten Eintrag der Versionshistorie, liest die Seitenzahl automatisch
+aus der PDF, aktualisiert die lokale LP und
+erstellt anschließend das geprüfte FTP-Paket. `source` und `story/current`
+müssen danach für HTML und PDF bytegenau übereinstimmen. Bei einer Abweichung
+wird die Veröffentlichung abgebrochen. Bereits vorhandene FTP-Pakete werden
+vorher automatisch ins lokale Archiv verschoben; in `output/ftp` bleibt damit
+immer nur die aktuelle Ausgabe.
+
+### Veröffentlichung über Supabase
+
 1. Den geschützten Bereich `admin.html` aufrufen und mit dem Supabase-Administratorkonto anmelden.
 2. Version, Datum und Seitenzahl eintragen.
 3. Neue PDF und HTML-Lesefassung auswählen.
