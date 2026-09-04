@@ -5,3 +5,12 @@ tmp/
 output/
 ideen/
 .tmp-inspect.py
+
+# Secrets and local credentials must never enter this public repository.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
