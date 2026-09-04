@@ -14,3 +14,4 @@ ideen/
 *.key
 *.pfx
 *.p12
+supabase/.temp/

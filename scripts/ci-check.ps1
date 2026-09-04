@@ -11,12 +11,51 @@ $requiredFiles = @(
     "assets/img/reling-it-logo.svg", "assets/img/favicon.png",
     "assets/css/styles.css", "assets/css/legal.css",
     "assets/js/app.js", "assets/js/admin.js", "assets/js/pdf-viewer.js", "assets/js/story-viewer.js", "assets/js/handout-viewer.js",
-    "assets/js/supabase-config.js", "supabase/setup.sql",
+    "assets/js/supabase-config.js", "supabase/setup.sql", "supabase/config.toml",
+    "supabase/functions/submit-feedback/index.ts", "supabase/tests/security-checks.sql",
     "source/fahrt-zum-kunden.html", "source/Die-Fahrt-zum-Kunden.pdf"
 )
 foreach ($file in $requiredFiles) {
     if (-not (Test-Path -LiteralPath $file -PathType Leaf)) {
         $failures.Add("Pflichtdatei fehlt: $file")
+    }
+}
+
+# Sicherheitsinvarianten: Die folgenden Prüfungen verhindern, dass spätere
+# Änderungen MFA, Rate-Limit oder die Viewer-Sandbox unbemerkt abschalten.
+$adminText = Get-Content -Raw -LiteralPath "assets/js/admin.js"
+$feedbackClientText = Get-Content -Raw -LiteralPath "assets/js/app.js"
+$setupText = Get-Content -Raw -LiteralPath "supabase/setup.sql"
+$edgeText = Get-Content -Raw -LiteralPath "supabase/functions/submit-feedback/index.ts"
+$supabaseConfigText = Get-Content -Raw -LiteralPath "supabase/config.toml"
+$viewerTexts = @(
+    Get-Content -Raw -LiteralPath "lesen.html"
+    Get-Content -Raw -LiteralPath "handout.html"
+)
+if ($adminText -notmatch '/factors/.+/challenge' -or $adminText -notmatch '/factors/.+/verify') {
+    $failures.Add("Adminbereich enthält keinen vollständigen MFA-Challenge-/Verify-Ablauf")
+}
+if ($adminText -notmatch 'aal2') {
+    $failures.Add("Adminbereich prüft den AAL2-Status nicht")
+}
+if ($setupText -notmatch "auth\.jwt\(\)\s*->>\s*'aal'.*'aal2'") {
+    $failures.Add("Supabase-RLS erzwingt AAL2 nicht serverseitig")
+}
+if ($setupText -notmatch 'revoke all on table public\.reader_feedback from anon, authenticated') {
+    $failures.Add("Direkter anonymer Feedbackzugriff ist nicht explizit entzogen")
+}
+if ($feedbackClientText -match '/rest/v1/reader_feedback' -or $feedbackClientText -notmatch '/functions/v1/submit-feedback') {
+    $failures.Add("Feedback läuft nicht ausschließlich über die Edge Function")
+}
+if ($edgeText -notmatch 'FEEDBACK_HASH_SALT' -or $edgeText -notmatch 'submit_reader_feedback') {
+    $failures.Add("Edge Function enthält keinen pseudonymen serverseitigen Rate-Limit-Ablauf")
+}
+if ($supabaseConfigText -notmatch 'verify_jwt\s*=\s*false') {
+    $failures.Add("Öffentliche Feedbackfunktion ist nicht korrekt konfiguriert")
+}
+foreach ($viewerText in $viewerTexts) {
+    if ($viewerText -match 'sandbox="[^"]*allow-scripts') {
+        $failures.Add("Viewer erlaubt Skriptausführung in eingebetteten Dokumenten")
     }
 }
 
@@ -167,12 +206,21 @@ foreach ($pdfName in @("story/current/geschichte.pdf", "story/current/workshop-h
 # Öffentliche Publishable Keys sind erlaubt; Secret- und Service-Role-Keys nicht.
 $secretPatterns = @(
     'sb_secret_[A-Za-z0-9_-]+',
-    'service_role["'']?\s*[:=]\s*["''][^"'']+'
+    'service_role["'']?\s*[:=]\s*["''][^"'']+',
+    'ghp_[A-Za-z0-9]{20,}',
+    'github_pat_[A-Za-z0-9_]{20,}',
+    'AKIA[0-9A-Z]{16}',
+    '-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----'
 )
 $scanFiles = Get-ChildItem -Path $projectRoot -Recurse -File |
-    Where-Object { $_.FullName -notmatch '[\\/]\.git[\\/]' -and $_.Extension -in '.js','.html','.md','.sql','.json','.yml','.yaml' }
+    Where-Object {
+        $_.FullName -notmatch '[\\/](?:\.git|archive|output|tmp)[\\/]' -and
+        $_.Extension -in '.js','.html','.md','.sql','.json','.yml','.yaml','.toml'
+    }
 foreach ($file in $scanFiles) {
     $text = Get-Content -Raw -LiteralPath $file.FullName
+    # Große eingebettete Bilder können zufällig wie Schlüsselpräfixe aussehen.
+    $text = [regex]::Replace($text, 'data:[^"'']+', '[embedded-data-removed]')
     foreach ($pattern in $secretPatterns) {
         if ($text -match $pattern) {
             $failures.Add("Möglicher Supabase-Secret-Key in $($file.FullName.Substring($projectRoot.Length + 1))")

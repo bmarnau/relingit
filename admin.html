@@ -39,6 +39,38 @@
       </form>
     </section>
 
+    <section id="mfa-panel" aria-labelledby="mfa-title" hidden>
+      <h2 id="mfa-title">Zweiten Faktor bestätigen</h2>
+      <p id="mfa-instructions">
+        Geben Sie den sechsstelligen Code Ihrer Authenticator-App ein.
+      </p>
+      <div id="mfa-enrollment" hidden>
+        <p>
+          Richten Sie den zweiten Faktor einmalig ein: QR-Code mit Ihrer
+          Authenticator-App scannen und anschließend den erzeugten Code
+          bestätigen.
+        </p>
+        <img id="mfa-qr" class="mfa-qr" alt="QR-Code für die Authenticator-App">
+        <details>
+          <summary>Alternativen Einrichtungsschlüssel anzeigen</summary>
+          <code id="mfa-secret"></code>
+        </details>
+      </div>
+      <form id="mfa-form" class="admin-form">
+        <label for="mfa-code">Authenticator-Code</label>
+        <input
+          id="mfa-code"
+          inputmode="numeric"
+          autocomplete="one-time-code"
+          pattern="[0-9]{6}"
+          maxlength="6"
+          required
+        >
+        <button class="button primary" type="submit">Code bestätigen</button>
+        <button class="button secondary" id="mfa-logout" type="button">Abbrechen und abmelden</button>
+      </form>
+    </section>
+
     <section id="publish-panel" aria-labelledby="publish-title" hidden>
       <h2 id="publish-title">Fortsetzung hochladen</h2>
       <p class="notice">

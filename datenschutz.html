@@ -71,6 +71,18 @@
       fallen technisch erforderliche Verbindungsdaten an.
     </p>
     <p>
+      Zum Schutz des Feedbackformulars vor automatisierten Massen-Einträgen
+      wird die übermittelte IP-Adresse innerhalb der Supabase-Funktion mit
+      einem geheimen, projektspezifischen Zusatzwert in einen nicht direkt
+      rückrechenbaren Prüfwert umgewandelt. Die rohe IP-Adresse wird dabei
+      nicht in der Feedbackdatenbank gespeichert. Der Prüfwert dient nur der
+      Begrenzung auf höchstens drei Rückmeldungen innerhalb von 15 Minuten und
+      wird nach Ablauf von 24 Stunden durch eine stündliche Löschroutine
+      entfernt. Rechtsgrundlage ist Art. 6
+      Abs. 1 lit. f DSGVO; berechtigtes Interesse ist der Schutz des Angebots
+      und der Datenbank vor Missbrauch.
+    </p>
+    <p>
       Empfänger beziehungsweise Auftragsverarbeiter ist Supabase, Inc. Zweck
       ist die Bereitstellung der aktuellen Fassung und die Auswertung von
       Leserfeedback. Rechtsgrundlage für das freiwillige Feedback ist Ihre
@@ -114,7 +126,7 @@
     </p>
 
     <h2>7. Stand</h2>
-    <p>30. August 2026</p>
+    <p>4. September 2026</p>
   </main>
 
   <footer>

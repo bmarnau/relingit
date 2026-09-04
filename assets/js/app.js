@@ -98,6 +98,7 @@ async function submitFeedback(form, statusNode) {
     category: document.querySelector("#kind").value,
     message: document.querySelector("#message").value.trim(),
     story_version: release.version,
+    website: document.querySelector("#website").value,
   };
 
   submitButton.disabled = true;
@@ -105,19 +106,20 @@ async function submitFeedback(form, statusNode) {
 
   try {
     const response = await fetch(
-      `${config.url}/rest/v1/reader_feedback`,
+      `${config.url}/functions/v1/submit-feedback`,
       {
         method: "POST",
         headers: {
           apikey: config.publishableKey,
-          Authorization: `Bearer ${config.publishableKey}`,
           "Content-Type": "application/json",
-          Prefer: "return=minimal",
         },
         body: JSON.stringify(payload),
       },
     );
 
+    if (response.status === 429) {
+      throw new Error("RATE_LIMIT");
+    }
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
@@ -126,8 +128,9 @@ async function submitFeedback(form, statusNode) {
     statusNode.textContent =
       "Vielen Dank. Ihre Rückmeldung wurde gespeichert.";
   } catch (error) {
-    statusNode.textContent =
-      "Das Senden hat nicht funktioniert. Bitte versuchen Sie es später erneut.";
+    statusNode.textContent = error.message === "RATE_LIMIT"
+      ? "Bitte warten Sie etwas, bevor Sie eine weitere Rückmeldung senden."
+      : "Das Senden hat nicht funktioniert. Bitte versuchen Sie es später erneut.";
     console.error("Feedback submission failed", error);
   } finally {
     submitButton.disabled = false;
