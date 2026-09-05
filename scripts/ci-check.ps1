@@ -51,6 +51,9 @@ if ($adminText -notmatch 'factor\.status === "unverified"' -or $adminText -notma
 if ($adminText -notmatch 'issuer:\s*"https://berndmarnau\.de/relingit"') {
     $failures.Add("MFA-Eintrag besitzt keinen eindeutig erkennbaren Reling-IT-Herausgeber")
 }
+if ($adminText -notmatch 'validateStoryFiles' -or $adminText -notmatch 'Die gewählte HTML-Datei ist der Viewer') {
+    $failures.Add("Adminbereich verhindert keinen versehentlichen Viewer-Upload als Geschichte")
+}
 if ($adminText -notmatch 'aal2') {
     $failures.Add("Adminbereich prüft den AAL2-Status nicht")
 }

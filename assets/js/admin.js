@@ -233,6 +233,57 @@ async function uploadStoryFile(file, name, contentType) {
   }
 }
 
+async function validateStoryFiles(htmlFile, pdfFile, expectedVersion) {
+  if (htmlFile.name.toLowerCase() !== "fahrt-zum-kunden.html") {
+    throw new Error(
+      "Falsche HTML-Datei. Bitte source/fahrt-zum-kunden.html auswählen",
+    );
+  }
+  if (pdfFile.name.toLowerCase() !== "die-fahrt-zum-kunden.pdf") {
+    throw new Error(
+      "Falsche PDF-Datei. Bitte source/Die-Fahrt-zum-Kunden.pdf auswählen",
+    );
+  }
+
+  const storyDocument = new DOMParser().parseFromString(
+    await htmlFile.text(),
+    "text/html",
+  );
+  if (
+    storyDocument.querySelector("#story-frame") ||
+    storyDocument.querySelector(".viewer-header") ||
+    storyDocument.querySelector('script[src*="story-viewer"]')
+  ) {
+    throw new Error(
+      "Die gewählte HTML-Datei ist der Viewer, nicht die Geschichte",
+    );
+  }
+
+  const coverMeta = storyDocument.querySelector(".cover-meta")?.textContent || "";
+  const storyVersion = coverMeta.match(/Version\s+(\d+\.\d+)/)?.[1] || "";
+  const normalizedVersion = expectedVersion.trim().replace(",", ".");
+  if (!storyVersion || storyVersion !== normalizedVersion) {
+    throw new Error(
+      `HTML-Version ${storyVersion || "unbekannt"} stimmt nicht mit ${normalizedVersion} überein`,
+    );
+  }
+  if (storyDocument.querySelectorAll("h2").length === 0) {
+    throw new Error("Die HTML-Datei enthält keine erkennbaren Kapitel");
+  }
+
+  for (const link of storyDocument.querySelectorAll('a[href^="#"]')) {
+    const fragment = link.getAttribute("href").slice(1);
+    if (fragment && !storyDocument.getElementById(decodeURIComponent(fragment))) {
+      throw new Error(`Inhaltsverzeichnisziel fehlt: #${fragment}`);
+    }
+  }
+
+  const pdfHeader = await pdfFile.slice(0, 5).text();
+  if (pdfHeader !== "%PDF-") {
+    throw new Error("Die gewählte PDF-Datei ist keine gültige PDF");
+  }
+}
+
 async function updateReleaseMetadata(form) {
   const payload = {
     version: form.querySelector("#version").value.trim(),
@@ -428,6 +479,8 @@ document.querySelector("#publish-form").addEventListener("submit", async (event)
   }
 
   const submitButton = form.querySelector("button[type='submit']");
+  const storyHtml = form.querySelector("#story-html").files[0];
+  const storyPdf = form.querySelector("#story-pdf").files[0];
   const handoutHtml = form.querySelector("#handout-html").files[0];
   const handoutPdf = form.querySelector("#handout-pdf").files[0];
   if (Boolean(handoutHtml) !== Boolean(handoutPdf)) {
@@ -436,11 +489,16 @@ document.querySelector("#publish-form").addEventListener("submit", async (event)
     return;
   }
   submitButton.disabled = true;
-  statusNode.textContent = "Dateien werden hochgeladen …";
+  statusNode.textContent = "Dateien werden vor dem Upload geprüft …";
 
   try {
-    await uploadStoryFile(form.querySelector("#story-html").files[0], "fahrt-zum-kunden.html", "text/html; charset=utf-8");
-    await uploadStoryFile(form.querySelector("#story-pdf").files[0], "geschichte.pdf", "application/pdf");
+    await validateStoryFiles(storyHtml, storyPdf, form.querySelector("#version").value);
+    form.querySelector("#version").value = form.querySelector("#version").value
+      .trim()
+      .replace(",", ".");
+    statusNode.textContent = "Dateien werden hochgeladen …";
+    await uploadStoryFile(storyHtml, "fahrt-zum-kunden.html", "text/html; charset=utf-8");
+    await uploadStoryFile(storyPdf, "geschichte.pdf", "application/pdf");
     if (handoutHtml && handoutPdf) {
       statusNode.textContent = "Handout wird hochgeladen …";
       await uploadStoryFile(handoutHtml, "workshop-handout.html", "text/html; charset=utf-8");
