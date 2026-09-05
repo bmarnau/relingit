@@ -29,6 +29,19 @@ values ('HIER-IHRE-USER-UID-EINTRAGEN');
 
 Nur diese UID darf über `admin.html` neue Dateien einstellen. Weitere Administratoren werden auf dieselbe Weise ergänzt.
 
+### Rücksetzlinks richtig zurückführen
+
+Unter **Authentication → URL Configuration** müssen beide Angaben auf die
+veröffentlichte Admin-Seite zeigen:
+
+- **Site URL:** `https://berndmarnau.de/relingit/admin.html`
+- **Redirect URLs:** `https://berndmarnau.de/relingit/admin.html`
+
+Ohne diese Einträge führt eine Passwort-E-Mail zur voreingestellten
+localhost-Adresse und der Link erscheint ungültig. Bereits versandte Links
+werden dadurch nicht repariert; nach der Korrektur immer einen neuen Link über
+**Passwort vergessen?** anfordern.
+
 ## C. Website verbinden
 
 1. In Supabase **Project Settings → API** öffnen.
@@ -54,6 +67,10 @@ Der Publishable-/Anon-Key darf in einer öffentlichen Website stehen, weil RLS s
 4. Version, sichtbares Datum und Seitenzahl eintragen; HTML und PDF auswählen.
 5. **Version jetzt veröffentlichen** drücken und die Erfolgsmeldung abwarten.
 6. Landingpage neu öffnen. Versionsangaben sowie Lese- und PDF-Link kommen nun aus Supabase.
+
+Der QR-Code erscheint nur bei der ersten erfolgreichen Anmeldung mit E-Mail und
+Passwort. Bei späteren Anmeldungen wird unmittelbar der aktuelle sechsstellige
+Code aus der bereits eingerichteten Authenticator-App verlangt.
 
 Wichtig: MFA unmittelbar nach dem Einspielen der SQL-Änderung selbst
 einrichten. Das Administratorkonto darf nicht unbeaufsichtigt nur mit Passwort
