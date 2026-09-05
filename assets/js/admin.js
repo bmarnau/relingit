@@ -7,6 +7,8 @@
  */
 const config = window.SUPABASE_CONFIG ?? {};
 const loginPanel = document.querySelector("#login-panel");
+const resetRequestPanel = document.querySelector("#reset-request-panel");
+const resetPasswordPanel = document.querySelector("#reset-password-panel");
 const mfaPanel = document.querySelector("#mfa-panel");
 const mfaEnrollment = document.querySelector("#mfa-enrollment");
 const publishPanel = document.querySelector("#publish-panel");
@@ -17,6 +19,8 @@ let accessToken = sessionStorage.getItem(tokenStorageKey) || "";
 let factorId = "";
 let challengeId = "";
 let enrollmentPending = false;
+const recoveryParameters = new URLSearchParams(window.location.hash.slice(1));
+let recoveryToken = recoveryParameters.get("access_token") || "";
 
 function isConfigured() {
   return Boolean(
@@ -43,8 +47,27 @@ function hasUsableToken(token, requiredAal = "aal1") {
 
 function showPanel(name) {
   loginPanel.hidden = name !== "login";
+  resetRequestPanel.hidden = name !== "reset-request";
+  resetPasswordPanel.hidden = name !== "reset-password";
   mfaPanel.hidden = name !== "mfa";
   publishPanel.hidden = name !== "publish";
+}
+
+function recoveryRedirectUrl() {
+  return new URL("admin.html", window.location.href).href.split("#")[0];
+}
+
+function friendlyLoginError(message = "") {
+  if (/invalid login credentials/i.test(message)) {
+    return "E-Mail oder Passwort ist nicht korrekt.";
+  }
+  if (/email not confirmed/i.test(message)) {
+    return "Die E-Mail-Adresse wurde in Supabase noch nicht bestätigt.";
+  }
+  if (/too many requests|rate limit/i.test(message)) {
+    return "Zu viele Versuche. Bitte einige Minuten warten.";
+  }
+  return "Die Anmeldung konnte nicht abgeschlossen werden.";
 }
 
 function saveToken(token) {
@@ -74,6 +97,23 @@ async function signIn(email, password) {
     "/token?grant_type=password",
     { method: "POST", body: JSON.stringify({ email, password }) },
     "",
+  );
+}
+
+async function requestPasswordReset(email) {
+  const redirectTo = encodeURIComponent(recoveryRedirectUrl());
+  return authRequest(
+    `/recover?redirect_to=${redirectTo}`,
+    { method: "POST", body: JSON.stringify({ email }) },
+    "",
+  );
+}
+
+async function updatePassword(password) {
+  return authRequest(
+    "/user",
+    { method: "PUT", body: JSON.stringify({ password }) },
+    recoveryToken,
   );
 }
 
@@ -193,10 +233,23 @@ async function logout() {
   statusNode.textContent = "Abgemeldet.";
 }
 
+const recoveryError = recoveryParameters.get("error_description");
+const isRecoverySession =
+  recoveryParameters.get("type") === "recovery" &&
+  hasUsableToken(recoveryToken);
+
 if (!isConfigured()) {
   statusNode.textContent =
     "Supabase ist noch nicht in assets/js/supabase-config.js eingetragen.";
   showPanel("login");
+} else if (isRecoverySession) {
+  window.history.replaceState({}, document.title, recoveryRedirectUrl());
+  showPanel("reset-password");
+  statusNode.textContent = "Der Rücksetzlink wurde bestätigt. Bitte ein neues Passwort vergeben.";
+} else if (recoveryError) {
+  showPanel("reset-request");
+  statusNode.textContent = "Der Rücksetzlink ist ungültig oder abgelaufen. Bitte einen neuen Link anfordern.";
+  window.history.replaceState({}, document.title, recoveryRedirectUrl());
 } else if (hasUsableToken(accessToken, "aal2")) {
   showPanel("publish");
 } else if (hasUsableToken(accessToken)) {
@@ -225,8 +278,72 @@ document.querySelector("#login-form").addEventListener("submit", async (event) =
     saveToken(result.access_token);
     await prepareMfa();
   } catch (error) {
-    statusNode.textContent = "Anmeldung fehlgeschlagen. E-Mail und Passwort prüfen.";
+    statusNode.textContent = `Anmeldung fehlgeschlagen: ${friendlyLoginError(error.message)}`;
     console.error(error);
+  }
+});
+
+document.querySelector("#forgot-password").addEventListener("click", () => {
+  document.querySelector("#reset-email").value =
+    document.querySelector("#admin-email").value;
+  showPanel("reset-request");
+  statusNode.textContent = "";
+});
+
+document.querySelector("#reset-request-cancel").addEventListener("click", () => {
+  showPanel("login");
+  statusNode.textContent = "";
+});
+
+document.querySelector("#reset-request-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  if (!form.reportValidity() || !isConfigured()) return;
+  const button = form.querySelector("button[type='submit']");
+  button.disabled = true;
+  statusNode.textContent = "Rücksetzlink wird angefordert …";
+
+  try {
+    await requestPasswordReset(document.querySelector("#reset-email").value.trim());
+    form.reset();
+    statusNode.textContent =
+      "Wenn die Adresse zum Administratorkonto gehört, wurde ein neuer Rücksetzlink gesendet.";
+  } catch (error) {
+    statusNode.textContent = /too many requests|rate limit/i.test(error.message)
+      ? "Zu viele Anfragen. Bitte einige Minuten warten."
+      : "Der Rücksetzlink konnte nicht angefordert werden. Bitte später erneut versuchen.";
+    console.error(error);
+  } finally {
+    button.disabled = false;
+  }
+});
+
+document.querySelector("#reset-password-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  if (!form.reportValidity()) return;
+  const password = document.querySelector("#new-password").value;
+  const confirmation = document.querySelector("#new-password-confirm").value;
+  if (password !== confirmation) {
+    statusNode.textContent = "Die beiden Passwörter stimmen nicht überein.";
+    return;
+  }
+  const button = form.querySelector("button[type='submit']");
+  button.disabled = true;
+  statusNode.textContent = "Neues Passwort wird gespeichert …";
+
+  try {
+    await updatePassword(password);
+    form.reset();
+    recoveryToken = "";
+    window.history.replaceState({}, document.title, recoveryRedirectUrl());
+    showPanel("login");
+    statusNode.textContent = "Passwort geändert. Sie können sich jetzt anmelden und MFA einrichten.";
+  } catch (error) {
+    statusNode.textContent = "Das Passwort konnte nicht geändert werden. Bitte einen neuen Link anfordern.";
+    console.error(error);
+  } finally {
+    button.disabled = false;
   }
 });
 

@@ -36,6 +36,34 @@
         >
 
         <button class="button primary" type="submit">Anmelden</button>
+        <button class="button secondary" id="forgot-password" type="button">
+          Passwort vergessen?
+        </button>
+      </form>
+    </section>
+
+    <section id="reset-request-panel" aria-labelledby="reset-request-title" hidden>
+      <h2 id="reset-request-title">Passwort zurücksetzen</h2>
+      <p>Sie erhalten eine E-Mail mit einem Link zurück zu dieser Admin-Seite.</p>
+      <form id="reset-request-form" class="admin-form">
+        <label for="reset-email">E-Mail</label>
+        <input id="reset-email" type="email" required autocomplete="email">
+        <button class="button primary" type="submit">Rücksetzlink senden</button>
+        <button class="button secondary" id="reset-request-cancel" type="button">
+          Zurück zur Anmeldung
+        </button>
+      </form>
+    </section>
+
+    <section id="reset-password-panel" aria-labelledby="reset-password-title" hidden>
+      <h2 id="reset-password-title">Neues Passwort festlegen</h2>
+      <p>Vergeben Sie ein neues Passwort mit mindestens zwölf Zeichen.</p>
+      <form id="reset-password-form" class="admin-form">
+        <label for="new-password">Neues Passwort</label>
+        <input id="new-password" type="password" minlength="12" required autocomplete="new-password">
+        <label for="new-password-confirm">Neues Passwort wiederholen</label>
+        <input id="new-password-confirm" type="password" minlength="12" required autocomplete="new-password">
+        <button class="button primary" type="submit">Passwort speichern</button>
       </form>
     </section>
 

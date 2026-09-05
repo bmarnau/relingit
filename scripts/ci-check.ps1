@@ -24,6 +24,7 @@ foreach ($file in $requiredFiles) {
 # Sicherheitsinvarianten: Die folgenden Prüfungen verhindern, dass spätere
 # Änderungen MFA, Rate-Limit oder die Viewer-Sandbox unbemerkt abschalten.
 $adminText = Get-Content -Raw -LiteralPath "assets/js/admin.js"
+$adminHtmlText = Get-Content -Raw -LiteralPath "admin.html"
 $feedbackClientText = Get-Content -Raw -LiteralPath "assets/js/app.js"
 $setupText = Get-Content -Raw -LiteralPath "supabase/setup.sql"
 $edgeText = Get-Content -Raw -LiteralPath "supabase/functions/submit-feedback/index.ts"
@@ -37,6 +38,12 @@ if ($adminText -notmatch '/factors/.+/challenge' -or $adminText -notmatch '/fact
 }
 if ($adminText -notmatch 'aal2') {
     $failures.Add("Adminbereich prüft den AAL2-Status nicht")
+}
+if ($adminHtmlText -notmatch 'id="reset-request-form"' -or $adminHtmlText -notmatch 'id="reset-password-form"') {
+    $failures.Add("Adminbereich enthält keinen vollständigen Passwort-Rücksetzdialog")
+}
+if ($adminText -notmatch '/recover\?redirect_to=' -or $adminText -notmatch 'method:\s*"PUT"' -or $adminText -notmatch 'recoveryRedirectUrl') {
+    $failures.Add("Adminbereich enthält keinen vollständigen Supabase-Passwort-Rücksetzablauf")
 }
 if ($setupText -notmatch "auth\.jwt\(\)\s*->>\s*'aal'.*'aal2'") {
     $failures.Add("Supabase-RLS erzwingt AAL2 nicht serverseitig")
