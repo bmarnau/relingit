@@ -81,6 +81,25 @@ foreach ($viewerText in $viewerTexts) {
     }
 }
 
+# Jedes interne Inhaltsverzeichnisziel der Geschichte muss tatsächlich als ID
+# existieren. So wird kein Paket mit scheinbar anklickbaren, aber wirkungslosen
+# Kapitellinks veröffentlicht.
+$storyHtmlText = Get-Content -Raw -LiteralPath "story/current/fahrt-zum-kunden.html"
+$storyIds = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::Ordinal)
+[regex]::Matches($storyHtmlText, '\sid\s*=\s*["''](?<id>[^"'']+)["'']', 'IgnoreCase') | ForEach-Object {
+    [void]$storyIds.Add([System.Net.WebUtility]::HtmlDecode($_.Groups['id'].Value))
+}
+$storyInternalLinks = [regex]::Matches($storyHtmlText, 'href\s*=\s*["'']#(?<target>[^"'']*)["'']', 'IgnoreCase')
+foreach ($link in $storyInternalLinks) {
+    $target = [uri]::UnescapeDataString([System.Net.WebUtility]::HtmlDecode($link.Groups['target'].Value))
+    if ($target -and -not $storyIds.Contains($target)) {
+        $failures.Add("Interner Story-Link hat kein Ziel: #$target")
+    }
+}
+if ($storyInternalLinks.Count -eq 0) {
+    $failures.Add("Geschichte enthält keine prüfbaren internen Inhaltsverzeichnis-Links")
+}
+
 # Versionsnummer und Veröffentlichungsdatum müssen in Landingpage-Logik,
 # Leseansicht und eigentlicher Geschichte denselben Stand ausweisen.
 $appText = Get-Content -Raw -LiteralPath "assets/js/app.js"
