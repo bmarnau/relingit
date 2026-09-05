@@ -11,6 +11,7 @@ const resetRequestPanel = document.querySelector("#reset-request-panel");
 const resetPasswordPanel = document.querySelector("#reset-password-panel");
 const mfaPanel = document.querySelector("#mfa-panel");
 const mfaEnrollment = document.querySelector("#mfa-enrollment");
+const mfaQr = document.querySelector("#mfa-qr");
 const publishPanel = document.querySelector("#publish-panel");
 const statusNode = document.querySelector("#admin-status");
 const tokenStorageKey = "reling_admin_token";
@@ -19,6 +20,7 @@ let accessToken = sessionStorage.getItem(tokenStorageKey) || "";
 let factorId = "";
 let challengeId = "";
 let enrollmentPending = false;
+let mfaQrObjectUrl = "";
 const recoveryParameters = new URLSearchParams(window.location.hash.slice(1));
 let recoveryToken = recoveryParameters.get("access_token") || "";
 
@@ -126,13 +128,32 @@ async function createChallenge(id) {
   challengeId = challenge.id;
 }
 
+function showMfaQrCode(qrCode) {
+  if (mfaQrObjectUrl) URL.revokeObjectURL(mfaQrObjectUrl);
+  mfaQrObjectUrl = "";
+
+  // GoTrue liefert den QR-Code je nach Version als SVG-Text oder als Bild-URL.
+  // SVG-Text wird ohne HTML-Injektion in eine lokale, kurzlebige Bild-URL gewandelt.
+  if (qrCode.trimStart().startsWith("<svg")) {
+    mfaQrObjectUrl = URL.createObjectURL(
+      new Blob([qrCode], { type: "image/svg+xml" }),
+    );
+    mfaQr.src = mfaQrObjectUrl;
+    return;
+  }
+
+  mfaQr.src = qrCode;
+}
+
 async function prepareMfa() {
   showPanel("mfa");
   statusNode.textContent = "Zweiter Faktor wird vorbereitet …";
 
-  const factors = await authRequest("/factors");
-  const verifiedTotp = (factors.totp || []).find(
-    (factor) => factor.status === "verified",
+  // Die GoTrue-Benutzerantwort enthält die vorhandenen Faktoren. Ein separates
+  // GET /factors ist nicht vorgesehen und wird vom Server mit HTTP 405 abgelehnt.
+  const currentUser = await authRequest("/user");
+  const verifiedTotp = (currentUser.factors || []).find(
+    (factor) => factor.factor_type === "totp" && factor.status === "verified",
   );
 
   if (verifiedTotp) {
@@ -153,7 +174,7 @@ async function prepareMfa() {
   enrollmentPending = true;
   factorId = enrollment.id;
   mfaEnrollment.hidden = false;
-  document.querySelector("#mfa-qr").src = enrollment.totp.qr_code;
+  showMfaQrCode(enrollment.totp.qr_code);
   document.querySelector("#mfa-secret").textContent = enrollment.totp.secret;
   await createChallenge(factorId);
   statusNode.textContent = "QR-Code scannen und den ersten Code bestätigen.";

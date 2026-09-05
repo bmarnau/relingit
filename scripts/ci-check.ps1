@@ -36,6 +36,12 @@ $viewerTexts = @(
 if ($adminText -notmatch '/factors/.+/challenge' -or $adminText -notmatch '/factors/.+/verify') {
     $failures.Add("Adminbereich enthält keinen vollständigen MFA-Challenge-/Verify-Ablauf")
 }
+if ($adminText -notmatch 'authRequest\("/user"\)' -or $adminText -match 'const factors = await authRequest\("/factors"\)') {
+    $failures.Add("Adminbereich liest MFA-Faktoren nicht über den unterstützten Benutzer-Endpunkt")
+}
+if ($adminText -notmatch 'new Blob\(\[qrCode\].+image/svg\+xml') {
+    $failures.Add("Adminbereich kann den von Supabase gelieferten SVG-QR-Code nicht sicher anzeigen")
+}
 if ($adminText -notmatch 'aal2') {
     $failures.Add("Adminbereich prüft den AAL2-Status nicht")
 }
