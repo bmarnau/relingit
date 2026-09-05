@@ -134,7 +134,9 @@ function showMfaQrCode(qrCode) {
 
   // GoTrue liefert den QR-Code je nach Version als SVG-Text oder als Bild-URL.
   // SVG-Text wird ohne HTML-Injektion in eine lokale, kurzlebige Bild-URL gewandelt.
-  if (qrCode.trimStart().startsWith("<svg")) {
+  // Supabase kann vor dem <svg>-Element zusätzlich eine XML-Deklaration
+  // (<?xml ...?>) mitsenden. Beide Formen sind SVG-Text.
+  if (qrCode.trimStart().startsWith("<")) {
     mfaQrObjectUrl = URL.createObjectURL(
       new Blob([qrCode], { type: "image/svg+xml" }),
     );
@@ -152,7 +154,10 @@ async function prepareMfa() {
   // Die GoTrue-Benutzerantwort enthält die vorhandenen Faktoren. Ein separates
   // GET /factors ist nicht vorgesehen und wird vom Server mit HTTP 405 abgelehnt.
   const currentUser = await authRequest("/user");
-  const verifiedTotp = (currentUser.factors || []).find(
+  const totpFactors = (currentUser.factors || []).filter(
+    (factor) => factor.factor_type === "totp",
+  );
+  const verifiedTotp = totpFactors.find(
     (factor) => factor.factor_type === "totp" && factor.status === "verified",
   );
 
@@ -164,11 +169,25 @@ async function prepareMfa() {
     return;
   }
 
+  // Ein abgebrochener erster Einrichtungsversuch hinterlässt einen
+  // unbestätigten Faktor. Dessen QR-Geheimnis kann nicht erneut abgerufen
+  // werden; deshalb wird nur dieser unbestätigte Faktor vor dem Neuaufbau
+  // entfernt. Bestätigte Faktoren werden niemals automatisch gelöscht.
+  const unverifiedTotp = totpFactors.find(
+    (factor) => factor.status === "unverified",
+  );
+  if (unverifiedTotp) {
+    await authRequest(`/factors/${unverifiedTotp.id}`, { method: "DELETE" });
+  }
+
   const enrollment = await authRequest("/factors", {
     method: "POST",
     body: JSON.stringify({
       factor_type: "totp",
       friendly_name: "Reling IT Veröffentlichung",
+      // Der Herausgeber erscheint zusammen mit der E-Mail-Adresse in der
+      // Authenticator-App und macht den Eintrag eindeutig auffindbar.
+      issuer: "https://berndmarnau.de/relingit",
     }),
   });
   enrollmentPending = true;

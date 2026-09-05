@@ -42,6 +42,15 @@ if ($adminText -notmatch 'authRequest\("/user"\)' -or $adminText -match 'const f
 if ($adminText -notmatch 'new Blob\(\[qrCode\].+image/svg\+xml') {
     $failures.Add("Adminbereich kann den von Supabase gelieferten SVG-QR-Code nicht sicher anzeigen")
 }
+if ($adminText -notmatch 'trimStart\(\)\.startsWith\("<"\)') {
+    $failures.Add("Adminbereich erkennt keinen SVG-QR-Code mit XML-Deklaration")
+}
+if ($adminText -notmatch 'factor\.status === "unverified"' -or $adminText -notmatch 'method:\s*"DELETE"') {
+    $failures.Add("Adminbereich bereinigt keinen abgebrochenen unbestätigten MFA-Faktor")
+}
+if ($adminText -notmatch 'issuer:\s*"https://berndmarnau\.de/relingit"') {
+    $failures.Add("MFA-Eintrag besitzt keinen eindeutig erkennbaren Reling-IT-Herausgeber")
+}
 if ($adminText -notmatch 'aal2') {
     $failures.Add("Adminbereich prüft den AAL2-Status nicht")
 }
