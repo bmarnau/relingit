@@ -1,6 +1,10 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
 <meta charset="UTF-8">
 <title>Die Fahrt zum Kunden</title>
 <style>
+
 
   :root{
     --bg:#123b4e;
@@ -8,7 +12,7 @@
     --surface-2:#24647e;
     --ink:#eef2fb;
     --ink-soft:#aab4cc;
-    --ink-faint:#6c7796;
+    --ink-faint:#93a0ba;
     --line:#265066;
     --road:#2c5c73;
     --navis:#4fd1c5;
@@ -60,7 +64,7 @@
   }
   .disclaimer{
     font-size:13px;
-    color:var(--ink-faint);
+    color:var(--ink-soft);
     max-width:56ch;
     margin:0 0 48px;
     padding:10px 14px;
@@ -68,7 +72,7 @@
     border:1px solid var(--line);
     border-radius:6px;
   }
-  .disclaimer b{color:var(--ink-soft);}
+  .disclaimer b{color:var(--ink);}
 
   .road{
     position:relative;
@@ -105,7 +109,7 @@
     font-family:"IBM Plex Mono",monospace;
     font-size:11px;
     letter-spacing:.04em;
-    color:var(--ink-faint);
+    color:var(--ink-soft);
     padding:8px 14px 10px;
     border-top:1px solid var(--line);
   }
@@ -361,6 +365,7 @@
 
   @media print{
     body{background:var(--bg) !important; -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+    .part-divider{break-before:page; margin-top:0;}
     .intro{break-inside:avoid;}
     .scene-fig, .voice, .drafttasks, .table-people{break-inside:avoid;}
     /* DREI VERSCHIEDENE RAENDER-MECHANISMEN, DREI VERSCHIEDENE LOESUNGEN (alle noetig):
@@ -496,6 +501,21 @@
     line-height:1.8;
   }
   .cover-toc-group:last-child{margin-bottom:0;}
+  .part-divider{
+    margin:70px 0 30px;
+    text-align:center;
+  }
+  .part-divider span{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:8px 0;
+    display:inline-block;
+  }
   .cover-toc-label{
     font-family:"IBM Plex Mono",monospace;
     font-size:10px;
@@ -567,6 +587,8 @@
   .vtable td:last-child{color:var(--ink-soft);}
   .vtable tr:last-child td{border-bottom:none;}
 </style>
+</head>
+<body>
 
 <div class="wrap">
 
@@ -629,21 +651,21 @@
 
     <div class="cover-meta">
       <span><b>Bernd Marnau</b></span>
-      <span>04.09.2026</span>
+      <span>05.09.2026</span>
       <span>Vorbereitung Workshop Ende September 2026</span>
-      <span>Version 1.32</span>
+      <span>Version 1.37</span>
     </div>
     <p id="render-stamp" style="text-align:center; font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.03em; color:var(--ink-faint); opacity:0.55; margin:10px 0 0;"></p>
   </section>
 
   <div class="box-shell"><div class="cover-frontmatter">
-    <p class="cover-whatsnew"><span class="tag">Neu in v1.32</span>Deckblatt-Bezeichnung von &bdquo;Kurzgeschichte&ldquo; auf &bdquo;Kurzgeschichten&ldquo; korrigiert &ndash; siehe <a href="#kap-versionen">Versionshistorie</a> am Ende.</p>
+    <p class="cover-whatsnew"><span class="tag">Neu in v1.37</span>Textkontrast in Kästen/Bildunterschriften verbessert (auf manchen Geräten schlecht lesbar) &ndash; siehe <a href="#kap-versionen">Versionshistorie</a> am Ende.</p>
 
     <nav class="cover-toc" aria-label="Inhaltsverzeichnis">
       <div class="cover-toc-title">Inhalt</div>
       <div class="cover-toc-group">
-        <span class="cover-toc-label">Teil&nbsp;1 &middot; Geschichte</span><br>
-        <a href="#kap-kaffeeecke">Kaffeeecke</a><span class="sep">&middot;</span><a href="#kap-umweg">Der Umweg</a><span class="sep">&middot;</span><a href="#kap-reiner-voss">Der klare Auftrag</a><span class="sep">&middot;</span><a href="#kap-freigabegrenze">Die Freigabegrenze</a><span class="sep">&middot;</span><a href="#kap-vor-reling-it">Vor Reling IT</a><span class="sep">&middot;</span><a href="#kap-aufbruch">Aufbruch</a><span class="sep">&middot;</span><a href="#kap-navis-meldet-sich">Navis meldet sich</a><span class="sep">&middot;</span><a href="#kap-frage-an-lumen">Eine Frage an Lumen</a><span class="sep">&middot;</span><a href="#kap-horst-avkk">Die vierte Frage</a><span class="sep">&middot;</span><a href="#kap-kunde-der-ging">Der Kunde, der ging</a><span class="sep">&middot;</span><a href="#kap-zwischenfall">Der kleine Zwischenfall</a><span class="sep">&middot;</span><a href="#kap-ankunft">Ankunft</a><span class="sep">&middot;</span><a href="#kap-konferenztisch">Am Konferenztisch</a><span class="sep">&middot;</span><a href="#kap-warum-navis-lumen">Warum Navis und Lumen</a><span class="sep">&middot;</span><a href="#kap-kurz-vor-neun">Kurz vor neun</a><span class="sep">&middot;</span><a href="#kap-erster-knoten">Der erste Knoten</a><span class="sep">&middot;</span><a href="#kap-haengen-bleibt">Was hängen bleibt</a><span class="sep">&middot;</span><a href="#kap-andere-fahrten">Andere Fahrten</a>
+        <span class="cover-toc-label">Teil&nbsp;1 &middot; Geschichten</span><br>
+        <a href="#kap-kaffeeecke">Kaffeeecke</a><span class="sep">&middot;</span><a href="#kap-umweg">Der Umweg</a><span class="sep">&middot;</span><a href="#kap-reiner-voss">Der klare Auftrag</a><span class="sep">&middot;</span><a href="#kap-freigabegrenze">Die Freigabegrenze</a><span class="sep">&middot;</span><a href="#kap-vor-reling-it">Vor Reling IT</a><span class="sep">&middot;</span><a href="#kap-aufbruch">Aufbruch</a><span class="sep">&middot;</span><a href="#kap-navis-meldet-sich">Navis meldet sich</a><span class="sep">&middot;</span><a href="#kap-frage-an-lumen">Eine Frage an Lumen</a><span class="sep">&middot;</span><a href="#kap-horst-avkk">Die vierte Frage</a><span class="sep">&middot;</span><a href="#kap-kunde-der-ging">Der Kunde, der ging</a><span class="sep">&middot;</span><a href="#kap-zwischenfall">Der kleine Zwischenfall</a><span class="sep">&middot;</span><a href="#kap-ankunft">Ankunft</a><span class="sep">&middot;</span><a href="#kap-konferenztisch">Am Konferenztisch</a><span class="sep">&middot;</span><a href="#kap-warum-navis-lumen">Warum Navis und Lumen</a><span class="sep">&middot;</span><a href="#kap-kurz-vor-neun">Kurz vor neun</a><span class="sep">&middot;</span><a href="#kap-erster-knoten">Der erste Knoten</a><span class="sep">&middot;</span><a href="#kap-haengen-bleibt">Was hängen bleibt</a><span class="sep">&middot;</span><a href="#kap-andere-fahrten">Ankunft, noch einmal</a>
       </div>
       <div class="cover-toc-group">
         <span class="cover-toc-label">Teil&nbsp;2 &middot; Realer Bezug</span><br>
@@ -1206,7 +1228,7 @@
 
       <p>Mira bringt die zwei offenen Punkte von der Fahrt auf den Tisch &ndash; Backup und Firewall-Update. Doch Fenner hebt die Hand.</p>
       <p><b>Jule Fenner:</b> &bdquo;Firewall bitte nicht vor 14 Uhr &ndash; wir fahren bis dahin eine Sonderschicht auf Linie 2, jede Unterbrechung kostet uns richtig Geld.&ldquo;</p>
-      <p>Baumann ergänzt, etwas leiser: &bdquo;Das ist die Charge für unseren größten Kunden, Lieferung ist für Freitag zugesagt. Wenn wir da jetzt ausfallen, stehe nicht nur ich schlecht da &ndash; der kann seine eigene Linie dann auch nicht bestücken.&ldquo; Kurz hängt die Sorge im Raum, die eigentlich nie im Ticket steht: seine Kunden hängen an seinen Kunden.</p>
+      <p>Baumann ergänzt, etwas leiser: &bdquo;Das ist die Charge für unseren größten Kunden, Lieferung ist für Freitag zugesagt. Wenn wir da jetzt ausfallen, stehe nicht nur ich schlecht da &ndash; der kann seine eigene Linie dann auch nicht bestücken.&ldquo; Kurz hängt die Sorge im Raum, die eigentlich nie im Ticket steht: Was hier ausfällt, trifft nicht nur Baumann, sondern auch die, die sich auf ihn verlassen.</p>
       <p>Genau die Art Information, die in keinem System steht. Mira nickt, entscheidet vor Ort: Backup-Prüfung sofort, Firewall-Update nach 14 Uhr im Abstimmung mit Fenner.</p>
 
       <div class="box-shell"><div class="voice lumen">
@@ -1490,7 +1512,7 @@
         </svg>
         <figcaption>Dieselbe Strasse, drei Fahrten, ein Zählen, das erst am Ende ganz aufgeht.</figcaption>
       </figure></div>
-      <h2 id="kap-andere-fahrten">Andere Fahrten</h2>
+      <h2 id="kap-andere-fahrten">Ankunft, noch einmal</h2>
       <p>Nora sitzt mit Finn über dessen zweitem Workflow-Entwurf und stellt beiläufig dieselbe Frage, die einmal Kilian ihr gestellt hat: &bdquo;Und was macht ihr, wenn er sich irrt?&ldquo; Sie hört sich selbst reden und merkt kaum, wie genau das klingt wie damals &ndash; nur diesmal ist sie es, die fragt, nicht die, der die Frage gestellt wird.</p>
       <p>Insa sitzt zum ersten Mal selbst im Auto statt am Schreibtisch, unterwegs zum Landhandel Rehder, wegen einer Ersatzteil-Abholung, die diesmal niemand anders übernehmen konnte. Ungewohnt, aber sie kommt klar &ndash; noch auf der Zufahrt fällt ihr auf, dass sie unterwegs genauso automatisch eine Zeile ins Sysingboard tippt, wie sie es sonst nur vom Schreibtisch aus tut.</p>
       <p>Mira fährt dieselbe Strecke wie an ihrem allerersten Tag bei einem Kunden, nur diesmal ohne das Gefühl, unterwegs etwas vergessen zu haben. Auf Höhe der alten Kastanie, wo sie damals umgedreht ist, weil die Unterlagen zu Hause lagen, denkt sie kurz nach, wer inzwischen eigentlich alles mitredet, wenn sie losfährt: Petra, Kilian, Nora, Reiner, Insa, Finn, Enno &ndash; sieben, murmelt sie, und dann, mehr zu sich selbst, weil ihr Navis und Lumen fast entfallen wären: eigentlich zehn.</p>
@@ -1499,7 +1521,9 @@
 
   </div>
 
-  <div class="box-shell"><aside class="real">
+  <div class="part-divider"><span>Teil 2 &middot; Realer Bezug</span></div>
+
+  <div class="box-shell-flow"><aside class="real">
     <span class="eyebrow">Realer Bezug</span>
     <h2 id="kap-so-ist-es-gedacht">So ist es tatsächlich gedacht</h2>
     <p>Hinter der Geschichte steckt keine neue Technik, sondern die schon skizzierte Architektur: ein Sprachzugang, eine KI-Zentrale mit austauschbarem Backend, und zwei beratende Agenten. Für das Lesen und Erklären &ndash; Situation Brief, Vorbereitung, Nachfragen &ndash; greifen sie direkt auf Sysingboard und Report-Familie zu, ohne Freigabe im Einzelfall. Sobald daraus etwas Neues entstehen soll &ndash; wie die vier Arbeitspakete am Konferenztisch &ndash; bleibt es beim Entwurf, bis ein Mensch es ausdrücklich freigibt.</p>
@@ -2165,6 +2189,31 @@
           <td>04.09.2026</td>
           <td>Auf Nutzerhinweis korrigiert: Mit inzwischen 18 Kapiteln über mehrere Figuren und Handlungsstränge ist das Buch tatsächlich eine Sammlung von Kurzgeschichten geworden, keine einzelne fortlaufende Kurzgeschichte mehr. Drei Fundstellen von &bdquo;Kurzgeschichte&ldquo; (Einzahl) auf &bdquo;Kurzgeschichten&ldquo; (Mehrzahl) korrigiert: das Deckblatt-Eyebrow-Label direkt unter dem Logo, der Verweis auf die Handout-Vorlage im Anhang, und die Einleitung der Versionshistorie. Allgemeinere Verwendungen von &bdquo;diese Geschichte&ldquo; (z.&nbsp;B. im TDF/ADR-Wissensblock oder beim &bdquo;Functional is not Done&ldquo;-Zitat), die sich auf das Buch bzw. die erzählte Welt als Ganzes beziehen statt auf eine einzelne Geschichte, bewusst unveraendert gelassen &ndash; dort ist die Einzahl inhaltlich weiterhin zutreffend.</td>
         </tr>
+        <tr>
+          <td>1.33</td>
+          <td>04.09.2026</td>
+          <td>Auf Nutzerhinweis dieselbe Korrektur wie in v1.32 auch im Mini-Inhaltsverzeichnis nachgezogen: &bdquo;Teil 1 &middot; Geschichte&ldquo; &rarr; &bdquo;Teil 1 &middot; Geschichten&ldquo;. Damit sind jetzt alle Stellen, die die Kapitelsammlung selbst benennen (Deckblatt-Label, Mini-Inhaltsverzeichnis, Handout-Verweis im Anhang, Versionshistorie-Einleitung), einheitlich in der Mehrzahl.</td>
+        </tr>
+        <tr>
+          <td>1.34</td>
+          <td>04.09.2026</td>
+          <td>Auf Nutzerwunsch zwei Anpassungen am Buchende: (1) Letztes Kapitel von &bdquo;Andere Fahrten&ldquo; auf &bdquo;Ankunft, noch einmal&ldquo; umbenannt (bewusstes Echo auf das frühere Kapitel &bdquo;Ankunft&ldquo;), da der vorherige Titel den Abschlusscharakter nicht klar genug signalisierte; Mini-Inhaltsverzeichnis mitgezogen, Kapitel-Anker (&bdquo;kap-andere-fahrten&ldquo;) bewusst unveraendert gelassen, um bestehende Verlinkungen nicht zu brechen. (2) Klarer optischer und inhaltlicher Übergang zu Teil&nbsp;2 ergänzt: neuer Zwischentitel &bdquo;TEIL 2 &middot; REALER BEZUG&ldquo; mit Abstand oben/unten, erzwungener Seitenumbruch davor. Dabei erneut dieselbe Fehlerklasse wie bei den fruehreren n8n-Einbauten aufgetreten: Der erzwungene Umbruch liess den nachfolgenden, sehr langen ersten Teil-2-Abschnitt (&bdquo;So ist es tatsächlich gedacht&ldquo;) zusaetzlich auf eine weitere neue Seite springen (break-inside:avoid + zu lang fuer eine Seite), was den Zwischentitel fast allein auf einer sonst leeren Seite zurueckliess. Mit derselben, bereits etablierten Loesung behoben: Wrapper dieses Abschnitts von &bdquo;.box-shell&ldquo; auf &bdquo;.box-shell-flow&ldquo; umgestellt. Mit zwei aufeinanderfolgenden Renderlaeufen als deterministisch bestaetigt, 64 Seiten.</td>
+        </tr>
+        <tr>
+          <td>1.35</td>
+          <td>05.09.2026</td>
+          <td>Nutzer meldet: Sprunglinks im Mini-Inhaltsverzeichnis der HTML-Version führen ins Leere; im PDF funktionieren dieselben Links einwandfrei. Ursache gefunden: Der Datei fehlte seit jeher das vollständige HTML-Grundgerüst (&bdquo;&lt;!DOCTYPE html&gt;&ldquo;, &bdquo;&lt;html&gt;&ldquo;, &bdquo;&lt;head&gt;&ldquo;, &bdquo;&lt;body&gt;&ldquo;) &ndash; dieselbe Klasse von Grundproblem, die in v1.21 bereits zum Encoding-Bug (fehlende &bdquo;meta charset&ldquo;-Deklaration) geführt hatte. Ohne Doctype rendern Browser die Seite im Quirks-Modus statt im Standard-Modus, was u.&nbsp;a. beeinflusst, wie der Dokument-Scrollcontainer für Sprungmarken (&bdquo;#anchor&ldquo;-Navigation) bestimmt wird &ndash; im internen Renderer (Playwright/Chromium) für die PDF-Erzeugung offenbar unproblematisch, in reguläraen Desktop-/Mobil-Browsern beim direkten Öffnen der HTML-Datei jedoch nicht zuverlässig. Behoben durch Ergänzen von vollständigem &bdquo;&lt;!DOCTYPE html&gt;&ldquo;/&bdquo;&lt;html lang=&bdquo;de&ldquo;&gt;&ldquo;/&bdquo;&lt;head&gt;&ldquo;/&bdquo;&lt;body&gt;&ldquo;-Gerüst um den bestehenden Inhalt, ohne inhaltliche Änderungen. Vor Fix keine doppelten IDs oder fehlenden Href-Ziele im Markup gefunden (programmatisch geprüft) &ndash; die Linkziele selbst waren also korrekt, nur die Navigation dorthin unzuverlässig. Layout-/Inhaltscheck weiterhin grün, jetzt 67 statt 64 Seiten (durch den saubereren Textfluss im Standard-Modus statt Quirks-Modus, keine optische Regression &ndash; Deckblatt und Personenliste stichprobenartig mit dem vorherigen Stand verglichen). Mit zwei aufeinanderfolgenden Renderläufen als deterministisch bestätigt.</td>
+        </tr>
+        <tr>
+          <td>1.36</td>
+          <td>05.09.2026</td>
+          <td>Auf Nutzerhinweis einen Satz im Kapitel &bdquo;Am Konferenztisch&ldquo; umformuliert: &bdquo;seine Kunden hängen an seinen Kunden&ldquo; &rarr; &bdquo;Was hier ausfällt, trifft nicht nur Baumann, sondern auch die, die sich auf ihn verlassen.&ldquo; Grund: Die alte Formulierung wiederholte &bdquo;seine/seinen Kunden&ldquo; nur in unterschiedlichem Kasus und liess dadurch die eigentliche Kette (Reling IT &rarr; Baumann &rarr; Baumanns eigener Grosskunde) unklar statt sie zu zeigen (von drei vorgeschlagenen Alternativen ausgewählt).</td>
+        </tr>
+        <tr>
+          <td>1.37</td>
+          <td>05.09.2026</td>
+          <td>Nutzer meldet (mit Screenshots belegt): Die kleine Schrift in Kästen &ndash; Disclaimer-Boxen auf dem Deckblatt (&bdquo;Aufbau in zwei Teilen&ldquo; u.&nbsp;ä.) und Bildunterschriften unter den Szenen-Illustrationen &ndash; ist je nach Bildschirm schlecht lesbar. Messtechnisch bestätigt (WCAG-Kontrastverhältnis berechnet): &bdquo;--ink-faint&ldquo; (#6c7796), bislang Textfarbe in beiden Fällen, erreichte auf &bdquo;--surface&ldquo; nur einen Kontrast von 2,00:1 &ndash; deutlich unter dem WCAG-AA-Mindestwert von 4,5:1 für normalen Fliesstext. Ursache: Die Hintergrundfarben wurden in v1.23/v1.24 mehrfach aufgehellt (Navy &rarr; Meeresblau), die feste, dunkle &bdquo;--ink-faint&ldquo;-Textfarbe aber nicht mitgezogen. Behoben: &bdquo;.disclaimer&ldquo;- und &bdquo;.scene-fig figcaption&ldquo;-Text von &bdquo;--ink-faint&ldquo; auf das bereits vorhandene, hellere &bdquo;--ink-soft&ldquo; umgestellt (Kontrast jetzt 5,47:1 auf &bdquo;--surface&ldquo;, klar AA-konform); der fette Lead-in in Disclaimer-Boxen (&bdquo;Aufbau in zwei Teilen:&ldquo; etc.) zusätzlich von &bdquo;--ink-soft&ldquo; auf volles &bdquo;--ink&ldquo; angehoben, um die Hierarchie zu erhalten. Zusätzlich die globale &bdquo;--ink-faint&ldquo;-Variable selbst von #6c7796 auf #93a0ba aufgehellt (Kontrast auf &bdquo;--bg&ldquo; jetzt 4,53:1 statt 2,68:1), da sie an vielen weiteren Stellen (Fusszeile, Zeitstempel, Tenure-Angaben in der Personenliste) verwendet wird. Layout-Check weiterhin grün, unveraendert 68 Seiten (keine Layoutverschiebung durch reine Farbaenderung), Seiten 2 und 4 visuell mit dem vorherigen Stand verglichen.</td>
+        </tr>
       </tbody>
     </table>
   </section></div>
@@ -2174,3 +2223,5 @@
   </footer></div>
 
 </div>
+</body>
+</html>

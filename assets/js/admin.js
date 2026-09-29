@@ -7,8 +7,11 @@
  */
 const config = window.SUPABASE_CONFIG ?? {};
 const loginPanel = document.querySelector("#login-panel");
+const resetRequestPanel = document.querySelector("#reset-request-panel");
+const resetPasswordPanel = document.querySelector("#reset-password-panel");
 const mfaPanel = document.querySelector("#mfa-panel");
 const mfaEnrollment = document.querySelector("#mfa-enrollment");
+const mfaQr = document.querySelector("#mfa-qr");
 const publishPanel = document.querySelector("#publish-panel");
 const statusNode = document.querySelector("#admin-status");
 const tokenStorageKey = "reling_admin_token";
@@ -17,6 +20,9 @@ let accessToken = sessionStorage.getItem(tokenStorageKey) || "";
 let factorId = "";
 let challengeId = "";
 let enrollmentPending = false;
+let mfaQrObjectUrl = "";
+const recoveryParameters = new URLSearchParams(window.location.hash.slice(1));
+let recoveryToken = recoveryParameters.get("access_token") || "";
 
 function isConfigured() {
   return Boolean(
@@ -43,8 +49,27 @@ function hasUsableToken(token, requiredAal = "aal1") {
 
 function showPanel(name) {
   loginPanel.hidden = name !== "login";
+  resetRequestPanel.hidden = name !== "reset-request";
+  resetPasswordPanel.hidden = name !== "reset-password";
   mfaPanel.hidden = name !== "mfa";
   publishPanel.hidden = name !== "publish";
+}
+
+function recoveryRedirectUrl() {
+  return new URL("admin.html", window.location.href).href.split("#")[0];
+}
+
+function friendlyLoginError(message = "") {
+  if (/invalid login credentials/i.test(message)) {
+    return "E-Mail oder Passwort ist nicht korrekt.";
+  }
+  if (/email not confirmed/i.test(message)) {
+    return "Die E-Mail-Adresse wurde in Supabase noch nicht bestätigt.";
+  }
+  if (/too many requests|rate limit/i.test(message)) {
+    return "Zu viele Versuche. Bitte einige Minuten warten.";
+  }
+  return "Die Anmeldung konnte nicht abgeschlossen werden.";
 }
 
 function saveToken(token) {
@@ -77,6 +102,23 @@ async function signIn(email, password) {
   );
 }
 
+async function requestPasswordReset(email) {
+  const redirectTo = encodeURIComponent(recoveryRedirectUrl());
+  return authRequest(
+    `/recover?redirect_to=${redirectTo}`,
+    { method: "POST", body: JSON.stringify({ email }) },
+    "",
+  );
+}
+
+async function updatePassword(password) {
+  return authRequest(
+    "/user",
+    { method: "PUT", body: JSON.stringify({ password }) },
+    recoveryToken,
+  );
+}
+
 async function createChallenge(id) {
   const challenge = await authRequest(`/factors/${id}/challenge`, {
     method: "POST",
@@ -86,13 +128,37 @@ async function createChallenge(id) {
   challengeId = challenge.id;
 }
 
+function showMfaQrCode(qrCode) {
+  if (mfaQrObjectUrl) URL.revokeObjectURL(mfaQrObjectUrl);
+  mfaQrObjectUrl = "";
+
+  // GoTrue liefert den QR-Code je nach Version als SVG-Text oder als Bild-URL.
+  // SVG-Text wird ohne HTML-Injektion in eine lokale, kurzlebige Bild-URL gewandelt.
+  // Supabase kann vor dem <svg>-Element zusätzlich eine XML-Deklaration
+  // (<?xml ...?>) mitsenden. Beide Formen sind SVG-Text.
+  if (qrCode.trimStart().startsWith("<")) {
+    mfaQrObjectUrl = URL.createObjectURL(
+      new Blob([qrCode], { type: "image/svg+xml" }),
+    );
+    mfaQr.src = mfaQrObjectUrl;
+    return;
+  }
+
+  mfaQr.src = qrCode;
+}
+
 async function prepareMfa() {
   showPanel("mfa");
   statusNode.textContent = "Zweiter Faktor wird vorbereitet …";
 
-  const factors = await authRequest("/factors");
-  const verifiedTotp = (factors.totp || []).find(
-    (factor) => factor.status === "verified",
+  // Die GoTrue-Benutzerantwort enthält die vorhandenen Faktoren. Ein separates
+  // GET /factors ist nicht vorgesehen und wird vom Server mit HTTP 405 abgelehnt.
+  const currentUser = await authRequest("/user");
+  const totpFactors = (currentUser.factors || []).filter(
+    (factor) => factor.factor_type === "totp",
+  );
+  const verifiedTotp = totpFactors.find(
+    (factor) => factor.factor_type === "totp" && factor.status === "verified",
   );
 
   if (verifiedTotp) {
@@ -103,17 +169,31 @@ async function prepareMfa() {
     return;
   }
 
+  // Ein abgebrochener erster Einrichtungsversuch hinterlässt einen
+  // unbestätigten Faktor. Dessen QR-Geheimnis kann nicht erneut abgerufen
+  // werden; deshalb wird nur dieser unbestätigte Faktor vor dem Neuaufbau
+  // entfernt. Bestätigte Faktoren werden niemals automatisch gelöscht.
+  const unverifiedTotp = totpFactors.find(
+    (factor) => factor.status === "unverified",
+  );
+  if (unverifiedTotp) {
+    await authRequest(`/factors/${unverifiedTotp.id}`, { method: "DELETE" });
+  }
+
   const enrollment = await authRequest("/factors", {
     method: "POST",
     body: JSON.stringify({
       factor_type: "totp",
       friendly_name: "Reling IT Veröffentlichung",
+      // Der Herausgeber erscheint zusammen mit der E-Mail-Adresse in der
+      // Authenticator-App und macht den Eintrag eindeutig auffindbar.
+      issuer: "https://berndmarnau.de/relingit",
     }),
   });
   enrollmentPending = true;
   factorId = enrollment.id;
   mfaEnrollment.hidden = false;
-  document.querySelector("#mfa-qr").src = enrollment.totp.qr_code;
+  showMfaQrCode(enrollment.totp.qr_code);
   document.querySelector("#mfa-secret").textContent = enrollment.totp.secret;
   await createChallenge(factorId);
   statusNode.textContent = "QR-Code scannen und den ersten Code bestätigen.";
@@ -150,6 +230,57 @@ async function uploadStoryFile(file, name, contentType) {
     throw new Error(
       `${name}: HTTP ${response.status}${detail ? ` – ${detail}` : ""}`,
     );
+  }
+}
+
+async function validateStoryFiles(htmlFile, pdfFile, expectedVersion) {
+  if (htmlFile.name.toLowerCase() !== "fahrt-zum-kunden.html") {
+    throw new Error(
+      "Falsche HTML-Datei. Bitte source/fahrt-zum-kunden.html auswählen",
+    );
+  }
+  if (pdfFile.name.toLowerCase() !== "die-fahrt-zum-kunden.pdf") {
+    throw new Error(
+      "Falsche PDF-Datei. Bitte source/Die-Fahrt-zum-Kunden.pdf auswählen",
+    );
+  }
+
+  const storyDocument = new DOMParser().parseFromString(
+    await htmlFile.text(),
+    "text/html",
+  );
+  if (
+    storyDocument.querySelector("#story-frame") ||
+    storyDocument.querySelector(".viewer-header") ||
+    storyDocument.querySelector('script[src*="story-viewer"]')
+  ) {
+    throw new Error(
+      "Die gewählte HTML-Datei ist der Viewer, nicht die Geschichte",
+    );
+  }
+
+  const coverMeta = storyDocument.querySelector(".cover-meta")?.textContent || "";
+  const storyVersion = coverMeta.match(/Version\s+(\d+\.\d+)/)?.[1] || "";
+  const normalizedVersion = expectedVersion.trim().replace(",", ".");
+  if (!storyVersion || storyVersion !== normalizedVersion) {
+    throw new Error(
+      `HTML-Version ${storyVersion || "unbekannt"} stimmt nicht mit ${normalizedVersion} überein`,
+    );
+  }
+  if (storyDocument.querySelectorAll("h2").length === 0) {
+    throw new Error("Die HTML-Datei enthält keine erkennbaren Kapitel");
+  }
+
+  for (const link of storyDocument.querySelectorAll('a[href^="#"]')) {
+    const fragment = link.getAttribute("href").slice(1);
+    if (fragment && !storyDocument.getElementById(decodeURIComponent(fragment))) {
+      throw new Error(`Inhaltsverzeichnisziel fehlt: #${fragment}`);
+    }
+  }
+
+  const pdfHeader = await pdfFile.slice(0, 5).text();
+  if (pdfHeader !== "%PDF-") {
+    throw new Error("Die gewählte PDF-Datei ist keine gültige PDF");
   }
 }
 
@@ -193,10 +324,23 @@ async function logout() {
   statusNode.textContent = "Abgemeldet.";
 }
 
+const recoveryError = recoveryParameters.get("error_description");
+const isRecoverySession =
+  recoveryParameters.get("type") === "recovery" &&
+  hasUsableToken(recoveryToken);
+
 if (!isConfigured()) {
   statusNode.textContent =
     "Supabase ist noch nicht in assets/js/supabase-config.js eingetragen.";
   showPanel("login");
+} else if (isRecoverySession) {
+  window.history.replaceState({}, document.title, recoveryRedirectUrl());
+  showPanel("reset-password");
+  statusNode.textContent = "Der Rücksetzlink wurde bestätigt. Bitte ein neues Passwort vergeben.";
+} else if (recoveryError) {
+  showPanel("reset-request");
+  statusNode.textContent = "Der Rücksetzlink ist ungültig oder abgelaufen. Bitte einen neuen Link anfordern.";
+  window.history.replaceState({}, document.title, recoveryRedirectUrl());
 } else if (hasUsableToken(accessToken, "aal2")) {
   showPanel("publish");
 } else if (hasUsableToken(accessToken)) {
@@ -225,8 +369,72 @@ document.querySelector("#login-form").addEventListener("submit", async (event) =
     saveToken(result.access_token);
     await prepareMfa();
   } catch (error) {
-    statusNode.textContent = "Anmeldung fehlgeschlagen. E-Mail und Passwort prüfen.";
+    statusNode.textContent = `Anmeldung fehlgeschlagen: ${friendlyLoginError(error.message)}`;
     console.error(error);
+  }
+});
+
+document.querySelector("#forgot-password").addEventListener("click", () => {
+  document.querySelector("#reset-email").value =
+    document.querySelector("#admin-email").value;
+  showPanel("reset-request");
+  statusNode.textContent = "";
+});
+
+document.querySelector("#reset-request-cancel").addEventListener("click", () => {
+  showPanel("login");
+  statusNode.textContent = "";
+});
+
+document.querySelector("#reset-request-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  if (!form.reportValidity() || !isConfigured()) return;
+  const button = form.querySelector("button[type='submit']");
+  button.disabled = true;
+  statusNode.textContent = "Rücksetzlink wird angefordert …";
+
+  try {
+    await requestPasswordReset(document.querySelector("#reset-email").value.trim());
+    form.reset();
+    statusNode.textContent =
+      "Wenn die Adresse zum Administratorkonto gehört, wurde ein neuer Rücksetzlink gesendet.";
+  } catch (error) {
+    statusNode.textContent = /too many requests|rate limit/i.test(error.message)
+      ? "Zu viele Anfragen. Bitte einige Minuten warten."
+      : "Der Rücksetzlink konnte nicht angefordert werden. Bitte später erneut versuchen.";
+    console.error(error);
+  } finally {
+    button.disabled = false;
+  }
+});
+
+document.querySelector("#reset-password-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  if (!form.reportValidity()) return;
+  const password = document.querySelector("#new-password").value;
+  const confirmation = document.querySelector("#new-password-confirm").value;
+  if (password !== confirmation) {
+    statusNode.textContent = "Die beiden Passwörter stimmen nicht überein.";
+    return;
+  }
+  const button = form.querySelector("button[type='submit']");
+  button.disabled = true;
+  statusNode.textContent = "Neues Passwort wird gespeichert …";
+
+  try {
+    await updatePassword(password);
+    form.reset();
+    recoveryToken = "";
+    window.history.replaceState({}, document.title, recoveryRedirectUrl());
+    showPanel("login");
+    statusNode.textContent = "Passwort geändert. Sie können sich jetzt anmelden und MFA einrichten.";
+  } catch (error) {
+    statusNode.textContent = "Das Passwort konnte nicht geändert werden. Bitte einen neuen Link anfordern.";
+    console.error(error);
+  } finally {
+    button.disabled = false;
   }
 });
 
@@ -271,6 +479,8 @@ document.querySelector("#publish-form").addEventListener("submit", async (event)
   }
 
   const submitButton = form.querySelector("button[type='submit']");
+  const storyHtml = form.querySelector("#story-html").files[0];
+  const storyPdf = form.querySelector("#story-pdf").files[0];
   const handoutHtml = form.querySelector("#handout-html").files[0];
   const handoutPdf = form.querySelector("#handout-pdf").files[0];
   if (Boolean(handoutHtml) !== Boolean(handoutPdf)) {
@@ -279,11 +489,16 @@ document.querySelector("#publish-form").addEventListener("submit", async (event)
     return;
   }
   submitButton.disabled = true;
-  statusNode.textContent = "Dateien werden hochgeladen …";
+  statusNode.textContent = "Dateien werden vor dem Upload geprüft …";
 
   try {
-    await uploadStoryFile(form.querySelector("#story-html").files[0], "fahrt-zum-kunden.html", "text/html; charset=utf-8");
-    await uploadStoryFile(form.querySelector("#story-pdf").files[0], "geschichte.pdf", "application/pdf");
+    await validateStoryFiles(storyHtml, storyPdf, form.querySelector("#version").value);
+    form.querySelector("#version").value = form.querySelector("#version").value
+      .trim()
+      .replace(",", ".");
+    statusNode.textContent = "Dateien werden hochgeladen …";
+    await uploadStoryFile(storyHtml, "fahrt-zum-kunden.html", "text/html; charset=utf-8");
+    await uploadStoryFile(storyPdf, "geschichte.pdf", "application/pdf");
     if (handoutHtml && handoutPdf) {
       statusNode.textContent = "Handout wird hochgeladen …";
       await uploadStoryFile(handoutHtml, "workshop-handout.html", "text/html; charset=utf-8");

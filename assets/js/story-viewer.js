@@ -32,7 +32,19 @@ function hasSupabaseConfig() {
 }
 
 async function fetchStory(url) {
-  const response = await fetch(url);
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 15000);
+  const separator = url.includes("?") ? "&" : "?";
+
+  let response;
+  try {
+    response = await fetch(`${url}${separator}viewer=${Date.now()}`, {
+      cache: "no-store",
+      signal: controller.signal,
+    });
+  } finally {
+    window.clearTimeout(timeout);
+  }
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   return response.text();
 }
@@ -108,6 +120,25 @@ function buildChapterNavigation() {
   updateCurrentSection();
 }
 
+function enableInternalStoryLinks() {
+  const storyDocument = frame.contentDocument;
+  if (!storyDocument) return;
+
+  storyDocument.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const fragment = link.getAttribute("href").slice(1);
+      if (!fragment) return;
+
+      const targetId = decodeURIComponent(fragment);
+      const target = storyDocument.getElementById(targetId);
+      if (!target) return;
+
+      event.preventDefault();
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+}
+
 async function loadReleaseInfo() {
   if (!hasSupabaseConfig()) return;
 
@@ -155,6 +186,7 @@ loadStory();
 
 frame.addEventListener("load", () => {
   buildChapterNavigation();
+  enableInternalStoryLinks();
   applyZoom();
 });
 chapterSelect.addEventListener("change", () => {

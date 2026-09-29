@@ -38,6 +38,12 @@ Das Zugriffstoken liegt nur im Session Storage des aktuellen Browser-Tabs. Beim
 Abmelden wird zusätzlich der Supabase-Logout aufgerufen. Das Passwort wird nach
 der Anmeldung aus dem Formular entfernt.
 
+Die Admin-Seite besitzt einen eigenen Passwort-Rücksetzablauf. Der angeforderte
+E-Mail-Link darf ausschließlich zur freigegebenen Adresse
+`https://berndmarnau.de/relingit/admin.html` zurückführen. Dort wird das neue
+Passwort gesetzt; das Rücksetztoken wird weder protokolliert noch dauerhaft
+gespeichert und anschließend aus der Browseradresse entfernt.
+
 ## Öffentliches Feedback
 
 Browser können nicht mehr direkt in `public.reader_feedback` schreiben. Die

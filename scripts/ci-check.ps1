@@ -24,6 +24,7 @@ foreach ($file in $requiredFiles) {
 # Sicherheitsinvarianten: Die folgenden Prüfungen verhindern, dass spätere
 # Änderungen MFA, Rate-Limit oder die Viewer-Sandbox unbemerkt abschalten.
 $adminText = Get-Content -Raw -LiteralPath "assets/js/admin.js"
+$adminHtmlText = Get-Content -Raw -LiteralPath "admin.html"
 $feedbackClientText = Get-Content -Raw -LiteralPath "assets/js/app.js"
 $setupText = Get-Content -Raw -LiteralPath "supabase/setup.sql"
 $edgeText = Get-Content -Raw -LiteralPath "supabase/functions/submit-feedback/index.ts"
@@ -35,8 +36,32 @@ $viewerTexts = @(
 if ($adminText -notmatch '/factors/.+/challenge' -or $adminText -notmatch '/factors/.+/verify') {
     $failures.Add("Adminbereich enthält keinen vollständigen MFA-Challenge-/Verify-Ablauf")
 }
+if ($adminText -notmatch 'authRequest\("/user"\)' -or $adminText -match 'const factors = await authRequest\("/factors"\)') {
+    $failures.Add("Adminbereich liest MFA-Faktoren nicht über den unterstützten Benutzer-Endpunkt")
+}
+if ($adminText -notmatch 'new Blob\(\[qrCode\].+image/svg\+xml') {
+    $failures.Add("Adminbereich kann den von Supabase gelieferten SVG-QR-Code nicht sicher anzeigen")
+}
+if ($adminText -notmatch 'trimStart\(\)\.startsWith\("<"\)') {
+    $failures.Add("Adminbereich erkennt keinen SVG-QR-Code mit XML-Deklaration")
+}
+if ($adminText -notmatch 'factor\.status === "unverified"' -or $adminText -notmatch 'method:\s*"DELETE"') {
+    $failures.Add("Adminbereich bereinigt keinen abgebrochenen unbestätigten MFA-Faktor")
+}
+if ($adminText -notmatch 'issuer:\s*"https://berndmarnau\.de/relingit"') {
+    $failures.Add("MFA-Eintrag besitzt keinen eindeutig erkennbaren Reling-IT-Herausgeber")
+}
+if ($adminText -notmatch 'validateStoryFiles' -or $adminText -notmatch 'Die gewählte HTML-Datei ist der Viewer') {
+    $failures.Add("Adminbereich verhindert keinen versehentlichen Viewer-Upload als Geschichte")
+}
 if ($adminText -notmatch 'aal2') {
     $failures.Add("Adminbereich prüft den AAL2-Status nicht")
+}
+if ($adminHtmlText -notmatch 'id="reset-request-form"' -or $adminHtmlText -notmatch 'id="reset-password-form"') {
+    $failures.Add("Adminbereich enthält keinen vollständigen Passwort-Rücksetzdialog")
+}
+if ($adminText -notmatch '/recover\?redirect_to=' -or $adminText -notmatch 'method:\s*"PUT"' -or $adminText -notmatch 'recoveryRedirectUrl') {
+    $failures.Add("Adminbereich enthält keinen vollständigen Supabase-Passwort-Rücksetzablauf")
 }
 if ($setupText -notmatch "auth\.jwt\(\)\s*->>\s*'aal'.*'aal2'") {
     $failures.Add("Supabase-RLS erzwingt AAL2 nicht serverseitig")
@@ -57,6 +82,25 @@ foreach ($viewerText in $viewerTexts) {
     if ($viewerText -match 'sandbox="[^"]*allow-scripts') {
         $failures.Add("Viewer erlaubt Skriptausführung in eingebetteten Dokumenten")
     }
+}
+
+# Jedes interne Inhaltsverzeichnisziel der Geschichte muss tatsächlich als ID
+# existieren. So wird kein Paket mit scheinbar anklickbaren, aber wirkungslosen
+# Kapitellinks veröffentlicht.
+$storyHtmlText = Get-Content -Raw -LiteralPath "story/current/fahrt-zum-kunden.html"
+$storyIds = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::Ordinal)
+[regex]::Matches($storyHtmlText, '\sid\s*=\s*["''](?<id>[^"'']+)["'']', 'IgnoreCase') | ForEach-Object {
+    [void]$storyIds.Add([System.Net.WebUtility]::HtmlDecode($_.Groups['id'].Value))
+}
+$storyInternalLinks = [regex]::Matches($storyHtmlText, 'href\s*=\s*["'']#(?<target>[^"'']*)["'']', 'IgnoreCase')
+foreach ($link in $storyInternalLinks) {
+    $target = [uri]::UnescapeDataString([System.Net.WebUtility]::HtmlDecode($link.Groups['target'].Value))
+    if ($target -and -not $storyIds.Contains($target)) {
+        $failures.Add("Interner Story-Link hat kein Ziel: #$target")
+    }
+}
+if ($storyInternalLinks.Count -eq 0) {
+    $failures.Add("Geschichte enthält keine prüfbaren internen Inhaltsverzeichnis-Links")
 }
 
 # Versionsnummer und Veröffentlichungsdatum müssen in Landingpage-Logik,
